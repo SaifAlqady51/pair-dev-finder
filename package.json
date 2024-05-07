@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npm run db:migrate && next start",
     "lint": "next lint",
     "db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
+    "db:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
+    "db:migrate": "node -r esbuild-register ./src/db/migrate.ts",
     "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
