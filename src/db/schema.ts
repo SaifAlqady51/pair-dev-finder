@@ -16,11 +16,6 @@ const pool = postgres(connectionString, { max: 1 })
 export const db = drizzle(pool)
  
 
-export const testing = pgTable("testing", {
-  id: text("id")
-    .primaryKey(),
-  name: text("name"),
-})
 export const users = pgTable("user", {
   id: text("id")
     .primaryKey()
