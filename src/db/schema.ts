@@ -16,6 +16,7 @@ const pool = postgres(connectionString, { max: 1 })
 export const db = drizzle(pool)
  
 
+
 export const users = pgTable("user", {
   id: text("id")
     .primaryKey()
@@ -69,3 +70,14 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 )
+
+export const rooms = pgTable("room", {
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  language: text("language").notNull(),
+  githubRepo: text("githubRepo"),
+  description:text("description"),
+
+})
