@@ -22,9 +22,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <Header />
-          <div>
-            <ModeToggle />
-          </div>
           {children}
         </Provider>
       </body>
