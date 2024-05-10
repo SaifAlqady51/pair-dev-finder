@@ -1,5 +1,5 @@
 export type formFieldDataType = {
-    fieldName:"username" | "language" | "description" | "githubRepo";
+    fieldName:"name" | "language" | "description" | "githubRepo";
     label:string;
     fieldDescription:string;
     placeholder?:string;
@@ -8,8 +8,8 @@ export type formFieldDataType = {
 // This is just a labels data to display on ui 
 export const formFieldsData: formFieldDataType[] = [
     {
-        fieldName: "username",
-        label: "usename",
+        fieldName: "name",
+        label: "name",
         fieldDescription: "This is you public display key",
         placeholder:"John Doe",
     },
