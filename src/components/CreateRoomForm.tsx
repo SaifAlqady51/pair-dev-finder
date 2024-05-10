@@ -16,9 +16,10 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formFieldDataType, formFieldsData } from "@/data/formFieldsData";
+import { createRoomAction } from "@/app/create-room/actions";
 
 export const formSchema = z.object({
-  username: z.string().min(2).max(50),
+  name: z.string().min(2).max(50),
   language: z.string().min(2).max(50),
   githubRepo: z.string().min(2).max(50),
   description: z.string().min(2).max(250),
@@ -30,7 +31,7 @@ export function CreateRoomForm() {
     resolver: zodResolver(formSchema),
     // set default values to avoid DOM warning
     defaultValues: {
-      username: "",
+      name: "",
       language: "",
       githubRepo: "",
       description: "",
@@ -38,8 +39,8 @@ export function CreateRoomForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await createRoomAction(values);
   }
 
   return (
