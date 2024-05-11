@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "npm run db:migrate && next start",
     "lint": "next lint",
-    "db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
-    "db:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
-    "db:migrate": "node -r esbuild-register ./src/db/migrate.ts ",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node -r esbuild-register ./src/db/migrate.ts",
     "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
@@ -31,6 +31,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.4",
+    "react-icons": "^5.2.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
@@ -39,7 +40,7 @@
     "@types/node": "^20.12.8",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
-    "drizzle-kit": "^0.20.17",
+    "drizzle-kit": "^0.21.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.3",
     "postcss": "^8.4.38",
