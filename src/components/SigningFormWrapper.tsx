@@ -1,4 +1,4 @@
-import Telephon from "../../public/telephone.jpg";
+import Telephon from "../../public/static/images/telephone.jpg";
 import Image from "next/image";
 
 type SigningFormWrapperProps = {
