@@ -2,15 +2,18 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./ModeToggle";
+import Link from "next/link";
 
 export default function Header() {
   const session = useSession();
   return (
     <div className="flex">
       {session.data ? (
-        <Button onClick={() => signOut()}>SignOut</Button>
+        <Button onClick={() => signOut()}>Sign Out</Button>
       ) : (
-        <Button onClick={() => signIn("google")}>SignIn</Button>
+        <Button>
+          <Link href="/register">Sign In</Link>
+        </Button>
       )}
       <ModeToggle />
     </div>
