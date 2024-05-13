@@ -15,26 +15,35 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import * as jwt from "jsonwebtoken";
-import { encrypt, decrypt } from "@/utils/jwt";
+import { encrypt } from "@/utils/jwt";
 
-const formSchema = z.object({
+import { render } from "@react-email/render";
+import { checkEmail } from "@/app/register/actions";
+import VerifyEmail from "../../emails/VerifyEmail";
+
+const emailHtml = render(<VerifyEmail code="555555" />);
+
+export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 
 export function RegisterForm() {
   const route = useRouter();
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof registerFormSchema>>({
+    resolver: zodResolver(registerFormSchema),
     defaultValues: {
       email: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof registerFormSchema>) {
     const token = encrypt(values);
+
+    checkEmail({ email: values.email, template: emailHtml })
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
     route.push(`/register/code?data=${token}`);
   }
   return (
