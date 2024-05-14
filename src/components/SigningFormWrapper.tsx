@@ -4,7 +4,7 @@ import Image from "next/image";
 type SigningFormWrapperProps = {
   form: React.ReactNode;
   title: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 export default function SigningFormWrapper({
   form,
