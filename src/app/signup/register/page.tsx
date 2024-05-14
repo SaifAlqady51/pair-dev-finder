@@ -14,7 +14,7 @@ export default function RegisterPage() {
           <span className="flex-shrink mx-4 text-sm text-gray-600 dark:text-gray-100">
             or continue with
           </span>
-          <div className="flex-grow border-t border-gray-300"></div>{" "}
+          <div className="flex-grow border-t border-gray-300"></div>
         </div>
         {/* Signup with providers section */}
         <div className="w-full flex justify-between gap-12 mt-4">

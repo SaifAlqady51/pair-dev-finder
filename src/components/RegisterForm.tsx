@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { encrypt } from "@/utils/jwt";
 
 import { render } from "@react-email/render";
-import { checkEmail } from "@/app/register/actions";
+import { checkEmail } from "@/app/signup/register/actions";
 import VerifyEmail from "../../emails/VerifyEmail";
 
 const emailHtml = render(<VerifyEmail code="555555" />);
@@ -44,7 +44,7 @@ export function RegisterForm() {
     checkEmail({ email: values.email, template: emailHtml })
       .then((res) => console.log(res))
       .catch((error) => console.log(error));
-    route.push(`/register/code?data=${token}`);
+    route.push(`/signup/code?data=${token}`);
   }
   return (
     <Form {...form}>
