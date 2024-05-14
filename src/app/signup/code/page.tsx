@@ -1,7 +1,10 @@
+import SigningFormWrapper from "@/components/SigningFormWrapper";
+import { VerficationCodeForm } from "@/components/VerficationCodeForm";
+
 export default function CodePage() {
   return (
-    <div>
-      <h1>CODE</h1>
-    </div>
+    <SigningFormWrapper
+      form={<VerficationCodeForm />}
+      title="Enter verification code"></SigningFormWrapper>
   );
 }
