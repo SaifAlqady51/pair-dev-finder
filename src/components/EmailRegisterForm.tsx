@@ -27,7 +27,7 @@ export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 
-export function RegisterForm() {
+export function EmailRegisterForm() {
   const route = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof registerFormSchema>>({
