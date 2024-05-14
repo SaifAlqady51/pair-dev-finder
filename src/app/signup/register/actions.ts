@@ -19,7 +19,6 @@ type CheckEmailType = {
 
 export async function checkEmail({email,template,code}: CheckEmailType) {
         try{
-
             await transporter.sendMail({
                 from: email,
                 to: email,
@@ -28,11 +27,8 @@ export async function checkEmail({email,template,code}: CheckEmailType) {
                 html: template
             });
 
-            return true
-
         }catch(error){
-            return false
-
+            throw new Error(`unable to send email : ${error} ` )
         }
     
 

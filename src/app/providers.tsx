@@ -7,8 +7,7 @@ import { usePathname } from "next/navigation";
 export default function Provider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const pathnameList = pathname.split("/");
-
-  const hideHeader = pathnameList.includes("register");
+  const hideHeader = pathnameList[1] === "signup";
 
   return (
     <SessionProvider>

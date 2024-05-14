@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,16 +17,15 @@ import { useRouter } from "next/navigation";
 import { encrypt } from "@/utils/jwt";
 
 import { render } from "@react-email/render";
-import { checkEmail } from "@/app/register/actions";
+import { checkEmail } from "@/app/signup/register/actions";
 import VerifyEmail from "../../emails/VerifyEmail";
-
-const emailHtml = render(<VerifyEmail code="555555" />);
+import { generateRandomNumber } from "@/utils/generateRandomNumber";
 
 export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 
-export function RegisterForm() {
+export function EmailRegisterForm() {
   const route = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -37,14 +35,19 @@ export function RegisterForm() {
     },
   });
 
+  const generatedCode = generateRandomNumber();
+  const emailHtml = render(<VerifyEmail code={generatedCode.toString()} />);
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof registerFormSchema>) {
     const token = encrypt(values);
+    const encryptedCode = encrypt({ code: generatedCode.toString() });
 
     checkEmail({ email: values.email, template: emailHtml })
-      .then((res) => console.log(res))
+      .then()
       .catch((error) => console.log(error));
-    route.push(`/register/code?data=${token}`);
+
+    route.push(`/signup/code?data=${token}&code=${encryptedCode}`);
   }
   return (
     <Form {...form}>

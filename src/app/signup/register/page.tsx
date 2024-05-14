@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/components/RegisterForm";
+import { EmailRegisterForm } from "@/components/EmailRegisterForm";
 import { Button } from "@/components/ui/button";
 import { IoLogoGoogle } from "react-icons/io5";
 import { FaGithub } from "react-icons/fa";
@@ -6,7 +6,7 @@ import SigningFormWrapper from "@/components/SigningFormWrapper";
 
 export default function RegisterPage() {
   return (
-    <SigningFormWrapper form={<RegisterForm />} title="Create New Account">
+    <SigningFormWrapper form={<EmailRegisterForm />} title="Create New Account">
       <div>
         {/* Divider */}
         <div className="relative flex items-center">
@@ -14,7 +14,7 @@ export default function RegisterPage() {
           <span className="flex-shrink mx-4 text-sm text-gray-600 dark:text-gray-100">
             or continue with
           </span>
-          <div className="flex-grow border-t border-gray-300"></div>{" "}
+          <div className="flex-grow border-t border-gray-300"></div>
         </div>
         {/* Signup with providers section */}
         <div className="w-full flex justify-between gap-12 mt-4">
