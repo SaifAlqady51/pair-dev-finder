@@ -19,8 +19,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useRouter, useSearchParams } from "next/navigation";
-import { decrypt, encrypt } from "@/utils/jwt";
-import { useParams } from "next/navigation";
+import { decrypt } from "@/utils/jwt";
 
 export const verificationCodeForm = z.object({
   code: z.string().length(6, { message: "should be 6 digits" }),
@@ -47,6 +46,7 @@ export function VerficationCodeForm() {
     console.log(realCode);
     if (realCode.code === values.code) {
       console.log("true");
+      route.push(`/signup/register?data=${searchParams.get("data")}`);
     } else {
       console.log("false");
     }
