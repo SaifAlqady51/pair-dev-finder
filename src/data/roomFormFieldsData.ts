@@ -1,4 +1,4 @@
-export type formFieldDataType = {
+export type RoomFormFieldDataType = {
     fieldName:"name" | "language" | "description" | "githubRepo";
     label:string;
     fieldDescription:string;
@@ -6,7 +6,7 @@ export type formFieldDataType = {
 }
 
 // This is just a labels data to display on ui 
-export const formFieldsData: formFieldDataType[] = [
+export const roomFormFieldsData: RoomFormFieldDataType[] = [
     {
         fieldName: "name",
         label: "name",

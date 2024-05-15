@@ -15,7 +15,10 @@ import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formFieldDataType, formFieldsData } from "@/data/formFieldsData";
+import {
+  RoomFormFieldDataType,
+  roomFormFieldsData,
+} from "@/data/roomFormFieldsData";
 import { createRoomAction } from "@/app/create-room/actions";
 
 export const formSchema = z.object({
@@ -47,7 +50,7 @@ export function CreateRoomForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Loop over each field from formFieldData  */}
-        {formFieldsData.map((formField: formFieldDataType) => (
+        {roomFormFieldsData.map((formField: RoomFormFieldDataType) => (
           <FormField
             key={formField.fieldName}
             control={form.control}
