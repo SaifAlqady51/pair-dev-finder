@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { encrypt } from "@/utils/jwt";
 
 import { render } from "@react-email/render";
-import { checkEmail } from "@/app/signup/register/actions";
+import { checkEmail } from "@/app/signup/email-check/actions";
 import VerifyEmail from "../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 
