@@ -1,5 +1,5 @@
-import SigningFormWrapper from "@/components/SigningFormWrapper";
-import { VerficationCodeForm } from "@/components/VerficationCodeForm";
+import SigningFormWrapper from "@/components/forms/SigningFormWrapper";
+import { VerficationCodeForm } from "@/components/forms/VerficationCodeForm";
 import { Suspense } from "react";
 
 export default function CodePage() {
