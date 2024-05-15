@@ -1,8 +1,8 @@
-import { EmailRegisterForm } from "@/components/EmailRegisterForm";
+import { EmailRegisterForm } from "@/components/forms/EmailRegisterForm";
 import { Button } from "@/components/ui/button";
 import { IoLogoGoogle } from "react-icons/io5";
 import { FaGithub } from "react-icons/fa";
-import SigningFormWrapper from "@/components/SigningFormWrapper";
+import SigningFormWrapper from "@/components/forms/SigningFormWrapper";
 
 export default function RegisterPage() {
   return (
