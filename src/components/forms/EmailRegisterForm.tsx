@@ -20,12 +20,15 @@ import { render } from "@react-email/render";
 import { checkEmail } from "@/app/signup/email-check/actions";
 import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
+import { useToast } from "../ui/use-toast";
+import { describe } from "node:test";
 
 export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 
 export function EmailRegisterForm() {
+  const { toast } = useToast();
   const route = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -46,6 +49,10 @@ export function EmailRegisterForm() {
     checkEmail({ email: values.email, template: emailHtml })
       .then()
       .catch((error) => console.log(error));
+    toast({
+      title: "Email Sent",
+      description: `Verfication code sent to ${values.email}`,
+    });
 
     route.push(`/signup/code?data=${token}&code=${encryptedCode}`);
   }
