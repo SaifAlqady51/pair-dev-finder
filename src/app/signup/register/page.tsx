@@ -1,13 +1,11 @@
 import { FullRegisterForm } from "@/components/forms/FullRegisterForm";
-import SigningFormWrapper from "@/components/forms/SigningFormWrapper";
 import { Suspense } from "react";
 
 export default function CodePage() {
   return (
     <Suspense>
-      <SigningFormWrapper
-        form={<FullRegisterForm />}
-        title="Complete your registration"></SigningFormWrapper>
+      <h1 className="font-semibold text-3xl">Continue your registration</h1>
+      <FullRegisterForm />
     </Suspense>
   );
 }
