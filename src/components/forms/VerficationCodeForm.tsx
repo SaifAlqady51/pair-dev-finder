@@ -20,15 +20,16 @@ import {
 } from "@/components/ui/input-otp";
 import { useRouter, useSearchParams } from "next/navigation";
 import { decrypt } from "@/utils/jwt";
+import { useNavigatControl } from "@/hooks/useNavigationControl";
 
 export const verificationCodeForm = z.object({
   code: z.string().length(6, { message: "should be 6 digits" }),
 });
 
 export function VerficationCodeForm() {
+  const access = useNavigatControl();
   const route = useRouter();
   const searchParams = useSearchParams();
-  console.log(searchParams.get("code"));
   // 1. Define your form.
   const form = useForm<z.infer<typeof verificationCodeForm>>({
     resolver: zodResolver(verificationCodeForm),
@@ -45,6 +46,7 @@ export function VerficationCodeForm() {
     };
     console.log(realCode);
     if (realCode.code === values.code) {
+      access.setCanAccess(true);
       console.log("true");
       route.push(`/signup/register?data=${searchParams.get("data")}`);
     } else {
