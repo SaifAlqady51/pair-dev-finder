@@ -2,11 +2,12 @@ import { EmailRegisterForm } from "@/components/forms/EmailRegisterForm";
 import { Button } from "@/components/ui/button";
 import { IoLogoGoogle } from "react-icons/io5";
 import { FaGithub } from "react-icons/fa";
-import SigningFormWrapper from "@/components/forms/SigningFormWrapper";
 
 export default function RegisterPage() {
   return (
-    <SigningFormWrapper form={<EmailRegisterForm />} title="Create New Account">
+    <>
+      <h1 className="font-semibold text-3xl">Create new account</h1>
+      <EmailRegisterForm />
       <div>
         {/* Divider */}
         <div className="relative flex items-center">
@@ -31,6 +32,6 @@ export default function RegisterPage() {
           </Button>
         </div>
       </div>
-    </SigningFormWrapper>
+    </>
   );
 }

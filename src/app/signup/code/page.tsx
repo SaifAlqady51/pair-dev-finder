@@ -5,9 +5,8 @@ import { Suspense } from "react";
 export default function CodePage() {
   return (
     <Suspense>
-      <SigningFormWrapper
-        form={<VerficationCodeForm />}
-        title="Enter verification code"></SigningFormWrapper>
+      <h1 className="font-semibold text-3xl">Enter verfication code</h1>
+      <VerficationCodeForm />
     </Suspense>
   );
 }

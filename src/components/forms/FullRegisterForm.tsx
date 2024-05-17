@@ -20,6 +20,8 @@ import {
   FullRegisterFormFieldDataType,
 } from "@/data/fullRegisterFieldsData";
 
+import { useNavigatControl } from "@/hooks/useNavigationControl";
+
 export const fullRegisterFormSchema = z.object({
   username: z
     .string()
@@ -42,9 +44,8 @@ export const fullRegisterFormSchema = z.object({
 });
 
 export function FullRegisterForm() {
-  const route = useRouter();
+  const access = useNavigatControl();
   // 1. Define your form.
-
   const form = useForm<z.infer<typeof fullRegisterFormSchema>>({
     resolver: zodResolver(fullRegisterFormSchema),
     defaultValues: {
@@ -56,39 +57,41 @@ export function FullRegisterForm() {
   function onSubmit(values: z.infer<typeof fullRegisterFormSchema>) {
     console.log(values);
   }
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-center">
-        {fullRegisterFormFieldsData.map(
-          (formField: FullRegisterFormFieldDataType) => (
-            <FormField
-              key={formField.fieldName}
-              control={form.control}
-              name={formField.fieldName}
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="font-medium capitalize ">
-                    {formField.label}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={formField.placeholder}
-                      {...field}
-                      className="border-2 "
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )
-        )}
-        <Button type="submit" className="w-full font-semibold">
-          Create new account
-        </Button>
-      </form>
-    </Form>
-  );
+  if (access.canAccess) {
+    return (
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 flex flex-col items-center">
+          {fullRegisterFormFieldsData.map(
+            (formField: FullRegisterFormFieldDataType) => (
+              <FormField
+                key={formField.fieldName}
+                control={form.control}
+                name={formField.fieldName}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-medium capitalize ">
+                      {formField.label}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={formField.placeholder}
+                        {...field}
+                        className="border-2 "
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )
+          )}
+          <Button type="submit" className="w-full font-semibold">
+            Create new account
+          </Button>
+        </form>
+      </Form>
+    );
+  }
 }
