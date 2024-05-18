@@ -14,6 +14,6 @@ export const fullRegisterFormFieldsData: FullRegisterFormFieldDataType[] = [
     },
     {
         fieldName: "password",
-        label: "description",
+        label: "password",
     },
 ]

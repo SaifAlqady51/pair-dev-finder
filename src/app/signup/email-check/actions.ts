@@ -16,20 +16,19 @@ type CheckEmailType = {
     code?:string;
 }
 
-
 export async function checkEmail({email,template,code}: CheckEmailType) {
-        try{
-            await transporter.sendMail({
-                from: email,
-                to: email,
-                replyTo: email,
-                subject: `Website activity from ${email}`,
-                html: template
-            });
+    try{
+        await transporter.sendMail({
+            from: email,
+            to: email,
+            replyTo: email,
+            subject: `Website activity from ${email}`,
+            html: template
+        });
 
-        }catch(error){
-            throw new Error(`unable to send email : ${error} ` )
-        }
+    }catch(error){
+        throw new Error(`unable to send email : ${error} ` )
+    }
     
 
     
