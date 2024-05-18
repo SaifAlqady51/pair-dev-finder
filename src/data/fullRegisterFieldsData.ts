@@ -1,7 +1,7 @@
 
 export type FullRegisterFormFieldDataType = {
     fieldName:"username" | "password";
-    label:string;
+    type:string;
     placeholder?:string;
 }
 
@@ -9,11 +9,11 @@ export type FullRegisterFormFieldDataType = {
 export const fullRegisterFormFieldsData: FullRegisterFormFieldDataType[] = [
     {
         fieldName: "username",
-        label: "username",
+        type: "text",
         placeholder:"John Doe",
     },
     {
         fieldName: "password",
-        label: "password",
+        type: "password",
     },
 ]
