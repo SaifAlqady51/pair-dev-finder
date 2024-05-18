@@ -99,6 +99,7 @@ export function FullRegisterForm() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 flex flex-col items-center">
+          {/* Loop over fields */}
           {fullRegisterFormFieldsData.map(
             (formField: FullRegisterFormFieldDataType) => (
               <FormField
@@ -124,6 +125,7 @@ export function FullRegisterForm() {
                           }
                         />
                       </FormControl>
+                      {/* hide & show password toggler */}
                       {formField.fieldName === "password" && (
                         <ShowPassowrd
                           showPassword={showPassword}
