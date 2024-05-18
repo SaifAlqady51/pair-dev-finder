@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   fullRegisterFormFieldsData,
@@ -21,6 +21,9 @@ import {
 } from "@/data/fullRegisterFieldsData";
 
 import { useNavigatControl } from "@/hooks/useNavigationControl";
+import { createUserAccount } from "@/app/signup/register/actions";
+import { decrypt } from "@/utils/jwt";
+import { toast } from "../ui/use-toast";
 
 export const fullRegisterFormSchema = z.object({
   username: z
@@ -44,18 +47,48 @@ export const fullRegisterFormSchema = z.object({
 });
 
 export function FullRegisterForm() {
+  const route = useRouter();
   const access = useNavigatControl();
+  const searchParams = useSearchParams();
+  const encryptedData = searchParams.get("data");
+
+  if (encryptedData) {
+    const data = decrypt(encryptedData);
+  }
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof fullRegisterFormSchema>>({
     resolver: zodResolver(fullRegisterFormSchema),
     defaultValues: {
       username: "",
+      password: "",
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof fullRegisterFormSchema>) {
     console.log(values);
+
+    const data = decrypt(searchParams.get("data") || "") as {
+      email: string;
+      iat: number;
+    };
+    if (data?.email) {
+      createUserAccount({
+        name: values.username,
+        password: values.password,
+        email: data.email,
+      })
+        .then(() =>
+          toast({
+            title: "Created Account",
+            description: `Created account with name ${values.username} `,
+          })
+        )
+        .catch();
+      access.setCanAccess(false);
+      route.push("/");
+    }
   }
   if (access.canAccess) {
     return (
