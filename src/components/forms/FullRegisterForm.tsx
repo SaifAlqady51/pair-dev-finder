@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,7 +25,8 @@ import { useNavigatControl } from "@/hooks/useNavigationControl";
 import { createUserAccount } from "@/app/signup/register/actions";
 import { decrypt } from "@/utils/jwt";
 import { toast } from "../ui/use-toast";
-
+import { IoIosEye, IoIosEyeOff } from "react-icons/io";
+import { ShowPassowrd } from "../ShowPassword";
 export const fullRegisterFormSchema = z.object({
   username: z
     .string()
@@ -52,6 +54,8 @@ export function FullRegisterForm() {
   const searchParams = useSearchParams();
   const encryptedData = searchParams.get("data");
 
+  const [showPassword, setShowPassword] = useState(false);
+
   if (encryptedData) {
     const data = decrypt(encryptedData);
   }
@@ -67,8 +71,6 @@ export function FullRegisterForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof fullRegisterFormSchema>) {
-    console.log(values);
-
     const data = decrypt(searchParams.get("data") || "") as {
       email: string;
       iat: number;
@@ -90,6 +92,7 @@ export function FullRegisterForm() {
       route.push("/");
     }
   }
+  console.log(access.canAccess);
   if (access.canAccess) {
     return (
       <Form {...form}>
@@ -105,15 +108,29 @@ export function FullRegisterForm() {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel className="font-medium capitalize ">
-                      {formField.label}
+                      {formField.fieldName}
                     </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={formField.placeholder}
-                        {...field}
-                        className="border-2 "
-                      />
-                    </FormControl>
+                    <div className="relative">
+                      <FormControl>
+                        <Input
+                          placeholder={formField.placeholder}
+                          {...field}
+                          className="border-2 "
+                          type={
+                            (formField.type === "password" && showPassword) ||
+                            formField.type === "text"
+                              ? "text"
+                              : "password"
+                          }
+                        />
+                      </FormControl>
+                      {formField.fieldName === "password" && (
+                        <ShowPassowrd
+                          showPassword={showPassword}
+                          setShowPassword={setShowPassword}
+                        />
+                      )}
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}

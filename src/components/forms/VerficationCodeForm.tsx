@@ -44,13 +44,10 @@ export function VerficationCodeForm() {
       code: string;
       iat: number;
     };
-    console.log(realCode);
     if (realCode.code === values.code) {
       access.setCanAccess(true);
-      console.log("true");
       route.push(`/signup/register?data=${searchParams.get("data")}`);
     } else {
-      console.log("false");
     }
   }
   return (
