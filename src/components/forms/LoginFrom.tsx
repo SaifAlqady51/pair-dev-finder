@@ -51,6 +51,7 @@ export function LoginForm() {
           className="space-y-8 flex flex-col items-center">
           {loginFormFieldsData.map((formField: LoginFormDataType) => (
             <FormField
+              key={formField.fieldName}
               control={form.control}
               name="email"
               render={({ field }) => (
