@@ -51,6 +51,9 @@ export const authConfig = {
     
           return session;
         },
+        redirect(){
+          return "/";
+        }
       },
 
 } satisfies AuthOptions;
