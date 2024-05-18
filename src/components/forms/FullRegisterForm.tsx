@@ -67,8 +67,6 @@ export function FullRegisterForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof fullRegisterFormSchema>) {
-    console.log(values);
-
     const data = decrypt(searchParams.get("data") || "") as {
       email: string;
       iat: number;
