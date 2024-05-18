@@ -22,7 +22,7 @@ import {
 } from "@/data/fullRegisterFieldsData";
 
 import { useNavigatControl } from "@/hooks/useNavigationControl";
-import { createUserAccount } from "@/app/signup/register/actions";
+import { createUserAccount } from "@/app/signing/register/actions";
 import { decrypt } from "@/utils/jwt";
 import { toast } from "../ui/use-toast";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
