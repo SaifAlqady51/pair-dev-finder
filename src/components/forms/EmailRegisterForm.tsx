@@ -54,7 +54,7 @@ export function EmailRegisterForm() {
       description: `Verfication code sent to ${values.email}`,
     });
 
-    route.push(`/signup/code?data=${token}&code=${encryptedCode}`);
+    route.push(`/signing/code?data=${token}&code=${encryptedCode}`);
   }
   return (
     <Form {...form}>
