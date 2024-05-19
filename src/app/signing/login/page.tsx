@@ -4,7 +4,7 @@ import { ProviderButtons } from "@/components/forms/ProvidersButtons";
 export default function LoginPage() {
   return (
     <>
-      <LoginForm />;
+      <LoginForm />
       <ProviderButtons />
     </>
   );
