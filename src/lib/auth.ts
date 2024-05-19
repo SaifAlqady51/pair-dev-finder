@@ -4,6 +4,9 @@ import { AuthOptions, getServerSession } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google"
 import GithubProvider from "next-auth/providers/github"
+import CredentialsProvider from "next-auth/providers/credentials";
+import { users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 
 export const authConfig = {
@@ -13,6 +16,18 @@ export const authConfig = {
         strategy:'jwt'
     },
     providers: [
+        CredentialsProvider({
+          name: "Credentials",
+          credentials: {
+            email: { label: "Email", placeholder: "jsmith@example.com" },
+            password: { label: "Password", type: "password" },
+          },
+          async authorize(credentials) {
+
+            const checkIfUserExist = await db.select().from(users).where(eq(users.email,credentials?.email!)).limit(1)
+            return checkIfUserExist[0]
+          },        
+        }),
         GithubProvider({
           clientId:process.env.GITHUB_CLIENT_ID!,
           clientSecret:process.env.GITHUB_CLIENT_SECRET!
