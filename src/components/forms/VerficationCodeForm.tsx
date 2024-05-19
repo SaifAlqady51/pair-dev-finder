@@ -46,7 +46,7 @@ export function VerficationCodeForm() {
     };
     if (realCode.code === values.code) {
       access.setCanAccess(true);
-      route.push(`/signup/register?data=${searchParams.get("data")}`);
+      route.push(`/signing/register?data=${searchParams.get("data")}`);
     } else {
     }
   }

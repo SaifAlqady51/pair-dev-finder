@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { encrypt } from "@/utils/jwt";
 
 import { render } from "@react-email/render";
-import { checkEmail } from "@/app/signup/email-check/actions";
+import { checkEmail } from "@/app/signing/email-check/actions";
 import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useToast } from "../ui/use-toast";
@@ -54,7 +54,7 @@ export function EmailRegisterForm() {
       description: `Verfication code sent to ${values.email}`,
     });
 
-    route.push(`/signup/code?data=${token}&code=${encryptedCode}`);
+    route.push(`/signing/code?data=${token}&code=${encryptedCode}`);
   }
   return (
     <Form {...form}>

@@ -22,10 +22,9 @@ import {
 } from "@/data/fullRegisterFieldsData";
 
 import { useNavigatControl } from "@/hooks/useNavigationControl";
-import { createUserAccount } from "@/app/signup/register/actions";
+import { createUserAccount } from "@/app/signing/register/actions";
 import { decrypt } from "@/utils/jwt";
 import { toast } from "../ui/use-toast";
-import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { ShowPassowrd } from "../ShowPassword";
 export const fullRegisterFormSchema = z.object({
   username: z
@@ -99,6 +98,7 @@ export function FullRegisterForm() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 flex flex-col items-center">
+          {/* Loop over fields */}
           {fullRegisterFormFieldsData.map(
             (formField: FullRegisterFormFieldDataType) => (
               <FormField
@@ -124,6 +124,7 @@ export function FullRegisterForm() {
                           }
                         />
                       </FormControl>
+                      {/* hide & show password toggler */}
                       {formField.fieldName === "password" && (
                         <ShowPassowrd
                           showPassword={showPassword}

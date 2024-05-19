@@ -12,7 +12,7 @@ export default function Header() {
         <Button onClick={() => signOut()}>Sign Out</Button>
       ) : (
         <Button>
-          <Link href="/signup/email-check">Sign In</Link>
+          <Link href="/signing/email-check">Sign In</Link>
         </Button>
       )}
       <ModeToggle />
