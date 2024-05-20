@@ -2,6 +2,7 @@
 import { db } from "@/db"
 import { users } from "@/db/schema"
 import * as bcrypt from "bcrypt"
+import { eq } from "drizzle-orm"
 
 interface CreateUserRequestType  {
     name:string
@@ -11,8 +12,13 @@ interface CreateUserRequestType  {
 
 export async function createUserAccount({...values}: CreateUserRequestType){
 
-    const encryptedPassword = await bcrypt.hash(values.password,parseInt(process.env.SALT_ROUNDS!))
+    try{
+        const encryptedPassword = await bcrypt.hash(values.password,parseInt(process.env.SALT_ROUNDS!))
+        await db.insert(users).values({...values,password:encryptedPassword})
+    }catch(error){
+        throw new Error(`${error}`)
+        
+    }
 
-    await db.insert(users).values({...values,password:encryptedPassword})
 
 }

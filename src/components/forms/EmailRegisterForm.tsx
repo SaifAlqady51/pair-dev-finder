@@ -47,14 +47,14 @@ export function EmailRegisterForm() {
     const encryptedCode = encrypt({ code: generatedCode.toString() });
 
     checkEmail({ email: values.email, template: emailHtml })
-      .then()
+      .then(() => {
+        toast({
+          title: "Email Sent",
+          description: `Verfication code sent to ${values.email}`,
+        });
+        route.push(`/signing/code?data=${token}&code=${encryptedCode}`);
+      })
       .catch((error) => console.log(error));
-    toast({
-      title: "Email Sent",
-      description: `Verfication code sent to ${values.email}`,
-    });
-
-    route.push(`/signing/code?data=${token}&code=${encryptedCode}`);
   }
   return (
     <Form {...form}>
