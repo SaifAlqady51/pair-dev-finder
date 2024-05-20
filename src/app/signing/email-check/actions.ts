@@ -1,6 +1,8 @@
 "use server"
 import * as nodemailer from "nodemailer"
-
+import { db } from "@/db"
+import {users} from "@/db/schema"
+import { eq } from "drizzle-orm"
 
 const transporter = nodemailer.createTransport({
     service:"gmail",
@@ -17,14 +19,21 @@ type CheckEmailType = {
 }
 
 export async function checkEmail({email,template,code}: CheckEmailType) {
+
     try{
-        await transporter.sendMail({
-            from: email,
-            to: email,
-            replyTo: email,
-            subject: `Website activity from ${email}`,
-            html: template
-        });
+        const checkIfUserExist = await db.select().from(users).where(eq(users.email,email)).limit(1)
+        if(checkIfUserExist[0]){
+            throw new Error("Email address used before")
+        }
+        else{
+            await transporter.sendMail({
+                from: email,
+                to: email,
+                replyTo: email,
+                subject: `Website activity from ${email}`,
+                html: template
+            });
+        }
 
     }catch(error){
         throw new Error(`unable to send email : ${error} ` )
