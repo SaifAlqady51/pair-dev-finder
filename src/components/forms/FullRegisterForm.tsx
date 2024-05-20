@@ -26,6 +26,8 @@ import { createUserAccount } from "@/app/signing/register/actions";
 import { decrypt } from "@/utils/jwt";
 import { toast } from "../ui/use-toast";
 import { ShowPassowrd } from "../ShowPassword";
+import { signIn } from "next-auth/react";
+
 export const fullRegisterFormSchema = z.object({
   username: z
     .string()
@@ -80,12 +82,16 @@ export function FullRegisterForm() {
         password: values.password,
         email: data.email,
       })
-        .then(() =>
+        .then(() => {
           toast({
             title: "Created Account",
             description: `Created account with name ${values.username} `,
-          })
-        )
+          });
+          signIn("credentials", {
+            email: data.email,
+            password: values.password,
+          });
+        })
         .catch();
       access.setCanAccess(false);
       route.push("/");
