@@ -84,3 +84,4 @@ export const rooms = pgTable("room", {
 })
 
 export type Room = typeof rooms.$inferSelect;
+export type Users = typeof users.$inferSelect;
