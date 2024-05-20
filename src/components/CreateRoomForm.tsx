@@ -20,6 +20,7 @@ import {
   roomFormFieldsData,
 } from "@/data/roomFormFieldsData";
 import { createRoomAction } from "@/app/create-room/actions";
+import { useToast } from "./ui/use-toast";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -29,6 +30,7 @@ export const formSchema = z.object({
 });
 
 export function CreateRoomForm() {
+  const { toast } = useToast();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,8 +44,19 @@ export function CreateRoomForm() {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createRoomAction(values);
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    createRoomAction(values)
+      .then(() =>
+        toast({
+          title: "Room Created",
+        })
+      )
+      .catch((error) =>
+        toast({
+          title: "Failed to create a room",
+          description: `${error}`,
+        })
+      );
   }
 
   return (

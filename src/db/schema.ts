@@ -4,7 +4,9 @@ import {
   text,
   primaryKey,
   integer,
+  uuid,
 } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm";
 import postgres from "postgres"
 import { drizzle } from "drizzle-orm/postgres-js"
 import type { AdapterAccount } from "next-auth/adapters"
@@ -73,6 +75,7 @@ export const verificationTokens = pgTable(
 )
 
 export const rooms = pgTable("room", {
+  id: uuid("id").default(sql`gen_random_uuid()`).notNull().primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
