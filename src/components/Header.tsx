@@ -5,7 +5,6 @@ import Profile from "./header/Profile";
 import Signing from "./header/Signing";
 import Image from "next/image";
 import Icon from "@/public/static/images/icon.png";
-import { loadBindings } from "next/dist/build/swc";
 import { Skeleton } from "./ui/skeleton";
 import Link from "next/link";
 
