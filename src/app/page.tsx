@@ -1,11 +1,12 @@
 import RoomCard from "@/components/RoomCard";
 import { Button } from "@/components/ui/button";
-import { db } from "@/db";
 import { Room } from "@/db/schema";
 import Link from "next/link";
+import { getRooms } from "../data-access/rooms";
+import { unstable_noStore } from "next/cache";
 
 export default async function Home() {
-  const rooms = await db.query.rooms.findMany();
+  const rooms = await getRooms();
 
   return (
     <main className="min-h-screen   p-24">
