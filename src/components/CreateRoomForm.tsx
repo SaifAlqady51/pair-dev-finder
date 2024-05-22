@@ -21,6 +21,7 @@ import {
 } from "@/data/roomFormFieldsData";
 import { createRoomAction } from "@/app/create-room/actions";
 import { useToast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -30,6 +31,7 @@ export const formSchema = z.object({
 });
 
 export function CreateRoomForm() {
+  const route = useRouter();
   const { toast } = useToast();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,6 +59,7 @@ export function CreateRoomForm() {
           description: `${error}`,
         })
       );
+    route.push("/");
   }
 
   return (
