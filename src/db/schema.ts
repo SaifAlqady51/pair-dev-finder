@@ -83,6 +83,7 @@ export const rooms = pgTable("room", {
   language: text("language").notNull(),
   githubRepo: text("githubRepo"),
   description:text("description"),
+  created_at: timestamp("expires", { mode: "date" }).notNull().defaultNow(),
 
 })
 
