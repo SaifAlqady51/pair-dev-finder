@@ -22,12 +22,14 @@ import {
 import { createRoomAction } from "@/app/create-room/actions";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
+import { removeErrorWord } from "@/utils/removeErrorWord";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
   language: z.string().min(2).max(50),
-  githubRepo: z.string().min(2).max(50),
-  description: z.string().min(2).max(250),
+  githubRepo: z.string(),
+  description: z.string().min(2).max(100),
 });
 
 export function CreateRoomForm() {
@@ -46,20 +48,20 @@ export function CreateRoomForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createRoomAction(values)
-      .then(() =>
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    checkGithubRepo(values.githubRepo || "")
+      .then(() => createRoomAction(values))
+      .then(() => {
+        toast({ title: "Room Created" });
+        route.push("/");
+      })
+      .catch((error) => {
         toast({
-          title: "Room Created",
-        })
-      )
-      .catch((error) =>
-        toast({
+          variant: "destructive",
           title: "Failed to create a room",
-          description: `${error}`,
-        })
-      );
-    route.push("/");
+          description: removeErrorWord(error as string), // Use error message if available
+        });
+      });
   }
 
   return (
