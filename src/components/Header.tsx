@@ -10,7 +10,6 @@ import Link from "next/link";
 
 export default function Header() {
   const { data: session, status } = useSession();
-  console.log(status);
   return (
     <div className="flex justify-between items-center pr-6 pl-2 dark:bg-gray-900 bg-gray-200 fixed top-0 w-full">
       <Link href="/" className="flex items-center gap-2">

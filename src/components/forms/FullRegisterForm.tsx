@@ -97,7 +97,6 @@ export function FullRegisterForm() {
       route.push("/");
     }
   }
-  console.log(access.canAccess);
   if (access.canAccess) {
     return (
       <Form {...form}>
