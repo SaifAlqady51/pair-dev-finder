@@ -5,17 +5,17 @@ import Profile from "./header/Profile";
 import Signing from "./header/Signing";
 import Image from "next/image";
 import Icon from "@/public/static/images/icon.png";
-import { loadBindings } from "next/dist/build/swc";
 import { Skeleton } from "./ui/skeleton";
+import Link from "next/link";
 
 export default function Header() {
   const { data: session, status } = useSession();
-  console.log(status);
   return (
     <div className="flex justify-between items-center pr-6 pl-2 dark:bg-gray-900 bg-gray-200 fixed top-0 w-full">
-      <div>
+      <Link href="/" className="flex items-center gap-2">
         <Image src={Icon} alt="Icon" className="w-16 h-16" />
-      </div>
+        <h3 className="text-2xl font-semibold">Dev Finder</h3>
+      </Link>
       <div className="flex items-center justify-center gap-10">
         <ModeToggle />
         {/* Skeleton for laoding */}

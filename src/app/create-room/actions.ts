@@ -5,7 +5,7 @@ import { Room,rooms } from "@/db/schema"
 import { getSession } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
 
-export async function createRoomAction(roomData : Omit<Room, "userId" | "id">) {
+export async function createRoomAction(roomData : Omit<Room, "userId" | "id" | "created_at">) {
     const session = await getSession() 
     if(!session){
         throw new Error('You have to sign in first')

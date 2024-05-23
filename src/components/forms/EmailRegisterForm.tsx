@@ -21,6 +21,7 @@ import { checkEmail } from "@/app/signing/email-check/actions";
 import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useToast } from "../ui/use-toast";
+import { removeErrorWord } from "@/utils/removeErrorWord";
 
 export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -53,7 +54,12 @@ export function EmailRegisterForm() {
         });
         route.push(`/signing/code?data=${token}&code=${encryptedCode}`);
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>
+        toast({
+          title: "Failed to sent code",
+          description: `${removeErrorWord(error as string)}`,
+        })
+      );
   }
   return (
     <Form {...form}>
