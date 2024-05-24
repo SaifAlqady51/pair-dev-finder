@@ -27,7 +27,7 @@ import { removeErrorWord } from "@/utils/removeErrorWord";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
-  language: z.string().min(2).max(50),
+  tags: z.string().min(2).max(50),
   githubRepo: z.string(),
   description: z.string().min(2).max(100),
 });
@@ -41,7 +41,7 @@ export function CreateRoomForm() {
     // set default values to avoid DOM warning
     defaultValues: {
       name: "",
-      language: "",
+      tags: "",
       githubRepo: "",
       description: "",
     },
@@ -79,7 +79,11 @@ export function CreateRoomForm() {
                   {formField.label}
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder={formField.placeholder || ""} {...field} />
+                  <Input
+                    className="border-gray-400"
+                    placeholder={formField.placeholder || ""}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>{formField.fieldDescription}</FormDescription>
                 <FormMessage />
