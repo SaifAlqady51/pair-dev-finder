@@ -8,14 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Room } from "@/db/schema";
+import { getRepoName } from "@/utils/getRepoName";
 import Link from "next/link";
 import { FaGithubAlt } from "react-icons/fa";
 
 export default function RoomCard({ room }: { room: Room }) {
-  const getRepoName = () => {
-    const repoName = room.githubRepo!.split("/").slice(-1)[0] || "";
-    return repoName;
-  };
   return (
     <Card className="w-full">
       <CardHeader>
@@ -29,7 +26,7 @@ export default function RoomCard({ room }: { room: Room }) {
             target="_blank"
             className="flex gap-2 items-center">
             <FaGithubAlt />
-            {getRepoName()}
+            {getRepoName(room.githubRepo)}
           </Link>
         )}
       </CardContent>
