@@ -1,5 +1,5 @@
 export type RoomFormFieldDataType = {
-    fieldName:"name" | "language" | "description" | "githubRepo";
+    fieldName:"name" | "tags" | "description" | "githubRepo";
     label:string;
     fieldDescription:string;
     placeholder?:string;
@@ -19,13 +19,15 @@ export const roomFormFieldsData: RoomFormFieldDataType[] = [
         fieldDescription: "This is your room descirption",
     },
     {
-        fieldName: "language",
-        label: "Primary language",
-        fieldDescription: "This is the primary language used in your project",
+        fieldName: "tags",
+        label: "Tags",
+        fieldDescription: "This is the technologies used in your project",
+        placeholder:"typescript, react"
     },
     {
         fieldName: "githubRepo",
         label: "github repo",
         fieldDescription: "This is your public Github repo url",
+        placeholder:"https:/github.com/user/repo"
     } 
 ]
