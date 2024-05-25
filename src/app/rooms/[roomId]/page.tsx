@@ -1,6 +1,8 @@
+import { TagList } from "@/components/TagList";
 import { Badge } from "@/components/ui/badge";
 import { getRoom } from "@/data-access/rooms";
 import { getRepoName } from "@/utils/getRepoName";
+import { splitTags } from "@/utils/splitTags";
 import Link from "next/link";
 import { FaGithubAlt } from "react-icons/fa";
 
@@ -13,7 +15,6 @@ interface ParamsProps {
 export default async function RoomPage({ params }: ParamsProps) {
   const room = await getRoom(params.roomId);
 
-  const tags = room?.tags.split(",");
   return (
     <div className="mt-16 grid grid-cols-4 h-screen ">
       {/* Video Player */}
@@ -26,13 +27,7 @@ export default async function RoomPage({ params }: ParamsProps) {
           <h3 className="text-center text-xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
           <h4 className="font-medium text-lg">Tags :</h4>
-          <div className="flex gap-2 flex-wrap">
-            {tags?.map((lang: string) => (
-              <Badge key={lang} className="text-base px-6">
-                {lang}
-              </Badge>
-            ))}
-          </div>
+          <TagList tags={splitTags(room?.tags)} />
           <Link
             href={room?.githubRepo || ""}
             target="_blank"
