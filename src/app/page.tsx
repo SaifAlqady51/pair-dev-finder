@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Room } from "@/db/schema";
 import Link from "next/link";
 import { getRooms } from "../data-access/rooms";
-import { unstable_noStore } from "next/cache";
 
 export default async function Home() {
   const rooms = await getRooms();
@@ -16,7 +15,7 @@ export default async function Home() {
           <Link href="/create-room">Create Room</Link>
         </Button>
       </div>
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-6">
         {rooms.map((room: Room) => (
           <RoomCard room={room} key={room.id} />
         ))}
