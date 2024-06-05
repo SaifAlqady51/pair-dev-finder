@@ -40,13 +40,13 @@ export function VerficationCodeForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof verificationCodeForm>) {
-    const realCode = decrypt(searchParams.get("code") || "") as {
+    const realCode = decrypt(searchParams!.get("code") || "") as {
       code: string;
       iat: number;
     };
     if (realCode.code === values.code) {
       access.setCanAccess(true);
-      route.push(`/signing/register?data=${searchParams.get("data")}`);
+      route.push(`/signing/register?data=${searchParams!.get("data")}`);
     } else {
     }
   }
