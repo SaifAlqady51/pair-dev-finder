@@ -53,7 +53,7 @@ export function FullRegisterForm() {
   const route = useRouter();
   const access = useNavigatControl();
   const searchParams = useSearchParams();
-  const encryptedData = searchParams.get("data");
+  const encryptedData = searchParams!.get("data");
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -72,7 +72,7 @@ export function FullRegisterForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof fullRegisterFormSchema>) {
-    const data = decrypt(searchParams.get("data") || "") as {
+    const data = decrypt(searchParams!.get("data") || "") as {
       email: string;
       iat: number;
     };
