@@ -18,7 +18,7 @@ const ICE_SERVERS = {
     { urls: "stun:stun2.l.google.com:19302" },
   ],
 };
-export function useWebRtcHook({
+export function useWebRtc({
   userStream,
   host,
   channelRef,
