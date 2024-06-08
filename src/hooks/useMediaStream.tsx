@@ -12,7 +12,7 @@ type StreamHookProps = {
   channelRef: MutableRefObject<PresenceChannel | null>;
 };
 
-export function useStreamHook({
+export function useMediaStream({
   micActive,
   cameraActive,
   userStream,
