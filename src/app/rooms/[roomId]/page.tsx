@@ -1,5 +1,5 @@
 import { TagList } from "@/components/TagList";
-import { Badge } from "@/components/ui/badge";
+import { Video } from "@/components/Video";
 import { getRoom } from "@/data-access/rooms";
 import { getRepoName } from "@/utils/getRepoName";
 import { splitTags } from "@/utils/splitTags";
@@ -16,11 +16,9 @@ export default async function RoomPage({ params }: ParamsProps) {
   const room = await getRoom(params.roomId);
 
   return (
-    <div className="mt-16 grid grid-cols-4 h-screen ">
+    <div className="mt-16 grid grid-cols-4 h-fit ">
       {/* Video Player */}
-      <div className="col-span-3 p-12 ">
-        <div className="drop-shadow-lg bg-gray-100 w-full h-[60%] rounded-[20px]"></div>
-      </div>
+      <Video roomId={room!.id} />
       {/* Panel */}
       <div className="col-span-1 pt-12">
         <div className=" mr-8 p-4 border rounded-[20px] border-gray-300 space-y-3">
