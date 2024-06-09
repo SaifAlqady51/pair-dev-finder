@@ -2,10 +2,10 @@ import { PresenceChannel } from "pusher-js";
 import { Dispatch, MutableRefObject, RefObject, SetStateAction } from "react";
 
 type StreamHookProps = {
-  micActive: boolean;
-  cameraActive: boolean;
-  setMicActive: Dispatch<SetStateAction<boolean>>;
-  setCameraActive: Dispatch<SetStateAction<boolean>>;
+  isMicActive: boolean;
+  isCameraActive: boolean;
+  setIsMicActive: Dispatch<SetStateAction<boolean>>;
+  setIsCameraActive: Dispatch<SetStateAction<boolean>>;
   userStream: MutableRefObject<MediaStream | null>;
   userVideo: RefObject<HTMLVideoElement>;
   host: MutableRefObject<boolean>;
@@ -13,11 +13,11 @@ type StreamHookProps = {
 };
 
 export function useMediaStream({
-  micActive,
-  cameraActive,
+  isMicActive,
+  isCameraActive,
   userStream,
-  setMicActive,
-  setCameraActive,
+  setIsMicActive,
+  setIsCameraActive,
   userVideo,
   host,
   channelRef,
@@ -46,25 +46,25 @@ export function useMediaStream({
         console.error("Error accessing media devices:", err);
         if (err.name === "NotAllowedError") {
           alert(
-            "Permission to access camera and microphone was denied. Please allow access."
+            "Permission to access camera and microphone was denied. Please allow access.",
           );
         } else if (
           err.name === "NotFoundError" ||
           err.name === "DevicesNotFoundError"
         ) {
           alert(
-            "No camera or microphone found. Please connect a camera and microphone."
+            "No camera or microphone found. Please connect a camera and microphone.",
           );
         } else if (
           err.name === "NotReadableError" ||
           err.name === "TrackStartError"
         ) {
           alert(
-            "Camera or microphone is already in use by another application."
+            "Camera or microphone is already in use by another application.",
           );
         } else {
           alert(
-            "An error occurred while accessing media devices. Please check your settings and try again."
+            "An error occurred while accessing media devices. Please check your settings and try again.",
           );
         }
       });
@@ -78,15 +78,15 @@ export function useMediaStream({
   };
 
   const toggleMic = () => {
-    toggleMediaStream("audio", micActive);
+    toggleMediaStream("audio", isMicActive);
 
-    setMicActive((prev) => !prev);
+    setIsMicActive((prev) => !prev);
   };
 
   const toggleCamera = () => {
-    toggleMediaStream("video", cameraActive);
+    toggleMediaStream("video", isCameraActive);
 
-    setCameraActive((prev) => !prev);
+    setIsCameraActive((prev) => !prev);
   };
 
   return {
