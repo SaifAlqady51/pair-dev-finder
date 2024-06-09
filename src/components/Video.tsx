@@ -4,6 +4,7 @@ import Pusher, { Members, PresenceChannel } from "pusher-js";
 import { useMediaStream } from "@/hooks/useMediaStream";
 import { useRouter } from "next/navigation";
 import { useWebRtc } from "@/hooks/useWebRTC";
+import { MediaButtons } from "./MediaButtons";
 
 export function Video({ roomId }: { roomId: string }) {
   // Setup states
@@ -14,15 +15,15 @@ export function Video({ roomId }: { roomId: string }) {
   const userStream = useRef<MediaStream | null>(null);
   const userVideo = useRef<HTMLVideoElement>(null);
   const partnerVideo = useRef<HTMLVideoElement>(null);
-  const [micActive, setMicActive] = useState(true);
-  const [cameraActive, setCameraActive] = useState(true);
+  const [isMicActive, setIsMicActive] = useState(true);
+  const [isCameraActive, setIsCameraActive] = useState(true);
   // invoke useMediaStram customed hook
   const { toggleMic, toggleCamera, handleRoomJoined } = useMediaStream({
-    micActive,
-    cameraActive,
+    isMicActive,
+    isCameraActive,
     userStream,
-    setMicActive,
-    setCameraActive,
+    setIsMicActive,
+    setIsCameraActive,
     userVideo,
     host,
     channelRef,
@@ -56,7 +57,7 @@ export function Video({ roomId }: { roomId: string }) {
     });
 
     channelRef.current = pusherRef.current.subscribe(
-      `presence-room`
+      `presence-room`,
     ) as PresenceChannel;
     // Join room
     channelRef.current.bind(
@@ -69,7 +70,7 @@ export function Video({ roomId }: { roomId: string }) {
           router.push("/");
         }
         handleRoomJoined();
-      }
+      },
     );
     // start call with the partner
     channelRef.current.bind("client-ready", () => {
@@ -83,7 +84,7 @@ export function Video({ roomId }: { roomId: string }) {
         if (!host.current) {
           handleReceivedOffer(offer);
         }
-      }
+      },
     );
     // leave room
     channelRef.current.bind("pusher:member_removed", handlePeerLeaving);
@@ -94,30 +95,41 @@ export function Video({ roomId }: { roomId: string }) {
         if (host.current) {
           handleAnswerReceived(answer as RTCSessionDescriptionInit);
         }
-      }
+      },
     );
     // Send ice-candidate message to partner
     channelRef.current.bind(
       "client-ice-candidate",
       (iceCandidate: RTCIceCandidate) => {
         handlerNewIceCandidateMsg(iceCandidate);
-      }
+      },
     );
   }, []);
 
   return (
     <div className="col-span-3 p-8 grid-cols-3  grid-rows-4 dark:bg-slate-800 bg-gray-100 m-4 rounded-[20px] space-y-10">
-      <video
-        className="drop-shadow-lg bg-gray-100 w-full row-span-3 rounded-[20px] "
-        autoPlay
-        muted
-        ref={userVideo}
-      />
-      <video
-        className="w-1/3 h-52 bg-gray-100 row-span-1 col-span-2 rounded-[20px]"
-        autoPlay
-        ref={partnerVideo}
-      />
+      <div className="relative">
+        <video
+          className="drop-shadow-lg bg-gray-300 w-full row-span-3 rounded-[20px] "
+          autoPlay
+          muted
+          ref={userVideo}
+        />
+        <MediaButtons
+          isCameraActive={isCameraActive}
+          isMicActive={isMicActive}
+          toggleMic={toggleMic}
+          toggleCamera={toggleCamera}
+          leaveRoom={leaveRoom}
+        />
+      </div>
+      <div>
+        <video
+          className="w-1/3 h-52 bg-gray-300 row-span-1 col-span-2 rounded-[20px] drop-shadow-lg"
+          autoPlay
+          ref={partnerVideo}
+        />
+      </div>
     </div>
   );
 }
