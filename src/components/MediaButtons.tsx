@@ -16,7 +16,7 @@ type MediaButtonsProps = {
 };
 
 const buttonStyles: string =
-  "bg-slate-900 hover:bg-slate-600  dark-slate-400 rounded-md p-2 opacity-70";
+  "bg-slate-900 hover:bg-slate-800  dark-slate-400 rounded-md p-2 opacity-70";
 const buttonIconStyles: string = "text-white w-7 h-7";
 
 export function MediaButtons({
