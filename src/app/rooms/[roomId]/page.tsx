@@ -16,13 +16,13 @@ export default async function RoomPage({ params }: ParamsProps) {
   const room = await getRoom(params.roomId);
 
   return (
-    <div className="mt-16 grid grid-cols-4 h-fit ">
+    <div className="mt-16 h-screen flex justify-center gap-12 bg-slate-100 dark:bg-slate-900 ">
       {/* Video Player */}
       <Video roomId={room!.id} />
       {/* Panel */}
-      <div className="col-span-1 pt-12">
-        <div className=" mr-8 p-4 border rounded-[20px] border-gray-300 space-y-3">
-          <h3 className="text-center text-xl font-semibold">{room?.name}</h3>
+      <div className="flex w-[1000px] h-fit pt-4">
+        <div className=" mr-8 p-4 border rounded-[20px] border-gray-300 dark:border-none space-y-3 drop-shadow-xl bg-gray-100 dark:bg-slate-800">
+          <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
           <h4 className="font-medium text-lg">Tags :</h4>
           <TagList tags={splitTags(room?.tags)} />
