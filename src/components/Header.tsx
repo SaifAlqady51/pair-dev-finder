@@ -11,12 +11,13 @@ import Link from "next/link";
 export default function Header() {
   const { data: session, status } = useSession();
   return (
-    <div className="flex justify-between items-center pr-6 pl-2 dark:bg-gray-900 bg-gray-300 fixed top-0 w-full z-10">
+    <div className="flex justify-between items-center pr-6 pl-2 dark:bg-gray-900 bg-slate-500 top-0 w-full z-10">
       <Link href="/" className="flex items-center gap-2">
         <Image src={Icon} alt="Icon" className="w-16 h-16" />
         <h3 className="text-2xl font-semibold">Dev Finder</h3>
       </Link>
-      <div className="flex items-center justify-center gap-10">
+      {/* This section get hidden when the screen size is small*/}
+      <div className="md:flex items-center justify-center gap-10 hidden ">
         <ModeToggle />
         {/* Skeleton for laoding */}
         {status === "loading" ? (
@@ -30,7 +31,8 @@ export default function Header() {
             {session ? (
               <Profile
                 image={session.user.image || ""}
-                name={session.user.name || ""}></Profile>
+                name={session.user.name || ""}
+              ></Profile>
             ) : (
               <Signing />
             )}
