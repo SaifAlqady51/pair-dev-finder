@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen pt-32 px-16">
       <div className="flex justify-between items-center w-full mb-12">
-        <h2 className="text-4xl font-medium">Find Dev Rooms</h2>
+        <h2 className="md:text-4xl text-3xl  font-bold">Find Dev Rooms</h2>
         <Button className="font-semibold">
           <Link href="/create-room">Create Room</Link>
         </Button>
