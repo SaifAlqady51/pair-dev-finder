@@ -57,7 +57,7 @@ export function Video({ roomId }: { roomId: string }) {
     });
 
     channelRef.current = pusherRef.current.subscribe(
-      `presence-room`
+      `presence-room`,
     ) as PresenceChannel;
     // Join room
     channelRef.current.bind(
@@ -70,7 +70,7 @@ export function Video({ roomId }: { roomId: string }) {
           router.push("/");
         }
         handleRoomJoined();
-      }
+      },
     );
     // start call with the partner
     channelRef.current.bind("client-ready", () => {
@@ -84,7 +84,7 @@ export function Video({ roomId }: { roomId: string }) {
         if (!host.current) {
           handleReceivedOffer(offer);
         }
-      }
+      },
     );
     // leave room
     channelRef.current.bind("pusher:member_removed", handlePeerLeaving);
@@ -95,19 +95,19 @@ export function Video({ roomId }: { roomId: string }) {
         if (host.current) {
           handleAnswerReceived(answer as RTCSessionDescriptionInit);
         }
-      }
+      },
     );
     // Send ice-candidate message to partner
     channelRef.current.bind(
       "client-ice-candidate",
       (iceCandidate: RTCIceCandidate) => {
         handlerNewIceCandidateMsg(iceCandidate);
-      }
+      },
     );
   }, []);
 
   return (
-    <div className="w-screen p-8 ml-12  dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] space-y-10">
+    <div className=" w-full h-fit p-8 ml-12  dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] space-y-10">
       <div className="relative">
         <video
           className="drop-shadow-lg bg-slate-300 dark:bg-slate-600 w-full rounded-[20px] "
