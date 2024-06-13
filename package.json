@@ -11,7 +11,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node -r esbuild-register ./src/db/migrate.ts",
     "db:studio": "npx drizzle-kit studio",
-    "email": "email dev --port 3600"
+    "email": "email dev --port 3600",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.0.1",
@@ -52,6 +54,15 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.5.0",
+    "@storybook/addon-essentials": "^8.1.7",
+    "@storybook/addon-interactions": "^8.1.7",
+    "@storybook/addon-links": "^8.1.7",
+    "@storybook/addon-onboarding": "^8.1.7",
+    "@storybook/blocks": "^8.1.7",
+    "@storybook/nextjs": "^8.1.7",
+    "@storybook/react": "^8.1.7",
+    "@storybook/test": "^8.1.7",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.12.8",
     "@types/pg": "^8.11.6",
@@ -60,7 +71,9 @@
     "drizzle-kit": "^0.21.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.3",
+    "eslint-plugin-storybook": "^0.8.0",
     "postcss": "^8.4.38",
+    "storybook": "^8.1.7",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
     "web-vitals": "^3.5.2"
