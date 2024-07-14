@@ -64,7 +64,8 @@ export function useMediaStream({
           );
         } else {
           alert(
-            "An error occurred while accessing media devices. Please check your settings and try again.",
+            "An error occurred while accessing media devices. Please check your settings and try again.   " +
+            err,
           );
         }
       });
