@@ -1,5 +1,3 @@
 # Pair dev finder
 
-## Details
-
-A google meet web app but it's for developers
+Connect, Create, and Excel with Fellow Developers
