@@ -7,3 +7,5 @@ Connect, Create, and Excel with Fellow Developers
 - Nextjs
 - Drizzle
 - Postgresql
+- Tailwind
+- StoryBook
