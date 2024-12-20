@@ -13,7 +13,6 @@ import type { AdapterAccount } from "next-auth/adapters"
  
 
 const connectionString = process.env.DATABASE_URL!;
-console.log("DATABASE =====> " +connectionString)
 const pool = postgres(connectionString, { max: 1 })
  
 export const db = drizzle(pool)
