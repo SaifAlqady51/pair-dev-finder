@@ -16,11 +16,12 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
 import { LoginFormDataType, loginFormFieldsData } from "@/data/loginformFields";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ShowPassowrd } from "../ShowPassword";
 import { checkLoginUser } from "@/app/signing/login/actions";
 import { toast } from "../ui/use-toast";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export const loginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -55,8 +56,16 @@ export function LoginForm() {
       );
   }
   return (
-    <>
-      <h1 className="font-semibold text-3xl">Login to your account</h1>
+    <React.Fragment>
+      <div className="space-y-3">
+        <h1 className="font-semibold text-3xl">Log in to your account</h1>
+        <div className="flex gap-1 text-gray-300 text-sm">
+          <p>{"Don't have an account?"}</p>
+          <Link href="/signing/email-check/" className="text-blue-500">
+            Register
+          </Link>
+        </div>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -103,6 +112,6 @@ export function LoginForm() {
           </Button>
         </form>
       </Form>
-    </>
+    </React.Fragment>
   );
 }
