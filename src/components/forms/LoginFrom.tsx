@@ -60,7 +60,7 @@ export function LoginForm() {
       <div className="space-y-3">
         <h1 className="font-semibold text-3xl">Log in to your account</h1>
         <div className="flex gap-1 text-gray-300 text-sm">
-          <p>Don't have an account?</p>
+          <p>{"Don't have an account?"}</p>
           <Link href="/signing/email-check/" className="text-blue-500">
             Register
           </Link>
