@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 
 import { LoginFormDataType, loginFormFieldsData } from "@/data/loginformFields";
 import React, { useState } from "react";
-import { ShowPassowrd } from "../ShowPassword";
+import { ShowPassword } from "../ShowPassword";
 import { checkLoginUser } from "@/app/signing/login/actions";
 import { toast } from "../ui/use-toast";
 import { signIn } from "next-auth/react";
@@ -46,13 +46,13 @@ export function LoginForm() {
       .then(() =>
         signIn("credentials", {
           ...values,
-        })
+        }),
       )
       .catch((error) =>
         toast({
           title: "Faild Login",
           description: `${error}`,
-        })
+        }),
       );
   }
   return (
@@ -69,7 +69,8 @@ export function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 flex flex-col items-center">
+          className="space-y-8 flex flex-col items-center"
+        >
           {loginFormFieldsData.map((formField: LoginFormDataType) => (
             <FormField
               key={formField.fieldName}
@@ -89,7 +90,7 @@ export function LoginForm() {
                         type={
                           (formField.fieldName === "password" &&
                             showPassword) ||
-                          formField.type === "text"
+                            formField.type === "text"
                             ? "text"
                             : "password"
                         }
@@ -97,7 +98,7 @@ export function LoginForm() {
                     </FormControl>
                     {/* hide & show password toggler */}
                     {formField.fieldName === "password" && (
-                      <ShowPassowrd
+                      <ShowPassword
                         showPassword={showPassword}
                         setShowPassword={setShowPassword}
                       />
