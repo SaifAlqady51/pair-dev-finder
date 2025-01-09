@@ -2,6 +2,11 @@ import React from "react";
 import { EmailRegisterForm } from "@/components/forms/EmailRegisterForm";
 import { ProviderButtons } from "@/components/forms/ProvidersButtons";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Register | Verify Email",
+};
 
 export default function RegisterPage() {
   return (
