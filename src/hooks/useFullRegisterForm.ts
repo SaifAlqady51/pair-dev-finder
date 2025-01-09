@@ -5,12 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { toast } from "@/components/ui/use-toast";
 import { decrypt } from "@/utils/jwt";
-import { createUserAccount } from "@/app/signing/register/actions";
 import { useNavigatControl } from "@/hooks/useNavigationControl";
 import {
   FullRegisterFormSchema,
   fullRegisterFormSchema,
 } from "@/app/schemas/fullRegisterSchema";
+import { createUserAccount } from "@/app/authentication/register/create-account/actions";
 
 export const useFullRegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
