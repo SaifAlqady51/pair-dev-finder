@@ -17,11 +17,11 @@ import { useRouter } from "next/navigation";
 import { encrypt } from "@/utils/jwt";
 
 import { render } from "@react-email/render";
-import { checkEmail } from "@/app/signing/email-check/actions";
 import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useToast } from "../ui/use-toast";
 import { removeErrorWord } from "@/utils/removeErrorWord";
+import { checkEmail } from "@/app/authentication/register/verfiy-email/actions";
 
 export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -52,20 +52,23 @@ export function EmailRegisterForm() {
           title: "Email Sent",
           description: `Verfication code sent to ${values.email}`,
         });
-        route.push(`/signing/code?data=${token}&code=${encryptedCode}`);
+        route.push(
+          `/authentication/confirm-code?data=${token}&code=${encryptedCode}`,
+        );
       })
       .catch((error) =>
         toast({
           title: "Failed to sent code",
           description: `${removeErrorWord(error as string)}`,
-        })
+        }),
       );
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-center">
+        className="space-y-8 flex flex-col items-center"
+      >
         <FormField
           control={form.control}
           name="email"

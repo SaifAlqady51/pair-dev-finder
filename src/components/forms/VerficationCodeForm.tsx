@@ -46,7 +46,9 @@ export function VerficationCodeForm() {
     };
     if (realCode.code === values.code) {
       access.setCanAccess(true);
-      route.push(`/signing/register?data=${searchParams!.get("data")}`);
+      route.push(
+        `/authentication/create-account?data=${searchParams!.get("data")}`,
+      );
     } else {
     }
   }
@@ -54,7 +56,8 @@ export function VerficationCodeForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-center">
+        className="space-y-8 flex flex-col items-center"
+      >
         <FormField
           control={form.control}
           name="code"

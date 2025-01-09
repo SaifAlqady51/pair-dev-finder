@@ -1,6 +1,10 @@
-import SigningFormWrapper from "@/components/forms/SigningFormWrapper";
 import { VerficationCodeForm } from "@/components/forms/VerficationCodeForm";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Register | Confirm Verfication Code",
+};
 
 export default function CodePage() {
   return (
