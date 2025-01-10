@@ -53,10 +53,10 @@ export function EmailRegisterForm() {
           description: `Verfication code sent to ${values.email}`,
         });
         route.push(
-          `/authentication/confirm-code?data=${token}&code=${encryptedCode}`,
+          `/authentication/register/confirm-code?data=${token}&code=${encryptedCode}`,
         );
       })
-      .catch((error) =>
+      .catch((error: any) =>
         toast({
           title: "Failed to sent code",
           description: `${removeErrorWord(error as string)}`,
