@@ -21,7 +21,7 @@ import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useToast } from "../ui/use-toast";
 import { removeErrorWord } from "@/utils/removeErrorWord";
-import { checkEmail } from "@/app/authentication/register/verfiy-email/actions";
+import { checkEmail } from "@/app/authentication/register/verify-email/actions";
 
 export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),

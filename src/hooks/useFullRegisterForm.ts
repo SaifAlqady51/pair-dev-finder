@@ -6,11 +6,11 @@ import { signIn } from "next-auth/react";
 import { toast } from "@/components/ui/use-toast";
 import { decrypt } from "@/utils/jwt";
 import { useNavigatControl } from "@/hooks/useNavigationControl";
+import { createUserAccount } from "@/app/authentication/register/create-account/actions";
 import {
   FullRegisterFormSchema,
   fullRegisterFormSchema,
-} from "@/app/schemas/fullRegisterSchema";
-import { createUserAccount } from "@/app/authentication/register/create-account/actions";
+} from "@/schemas/fullRegisterSchema";
 
 export const useFullRegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
