@@ -22,6 +22,7 @@ import { toast } from "../ui/use-toast";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { checkLoginUser } from "@/app/authentication/login/actions";
+import { useLoginForm } from "@/hooks/useLoginForm";
 
 export const loginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -29,32 +30,9 @@ export const loginFormSchema = z.object({
 });
 
 export function LoginForm() {
-  const route = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const { form, isLoading, onSubmit } = useLoginForm();
 
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    checkLoginUser({ ...values })
-      .then(() =>
-        signIn("credentials", {
-          ...values,
-        }),
-      )
-      .catch((error) =>
-        toast({
-          title: "Faild Login",
-          description: `${error}`,
-        }),
-      );
-  }
   return (
     <React.Fragment>
       <div className="space-y-3">
