@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/form";
 import { ShowPassword } from "@/components/ShowPassword";
 import { Input } from "@/components/ui/input";
-import { fullRegisterFormFieldsData } from "@/data/fullRegisterFieldsData";
 
-import { useFullRegisterForm } from "@/hooks/useFullRegisterForm";
+import { createAccountFormFieldsData } from "@/data/createAccountFormFieldsData";
+import { useCreateAccountForm } from "@/hooks/useCreateAccountForm";
 
-export function FullRegisterForm() {
+export const CreateAccountForm: React.FC = () => {
   const { form, onSubmit, showPassword, setShowPassword, access } =
-    useFullRegisterForm();
+    useCreateAccountForm();
 
   if (!access.canAccess) {
     return null;
@@ -28,7 +28,7 @@ export function FullRegisterForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 flex flex-col items-center"
       >
-        {fullRegisterFormFieldsData.map((formField) => (
+        {createAccountFormFieldsData.map((formField) => (
           <FormField
             key={formField.fieldName}
             control={form.control}
@@ -72,4 +72,4 @@ export function FullRegisterForm() {
       </form>
     </Form>
   );
-}
+};

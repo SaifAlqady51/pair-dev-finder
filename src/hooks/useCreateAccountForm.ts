@@ -8,26 +8,26 @@ import { decrypt } from "@/utils/jwt";
 import { useNavigatControl } from "@/hooks/useNavigationControl";
 import { createUserAccount } from "@/app/authentication/register/create-account/actions";
 import {
-  FullRegisterFormSchema,
-  fullRegisterFormSchema,
-} from "@/schemas/fullRegisterSchema";
+  createAccountFormSchema,
+  CreateAccountFormSchema,
+} from "@/schemas/creatAccountFormSchema";
 
-export const useFullRegisterForm = () => {
+export const useCreateAccountForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const access = useNavigatControl();
   const searchParams = useSearchParams();
   const encryptedData = searchParams!.get("data");
 
-  const form = useForm<FullRegisterFormSchema>({
-    resolver: zodResolver(fullRegisterFormSchema),
+  const form = useForm<CreateAccountFormSchema>({
+    resolver: zodResolver(createAccountFormSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: FullRegisterFormSchema) => {
+  const onSubmit = async (values: CreateAccountFormSchema) => {
     try {
       const data = decrypt(encryptedData || "") as {
         email: string;
