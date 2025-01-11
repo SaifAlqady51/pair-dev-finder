@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const fullRegisterFormSchema = z.object({
+export const createAccountFormSchema = z.object({
   username: z
     .string()
     .min(3, { message: "Username should be at least 3 characters" })
@@ -21,4 +21,4 @@ export const fullRegisterFormSchema = z.object({
     }),
 });
 
-export type FullRegisterFormSchema = z.infer<typeof fullRegisterFormSchema>;
+export type CreateAccountFormSchema = z.infer<typeof createAccountFormSchema>;
