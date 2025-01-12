@@ -21,7 +21,7 @@ import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useToast } from "../ui/use-toast";
 import { removeErrorWord } from "@/utils/removeErrorWord";
-import { checkEmail } from "@/app/authentication/register/verify-email/actions";
+import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
 
 export const registerFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -46,7 +46,7 @@ export function EmailRegisterForm() {
     const token = encrypt(values);
     const encryptedCode = encrypt({ code: generatedCode.toString() });
 
-    checkEmail({ email: values.email, template: emailHtml })
+    verifyEmail({ email: values.email, template: emailHtml })
       .then(() => {
         toast({
           title: "Email Sent",
@@ -58,7 +58,7 @@ export function EmailRegisterForm() {
       })
       .catch((error: any) =>
         toast({
-          title: "Failed to sent code",
+          title: "Failed to send code",
           description: `${removeErrorWord(error as string)}`,
         }),
       );

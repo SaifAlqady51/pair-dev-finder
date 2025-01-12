@@ -15,10 +15,9 @@ const transporter = nodemailer.createTransport({
 type CheckEmailType = {
   email: string;
   template: any;
-  code?: string;
 };
 
-export async function checkEmail({ email, template, code }: CheckEmailType) {
+export async function verifyEmail({ email, template }: CheckEmailType) {
   try {
     const checkIfUserExist = await db
       .select()
