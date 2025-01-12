@@ -15,28 +15,37 @@ const transporter = nodemailer.createTransport({
 type CheckEmailType = {
   email: string;
   template: any;
-  code?: string;
 };
 
-export async function checkEmail({ email, template, code }: CheckEmailType) {
+export async function verifyEmail({
+  email,
+  template,
+}: CheckEmailType): Promise<{ success: boolean; message: string }> {
   try {
     const checkIfUserExist = await db
       .select()
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
-    if (checkIfUserExist[0]) {
-      throw new Error("Email address used before");
-    } else {
-      await transporter.sendMail({
-        from: email,
-        to: email,
-        replyTo: email,
-        subject: `Website activity from ${email}`,
-        html: template,
-      });
+
+    if (checkIfUserExist.length > 0) {
+      return { success: false, message: "Email address already in use." };
     }
+
+    await transporter.sendMail({
+      from: email,
+      to: email,
+      replyTo: email,
+      subject: `Website activity from ${email}`,
+      html: template,
+    });
+
+    return { success: true, message: "Verification email sent successfully." };
   } catch (error) {
-    throw new Error(`unable to send email : ${error} `);
+    console.error("Error during email verification:", error);
+    return {
+      success: false,
+      message: `Unable to send verification email. Please try again later.`,
+    };
   }
 }
