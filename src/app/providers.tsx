@@ -1,4 +1,5 @@
 "use client";
+
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
@@ -6,8 +7,7 @@ import { usePathname } from "next/navigation";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const pathnameList = pathname!.split("/");
-  const hideHeader = pathnameList[1] === "signing";
+  const hideHeader = pathname?.startsWith("/authentication");
 
   return (
     <SessionProvider>
@@ -15,7 +15,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
         attribute="class"
         defaultTheme="system"
         enableSystem
-        disableTransitionOnChange>
+        disableTransitionOnChange
+      >
         {!hideHeader && <Header />}
         {children}
       </ThemeProvider>
