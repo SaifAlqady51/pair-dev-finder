@@ -1,8 +1,8 @@
 import React from "react";
-import { EmailRegisterForm } from "@/components/forms/EmailRegisterForm";
 import { ProviderButtons } from "@/components/forms/ProvidersButtons";
 import Link from "next/link";
 import { Metadata } from "next";
+import { VerifyEmailForm } from "@/components/forms/VerifyEmailForm";
 
 export const metadata: Metadata = {
   title: "Register | Verify Email",
@@ -20,7 +20,7 @@ export default function RegisterPage() {
           </Link>
         </div>
       </div>
-      <EmailRegisterForm />
+      <VerifyEmailForm />
       <ProviderButtons />
     </React.Fragment>
   );

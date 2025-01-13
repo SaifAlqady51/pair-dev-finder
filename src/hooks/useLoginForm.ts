@@ -1,6 +1,6 @@
 import { checkLoginUser } from "@/app/authentication/login/actions";
-import { loginFormSchema } from "@/components/forms/LoginFrom";
 import { toast } from "@/components/ui/use-toast";
+import { loginFormSchema } from "@/schemas/loginFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";

@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,19 +19,15 @@ import { render } from "@react-email/render";
 import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useToast } from "../ui/use-toast";
-import { removeErrorWord } from "@/utils/removeErrorWord";
 import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
+import { verifyEmailFormSchema } from "@/schemas/verifyEmailFormSchema";
 
-export const registerFormSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-});
-
-export function EmailRegisterForm() {
+export const VerifyEmailForm: React.FC = () => {
   const { toast } = useToast();
   const route = useRouter();
   // 1. Define your form.
-  const form = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
+  const form = useForm<z.infer<typeof verifyEmailFormSchema>>({
+    resolver: zodResolver(verifyEmailFormSchema),
     defaultValues: {
       email: "",
     },
@@ -42,7 +37,7 @@ export function EmailRegisterForm() {
   const emailHtml = render(<VerifyEmail code={generatedCode.toString()} />);
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof registerFormSchema>) {
+  async function onSubmit(values: z.infer<typeof verifyEmailFormSchema>) {
     const token = encrypt(values);
     const encryptedCode = encrypt({ code: generatedCode.toString() });
 
@@ -95,4 +90,4 @@ export function EmailRegisterForm() {
       </form>
     </Form>
   );
-}
+};
