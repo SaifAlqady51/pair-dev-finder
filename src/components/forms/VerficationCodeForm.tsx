@@ -47,7 +47,7 @@ export function VerficationCodeForm() {
     if (realCode.code === values.code) {
       access.setCanAccess(true);
       route.push(
-        `/authentication/create-account?data=${searchParams!.get("data")}`,
+        `/authentication/register/create-account?data=${searchParams!.get("data")}`,
       );
     } else {
     }
