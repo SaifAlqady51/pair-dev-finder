@@ -1,7 +1,4 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,55 +9,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-import { encrypt } from "@/utils/jwt";
 
 import { render } from "@react-email/render";
 import VerifyEmail from "../../../emails/VerifyEmail";
 import { generateRandomNumber } from "@/utils/generateRandomNumber";
-import { useToast } from "../ui/use-toast";
-import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
-import { verifyEmailFormSchema } from "@/schemas/verifyEmailFormSchema";
+import { useVerifyEmailForm } from "@/hooks/useVerifyEmailForm";
 
 export const VerifyEmailForm: React.FC = () => {
-  const { toast } = useToast();
-  const route = useRouter();
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof verifyEmailFormSchema>>({
-    resolver: zodResolver(verifyEmailFormSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
-
   const generatedCode = generateRandomNumber();
   const emailHtml = render(<VerifyEmail code={generatedCode.toString()} />);
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof verifyEmailFormSchema>) {
-    const token = encrypt(values);
-    const encryptedCode = encrypt({ code: generatedCode.toString() });
+  const { form, onSubmit } = useVerifyEmailForm({
+    emailHtml,
+    code: generatedCode.toString(),
+  });
 
-    const { success, message } = await verifyEmail({
-      email: values.email,
-      template: emailHtml,
-    });
-
-    if (success) {
-      toast({
-        title: "Email Sent",
-        description: `Verification code sent to ${values.email}`,
-      });
-      route.push(
-        `/authentication/register/confirm-code?data=${token}&code=${encryptedCode}`,
-      );
-    } else {
-      toast({
-        title: "Failed to send code",
-        description: message,
-      });
-    }
-  }
   return (
     <Form {...form}>
       <form
