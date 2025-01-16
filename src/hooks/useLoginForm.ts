@@ -4,7 +4,7 @@ import { loginFormSchema } from "@/schemas/loginFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,17 +20,27 @@ export function useLoginForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setIsLoading(true);
-    checkLoginUser({ ...values })
-      .then(() => signIn("credentials", { ...values }))
-      .catch((error) => {
-        toast({
-          title: "Failed Login",
-          description: String(error),
-        });
-      })
-      .finally(() => setIsLoading(false));
+
+    const { success, message } = await checkLoginUser({ ...values });
+
+    if (success) {
+      toast({
+        title: "Login Successful",
+        description: "You have successfully logged in!",
+        variant: "success",
+      });
+
+      signIn("credentials", { ...values });
+    } else {
+      toast({
+        title: "Failed Login",
+        description: message,
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
   }
   return { form, onSubmit, isLoading };
 }
