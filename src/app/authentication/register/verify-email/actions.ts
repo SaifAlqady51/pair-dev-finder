@@ -3,6 +3,7 @@ import * as nodemailer from "nodemailer";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { FormResponseType } from "@/types/formResponse";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -20,7 +21,7 @@ type CheckEmailType = {
 export async function verifyEmail({
   email,
   template,
-}: CheckEmailType): Promise<{ success: boolean; message: string }> {
+}: CheckEmailType): Promise<FormResponseType> {
   try {
     const checkIfUserExist = await db
       .select()
