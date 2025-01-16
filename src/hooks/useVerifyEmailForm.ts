@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { verifyEmailFormSchema } from "@/schemas/verifyEmailFormSchema";
 import { encrypt } from "@/utils/jwt";
 import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
+import { useState } from "react";
 type UseVerifyEmailFormProps = {
   emailHtml: string;
   code: string;
@@ -16,6 +17,7 @@ export function useVerifyEmailForm({
 }: UseVerifyEmailFormProps) {
   const { toast } = useToast();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof verifyEmailFormSchema>>({
     resolver: zodResolver(verifyEmailFormSchema),
@@ -25,6 +27,7 @@ export function useVerifyEmailForm({
   });
 
   const onSubmit = async (values: z.infer<typeof verifyEmailFormSchema>) => {
+    setIsLoading(true);
     const token = encrypt(values);
     const encryptedCode = encrypt({ code: code.toString() });
 
@@ -37,6 +40,7 @@ export function useVerifyEmailForm({
       toast({
         title: "Email Sent",
         description: `Verification code sent to ${values.email}`,
+        variant: "success",
       });
       router.push(
         `/authentication/register/confirm-code?data=${token}&code=${encryptedCode}`,
@@ -45,9 +49,11 @@ export function useVerifyEmailForm({
       toast({
         title: "Failed to send code",
         description: message,
+        variant: "destructive",
       });
     }
+    setIsLoading(false);
   };
 
-  return { form, onSubmit };
+  return { form, onSubmit, isLoading };
 }
