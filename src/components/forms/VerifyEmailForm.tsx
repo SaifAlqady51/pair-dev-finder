@@ -19,7 +19,7 @@ export const VerifyEmailForm: React.FC = () => {
   const generatedCode = generateRandomNumber();
   const emailHtml = render(<VerifyEmail code={generatedCode.toString()} />);
 
-  const { form, onSubmit } = useVerifyEmailForm({
+  const { form, onSubmit, isLoading } = useVerifyEmailForm({
     emailHtml,
     code: generatedCode.toString(),
   });
@@ -47,8 +47,17 @@ export const VerifyEmailForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full font-semibold">
-          Create new account
+
+        <Button
+          type="submit"
+          className="w-full font-semibold flex items-center justify-center"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <span>Processing...</span>
+          ) : (
+            <span>Create new account</span>
+          )}
         </Button>
       </form>
     </Form>
