@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigatControl } from "./useNavigationControl";
 import { useRouter, useSearchParams } from "next/navigation";
-import { confirmCodeFormSchema } from "@/schemas/confirmCodeFromSchema";
 import { useState } from "react";
+import { confirmCodeFormSchema } from "@/schemas/confirmCodeFormSchema";
 
 export function useConfirmCodeForm() {
   const [isLoading, setIsLoading] = useState(false);
