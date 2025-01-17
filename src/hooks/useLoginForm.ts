@@ -16,6 +16,7 @@ export function useLoginForm() {
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
 
