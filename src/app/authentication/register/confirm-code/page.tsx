@@ -1,4 +1,4 @@
-import { VerficationCodeForm } from "@/components/forms/VerficationCodeForm";
+import { ConfirmCodeForm } from "@/components/forms/ConfirmCodeForm";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -10,7 +10,7 @@ export default function CodePage() {
   return (
     <Suspense>
       <h1 className="font-semibold text-3xl">Enter verfication code</h1>
-      <VerficationCodeForm />
+      <ConfirmCodeForm />
     </Suspense>
   );
 }
