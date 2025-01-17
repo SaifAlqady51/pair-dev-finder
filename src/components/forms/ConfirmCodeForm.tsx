@@ -1,9 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,40 +14,11 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useRouter, useSearchParams } from "next/navigation";
-import { decrypt } from "@/utils/jwt";
-import { useNavigatControl } from "@/hooks/useNavigationControl";
+import React from "react";
+import { useConfirmCodeForm } from "@/hooks/useConfirmCodeForm";
 
-export const verificationCodeForm = z.object({
-  code: z.string().length(6, { message: "should be 6 digits" }),
-});
-
-export function VerficationCodeForm() {
-  const access = useNavigatControl();
-  const route = useRouter();
-  const searchParams = useSearchParams();
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof verificationCodeForm>>({
-    resolver: zodResolver(verificationCodeForm),
-    defaultValues: {
-      code: "",
-    },
-  });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof verificationCodeForm>) {
-    const realCode = decrypt(searchParams!.get("code") || "") as {
-      code: string;
-      iat: number;
-    };
-    if (realCode.code === values.code) {
-      access.setCanAccess(true);
-      route.push(
-        `/authentication/register/create-account?data=${searchParams!.get("data")}`,
-      );
-    } else {
-    }
-  }
+export const ConfirmCodeForm: React.FC = () => {
+  const { form, onSubmit, isLoading } = useConfirmCodeForm();
   return (
     <Form {...form}>
       <form
@@ -80,10 +47,14 @@ export function VerficationCodeForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full font-semibold">
-          Enter Code
+        <Button
+          type="submit"
+          className="w-full font-semibold flex items-center justify-center"
+          disabled={isLoading}
+        >
+          {isLoading ? <span>Processing...</span> : <span>Confirm Code</span>}
         </Button>
       </form>
     </Form>
   );
-}
+};
