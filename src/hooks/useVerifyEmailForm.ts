@@ -38,7 +38,7 @@ export function useVerifyEmailForm({
 
     if (success) {
       toast({
-        title: "Email Sent",
+        title: "Verfication Code Sent",
         description: `Verification code sent to ${values.email}`,
         variant: "success",
       });
