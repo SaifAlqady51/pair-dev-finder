@@ -6,6 +6,7 @@ import { useNavigatControl } from "./useNavigationControl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { confirmCodeFormSchema } from "@/schemas/confirmCodeFormSchema";
+import { toast } from "@/components/ui/use-toast";
 
 export function useConfirmCodeForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +35,12 @@ export function useConfirmCodeForm() {
         `/authentication/register/create-account?data=${searchParams!.get("data")}`,
       );
     } else {
+      toast({
+        title: "Error",
+        description: "The provided code is incorrect.",
+        variant: "destructive",
+      });
     }
-
     setIsLoading(false);
   }
 
