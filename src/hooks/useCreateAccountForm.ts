@@ -29,39 +29,62 @@ export const useCreateAccountForm = () => {
 
   const onSubmit = async (values: CreateAccountFormSchema) => {
     try {
-      const data = decrypt(encryptedData || "") as {
-        email: string;
-        iat: number;
-      } | null;
+      // Decrypt and validate email data
+      const decryptedData = decrypt(encryptedData || "");
+      const data = decryptedData as { email: string; iat: number } | null;
 
       if (!data?.email) {
-        throw new Error("Invalid or missing email data");
+        toast({
+          title: "Error",
+          description: "Invalid or missing email data",
+          variant: "destructive",
+        });
+        return;
       }
 
-      await createUserAccount({
+      // Create the user account
+      const createdAccount = await createUserAccount({
         name: values.username,
         password: values.password,
         email: data.email,
       });
 
-      toast({
-        title: "Account Created",
-        description: `Created account for ${values.username}`,
-      });
-
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: values.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error(result.error);
+      if (!createdAccount.success) {
+        console.error(createdAccount.message);
+        toast({
+          title: "Error",
+          description: "Failed to create account",
+          variant: "destructive",
+        });
+        return;
       }
 
+      // Show success toast with account details
+      toast({
+        title: "Account Created",
+        description: `Created account for successfully `,
+      });
+
+      // Sign in the user
+      const signInResult = await signIn("credentials", {
+        email: data.email,
+        password: values.password,
+      });
+
+      if (signInResult?.error) {
+        toast({
+          title: "Error",
+          description: signInResult.error,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Update access and redirect
       access.setCanAccess(false);
       router.push("/");
     } catch (error) {
+      // Show error toast
       toast({
         title: "Error",
         description:
@@ -70,6 +93,5 @@ export const useCreateAccountForm = () => {
       });
     }
   };
-
   return { form, onSubmit, showPassword, setShowPassword, access };
 };
