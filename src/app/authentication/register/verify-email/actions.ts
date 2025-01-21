@@ -43,7 +43,6 @@ export async function verifyEmail({
 
     return { success: true, message: "Verification email sent successfully." };
   } catch (error) {
-    console.error("Error during email verification:", error);
     return {
       success: false,
       message: `Unable to send verification email. Please try again later.`,
