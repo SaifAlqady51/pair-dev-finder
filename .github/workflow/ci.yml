@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**" # Run tests on all branches
+  pull_request:
+    branches:
+      - "**" # Run tests on pull requests targeting any branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # Use the latest Ubuntu environment
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Use Node.js 18 (or your preferred version)
+          cache: "npm" # Cache npm dependencies for faster builds
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
