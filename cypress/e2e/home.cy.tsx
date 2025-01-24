@@ -1,22 +1,32 @@
-// cypress/e2e/home.cy.js
 describe("Home Page", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/"); // Visit the home page
   });
 
-  it("should load the home page", () => {
-    cy.contains("h2", "Find Dev Rooms").should("be.visible");
-  });
-
-  it('should have a "Create Room" button that links to the create room page', () => {
-    cy.get("Button")
-      .contains("Create Room")
+  it("should load the page and display the title", () => {
+    cy.get('[data-testid="find-dev-title"]')
       .should("be.visible")
-      .and("have.attr", "href", "/create-room");
+      .and("contain.text", "Find Dev Rooms");
   });
 
-  it('should display "No rooms available" when there are no rooms', () => {
-    // Mock the UI state to simulate no rooms
-    cy.contains("No rooms available").should("be.visible");
+  it('should display "Create Room" button and navigate correctly', () => {
+    cy.get("button").contains("Create Room").should("be.visible").click();
+    cy.url().should("include", "/create-room");
+  });
+
+  it('should display "No rooms available" message when no rooms', () => {
+    cy.intercept("GET", "/api/rooms", []).as("getEmptyRooms"); // Mock empty rooms
+    cy.visit("/");
+    cy.get("p").contains("No rooms available").should("be.visible");
+  });
+
+  it("should display rooms when rooms are available", () => {
+    cy.intercept("GET", "/api/rooms", { fixture: "rooms.json" }).as("getRooms"); // Mock API call
+    cy.wait("@getRooms"); // Wait for the mocked API response
+    cy.get('[data-testid="room-list"]')
+      .should("exist")
+      .within(() => {
+        cy.get(".RoomCard").should("have.length", 3); // Assuming rooms.json has 3 rooms
+      });
   });
 });
