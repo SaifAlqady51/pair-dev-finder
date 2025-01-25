@@ -12,6 +12,7 @@ export function ShowPassword({
 }: ShowPasswordProps) {
   return (
     <span
+      data-cy="show-password-button"
       className="absolute top-[30%] right-4 text-xl cursor-pointer"
       onClick={() => setShowPassword((prevState) => !prevState)}
     >

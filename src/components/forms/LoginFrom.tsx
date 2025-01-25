@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -28,6 +29,7 @@ export function LoginForm() {
           <Link
             href="/authentication/register/verify-email/"
             className="text-blue-500"
+            data-cy="register-link" // Add this line
           >
             Register
           </Link>
@@ -71,6 +73,8 @@ export function LoginForm() {
                       />
                     )}
                   </div>
+
+                  <FormMessage data-cy="error-message" />
                 </FormItem>
               )}
             />
@@ -79,6 +83,7 @@ export function LoginForm() {
             type="submit"
             className="w-full font-semibold flex items-center justify-center"
             disabled={isLoading}
+            data-cy="submit-button"
           >
             {isLoading ? <span>Processing...</span> : <span>Log in</span>}
           </Button>
