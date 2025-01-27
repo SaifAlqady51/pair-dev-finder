@@ -4,7 +4,7 @@ describe("Home Page", () => {
   });
 
   it("should load the page and display the title", () => {
-    cy.get('[data-testid="find-dev-title"]')
+    cy.get('[data-cy="find-dev-title"]')
       .should("be.visible")
       .and("contain.text", "Find Dev Rooms");
   });
@@ -20,13 +20,39 @@ describe("Home Page", () => {
     cy.get("p").contains("No rooms available").should("be.visible");
   });
 
-  it("should display rooms when rooms are available", () => {
-    cy.intercept("GET", "/api/rooms", { fixture: "rooms.json" }).as("getRooms"); // Mock API call
-    cy.wait("@getRooms"); // Wait for the mocked API response
-    cy.get('[data-testid="room-list"]')
-      .should("exist")
-      .within(() => {
-        cy.get(".RoomCard").should("have.length", 3); // Assuming rooms.json has 3 rooms
-      });
+  it("should display a list of rooms if available", () => {
+    // Mock the API response
+    cy.intercept("GET", "/api/rooms", {
+      statusCode: 200,
+      body: [
+        {
+          id: "1",
+          name: "Room 1",
+          tags: "react,typescript",
+          githubRepo: "https://github.com/example/repo1",
+          description:
+            "This is a bit long description for room 1 to see what this card looks like",
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: "2",
+          name: "Room 2",
+          tags: "nodejs,express",
+          githubRepo: "https://github.com/example/repo2",
+          description: "This is room 2",
+          created_at: new Date().toISOString(),
+        },
+      ],
+    }).as("getRooms");
+
+    // Wait for the API call to complete
+    cy.wait("@getRooms");
+
+    // Check if the room list is visible
+    cy.get('[data-cy="room-list"]').should("be.visible");
+
+    // Check if the rooms are displayed
+    cy.contains("Room 1").should("be.visible");
+    cy.contains("Room 2").should("be.visible");
   });
 });
