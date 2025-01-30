@@ -1,6 +1,6 @@
 import { TagList } from "@/components/TagList";
 import { Video } from "@/components/Video";
-import { getRoom } from "@/data-access/rooms";
+import { fetchRoomById } from "@/services";
 import { getRepoName } from "@/utils/getRepoName";
 import { splitTags } from "@/utils/splitTags";
 import Link from "next/link";
@@ -13,7 +13,7 @@ interface ParamsProps {
 }
 
 export default async function RoomPage({ params }: ParamsProps) {
-  const room = await getRoom(params.roomId);
+  const room = await fetchRoomById(params.roomId);
 
   return (
     <div className="mt-2 flex justify-center gap-12 bg-slate-100 dark:bg-slate-950 ">
