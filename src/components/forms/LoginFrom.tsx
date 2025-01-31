@@ -23,7 +23,9 @@ export function LoginForm() {
   return (
     <React.Fragment>
       <div className="space-y-3">
-        <h1 className="font-semibold text-3xl">Log in to your account</h1>
+        <h1 className="font-semibold text-[1.8rem] md:text-3xl ">
+          Log in to your account
+        </h1>
         <div className="flex gap-1 text-gray-300 text-sm">
           <p>{"Don't have an account?"}</p>
           <Link
