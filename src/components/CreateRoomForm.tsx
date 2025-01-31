@@ -24,6 +24,7 @@ import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
 import { removeErrorWord } from "@/utils/removeErrorWord";
+import { createRoom } from "@/services";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -50,7 +51,7 @@ export function CreateRoomForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     checkGithubRepo(values.githubRepo || "")
-      .then(() => createRoomAction(values))
+      .then(() => createRoom(values))
       .then(() => {
         toast({ title: "Room Created" });
         route.push("/");
