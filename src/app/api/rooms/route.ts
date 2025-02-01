@@ -33,7 +33,8 @@ export async function POST(req: Request) {
 
     const insertedRoom = await db
       .insert(rooms)
-      .values({ ...data, userId: session.user.id });
+      .values({ ...data, userId: session.user.id })
+      .returning();
 
     revalidatePath("/");
     return NextResponse.json({ success: true, data: insertedRoom });
