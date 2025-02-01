@@ -20,7 +20,6 @@ export const fetchRooms = async (): Promise<Room[]> => {
 
     // Step 3: Parse the response as JSON
     const data = await response.json();
-    console.log(data.data);
 
     // Step 4: Validate the response data and return an empty array if invalid
     if (!Array.isArray(data.data)) {
