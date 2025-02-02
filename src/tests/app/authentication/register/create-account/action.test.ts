@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals";
 import { createUserAccount } from "@/app/authentication/register/create-account/actions";
 import { db } from "@/db";
 import { users } from "@/db/schema";
@@ -97,7 +98,7 @@ describe("createUserAccount", () => {
     });
 
     // Ensure db.select was called to check for existing user
-    expect(mockDbSelect).toHaveBeenCalled();
+    expect(mockDbSelect).toHaveBeenCalledWith();
     expect(mockEq).toHaveBeenCalledWith(users.email, mockUser.email);
 
     // Ensure db.insert was not called
