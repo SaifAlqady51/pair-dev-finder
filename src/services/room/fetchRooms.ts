@@ -1,8 +1,11 @@
 import { Room } from "@/db/schema";
+import { revalidatePath } from "next/cache";
 
 export const fetchRooms = async (): Promise<Room[]> => {
   try {
     // Step 1: Make the API request
+    //
+    revalidatePath("/");
     const response = await fetch("http://localhost:3000/api/rooms", {
       method: "GET",
     });
@@ -10,7 +13,7 @@ export const fetchRooms = async (): Promise<Room[]> => {
     // Step 2: Check if the response is OK (status code 200-299)
     if (!response.ok) {
       if (response.status === 404) {
-        return [];
+        throw new Error(`Failed to fetch rooms: ${response.statusText}`);
       } else if (response.status === 500) {
         throw new Error("Server error. Please try again later.");
       } else {

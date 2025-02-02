@@ -13,6 +13,7 @@ export async function GET() {
       .from(rooms)
       .orderBy(desc(rooms.created_at))
       .limit(9);
+    revalidatePath("/");
     return NextResponse.json({ success: true, data: fetchedRooms });
   } catch (error) {
     return NextResponse.json(
