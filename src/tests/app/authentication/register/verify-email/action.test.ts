@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals";
 import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
 import { db } from "@/db";
 import * as nodemailer from "nodemailer";
