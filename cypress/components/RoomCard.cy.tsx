@@ -1,5 +1,5 @@
 import "../../src/app/globals.css";
-import RoomCard from "@/components/RoomCard";
+import { RoomCard } from "@/components";
 import React from "react";
 import { getRepoName } from "@/utils/getRepoName";
 

@@ -1,5 +1,5 @@
-import { TagList } from "@/components/TagList";
-import { Video } from "@/components/Video";
+import { TagList } from "@/components";
+import { Video } from "@/components";
 import { fetchRoomById } from "@/services";
 import { getRepoName } from "@/utils/getRepoName";
 import { splitTags } from "@/utils/splitTags";
