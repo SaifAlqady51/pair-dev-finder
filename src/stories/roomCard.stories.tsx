@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import RoomCard from "@/components/RoomCard";
 import { Room } from "@/db/schema";
+import { RoomCard } from "@/components";
 
 const meta: Meta<typeof RoomCard> = {
   title: "Components/RoomCard",
