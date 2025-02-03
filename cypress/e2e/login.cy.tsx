@@ -77,6 +77,9 @@ describe("LoginForm Component", () => {
     // Verify that the form is in a loading state
     cy.get('button[type="submit"]').should("be.disabled");
 
+    // Wait for the button to become enabled again after processing
+    cy.get('button[type="submit"]').should("not.be.disabled");
+
     // Verify that a success toast notification is displayed
     cy.contains("Failed Login").should("exist");
   });
@@ -110,6 +113,10 @@ describe("LoginForm Component", () => {
     cy.get("h1")
       .should("be.visible")
       .and("contain.text", "Log in to your account");
+
+    cy.get('img[alt="login image"]')
+      .should("exist")
+      .and("have.css", "width", "0px");
 
     // Debugging: Log the computed styles and dimensions of the title
     cy.get("h1").then(($title) => {
@@ -153,5 +160,28 @@ describe("LoginForm Component", () => {
     // Check if the GitHub button is rendered
     cy.get("button").contains("Github").should("be.visible");
     cy.get("svg").should("exist"); // Check for the GitHub icon
+  });
+  it("should display the login form correctly on full-screen devices", () => {
+    // Set viewport to a full-screen desktop size (e.g., 1920x1080)
+    cy.viewport(1920, 1080);
+
+    // Check if the form title is visible
+    cy.get("h1")
+      .should("be.visible")
+      .and("contain.text", "Log in to your account");
+
+    // Check if the email and password fields are visible
+    cy.get('input[name="email"]').should("be.visible");
+    cy.get('input[name="password"]').should("be.visible");
+
+    // Check if the submit button is visible
+    cy.get('button[type="submit"]').should("be.visible");
+
+    // Check if the register link is visible
+    cy.get('[data-cy="register-link"]').should("be.visible");
+    cy.get('img[alt="login image"]') // Select the Image component by alt text
+      .should("be.visible")
+      .and("have.css", "width")
+      .and("not.eq", "0px");
   });
 });
