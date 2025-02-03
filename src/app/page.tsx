@@ -1,8 +1,8 @@
-import RoomCard from "@/components/RoomCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Room } from "@/db/schema";
 import { fetchRooms } from "@/services";
+import { RoomCard } from "@/components";
 
 export default async function Home() {
   let rooms: Room[] = [];
@@ -11,6 +11,7 @@ export default async function Home() {
   try {
     rooms = await fetchRooms();
   } catch (err) {
+    console.error("Error fetching rooms:", err);
     error = "Failed to load rooms. Please try again later.";
   }
 
@@ -27,7 +28,12 @@ export default async function Home() {
 
       <div className="flex justify-center items-center min-h-[30vh]">
         {error ? (
-          <p className="text-2xl font-light text-red-500">{error}</p>
+          <p
+            className="text-2xl font-light text-red-500"
+            data-cy="error-message"
+          >
+            {error}
+          </p>
         ) : rooms.length > 0 ? (
           <div
             className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6"
@@ -38,7 +44,9 @@ export default async function Home() {
             ))}
           </div>
         ) : (
-          <p className="text-2xl font-light">No rooms available</p>
+          <p className="text-2xl font-light" data-cy="no-rooms-message">
+            No rooms available
+          </p>
         )}
       </div>
     </main>

@@ -1,6 +1,6 @@
 import { Badge } from "./ui/badge";
 
-export function TagList({ tags }: { tags: string[] | undefined }) {
+export const TagList: React.FC<{ tags: string[] | undefined }> = ({ tags }) => {
   if (tags) {
     return (
       <div className="flex gap-2 flex-wrap">
@@ -12,4 +12,4 @@ export function TagList({ tags }: { tags: string[] | undefined }) {
       </div>
     );
   }
-}
+};

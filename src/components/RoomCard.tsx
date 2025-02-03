@@ -14,7 +14,7 @@ import { FaGithub } from "react-icons/fa";
 import { TagList } from "./TagList";
 import { splitTags } from "@/utils/splitTags";
 
-export default function RoomCard({ room }: { room: Room }) {
+export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (
     <Card className="w-full flex flex-col justify-between" data-cy="room-card">
       <div>
@@ -52,4 +52,4 @@ export default function RoomCard({ room }: { room: Room }) {
       </CardFooter>
     </Card>
   );
-}
+};

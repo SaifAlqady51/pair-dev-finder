@@ -1,14 +1,14 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { ModeToggle } from "./ModeToggle";
-import Profile from "./header/Profile";
-import Signing from "./header/Signing";
 import Image from "next/image";
 import Icon from "@/public/static/images/icon.png";
-import { Skeleton } from "./ui/skeleton";
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
+import { ModeToggle } from "../ModeToggle";
+import Profile from "./Profile";
+import Signing from "./Signing";
 
-export default function Header() {
+export function Header() {
   const { data: session, status } = useSession();
   return (
     <div className="flex justify-between items-center pr-6 pl-2 dark:bg-gray-900 bg-slate-500 top-0 w-full z-10">
