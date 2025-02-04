@@ -21,7 +21,7 @@ export function Header() {
         <ModeToggle />
         {/* Skeleton for laoding */}
         {status === "loading" ? (
-          <div className="flex gap-4">
+          <div data-cy="skelatons" className="flex gap-4">
             <Skeleton className="w-20 h-10 rounded-md " />
             <Skeleton className="w-20 h-10 rounded-md " />
           </div>
