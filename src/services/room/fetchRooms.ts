@@ -4,8 +4,6 @@ import { revalidatePath } from "next/cache";
 export const fetchRooms = async (): Promise<Room[]> => {
   try {
     // Step 1: Make the API request
-    //
-    revalidatePath("/");
     const response = await fetch("http://localhost:3000/api/rooms", {
       method: "GET",
     });

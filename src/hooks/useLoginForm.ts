@@ -1,10 +1,9 @@
-import { checkLoginUser } from "@/app/authentication/login/actions";
 import { toast } from "@/components/ui/use-toast";
 import { loginFormSchema } from "@/schemas/loginFormSchema";
+import { loginUser } from "@/services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
-import { memo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -24,7 +23,7 @@ export function useLoginForm() {
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setIsLoading(true);
 
-    const { success, message } = await checkLoginUser({ ...values });
+    const { success, message } = await loginUser(values);
 
     if (success) {
       toast({
