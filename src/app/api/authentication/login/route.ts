@@ -12,10 +12,10 @@ export async function POST(request: Request) {
     // Test the DB connection
     const dbConnectionSuccessful = await testDbConnection();
     if (!dbConnectionSuccessful) {
-      return NextResponse.json({
-        success: false,
-        message: "Login failed try again later",
-      });
+      return NextResponse.json(
+        { success: false, message: "Login failed, try again later" },
+        { status: 500 },
+      );
     }
     const { email, password }: LoginUserType = await request.json();
 
@@ -27,18 +27,21 @@ export async function POST(request: Request) {
       .limit(1);
 
     if (checkIfUserExist.length !== 1) {
-      return NextResponse.json({
-        success: false,
-        message: "Email does not exist",
-      });
+      return NextResponse.json(
+        { success: false, message: "Email does not exist" },
+        { status: 400 },
+      );
     }
 
     // Check if user has a password
     if (!checkIfUserExist[0].password) {
-      return NextResponse.json({
-        success: false,
-        message: "Looks like you've registered with Google or GitHub",
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Looks like you've registered with Google or GitHub",
+        },
+        { status: 400 },
+      );
     }
 
     // Check if password is correct
@@ -47,16 +50,25 @@ export async function POST(request: Request) {
       checkIfUserExist[0].password!,
     );
     if (!checkPassword) {
-      return NextResponse.json({ success: false, message: "Wrong password" });
+      return NextResponse.json(
+        { success: false, message: "Wrong password" },
+        { status: 400 },
+      );
     }
 
     // Return success response
-    return NextResponse.json({ success: true, message: "Login successful" });
+    return NextResponse.json(
+      { success: true, message: "Login successful" },
+      { status: 200 },
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      },
+      { status: 500 },
+    );
   }
 }
 async function testDbConnection() {
