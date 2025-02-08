@@ -4,7 +4,9 @@ describe("Header Component Tests", () => {
   });
 
   it("should render the header with icon and title", () => {
-    cy.get("h3").contains("Dev Finder").should("be.visible");
+    cy.get("h3").contains("Dev Finder").should("be.visible").click();
+
+    cy.url().should("include", "/");
     cy.get('img[alt="Icon"]').should("be.visible");
   });
 
