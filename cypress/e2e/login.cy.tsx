@@ -66,7 +66,7 @@ describe("LoginForm Component", () => {
   });
 
   // Test 5: Submit the form with valid data and redirect the user
-  it("should submit the form with valid data and redirect the user", () => {
+  it("Show Email does not exist if the email is not in the databse", () => {
     // Fill in the form with valid data
     cy.get('input[name="email"]').type("user@example.com");
     cy.get('input[name="password"]').type("password123");
@@ -74,14 +74,32 @@ describe("LoginForm Component", () => {
     // Submit the form
     cy.get('button[type="submit"]').click();
 
-    // Verify that the form is in a loading state
-    cy.get('button[type="submit"]').should("be.disabled");
+    // Verify that a success toast notification is displayed
+    cy.contains("Email does not exist").should("exist");
+  });
 
-    // Wait for the button to become enabled again after processing
-    cy.get('button[type="submit"]').should("not.be.disabled");
+  it("Show Wrong password modal if the password is wrong", () => {
+    // Fill in the form with valid data
+    cy.get('input[name="email"]').type("test654432444@gmail.com");
+    cy.get('input[name="password"]').type("Password");
+
+    // Submit the form
+    cy.get('button[type="submit"]').click();
 
     // Verify that a success toast notification is displayed
-    cy.contains("Failed Login").should("exist");
+    cy.contains("Wrong password").should("exist");
+  });
+
+  it("Show Login Successful if the email and password are correct", () => {
+    // Fill in the form with valid data
+    cy.get('input[name="email"]').type("test654432444@gmail.com");
+    cy.get('input[name="password"]').type("Password1234#");
+
+    // Submit the form
+    cy.get('button[type="submit"]').click();
+
+    // Verify that a success toast notification is displayed
+    cy.contains("Login Successful").should("exist");
   });
 
   // Test 6: Test mobile responsiveness of the login form
