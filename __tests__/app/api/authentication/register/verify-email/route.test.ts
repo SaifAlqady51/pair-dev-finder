@@ -1,7 +1,7 @@
-import { describe, test, expect } from "@jest/globals";
-import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
+import { describe, test, expect, beforeAll, afterEach } from "@jest/globals";
 import { db } from "@/db";
 import * as nodemailer from "nodemailer";
+import { POST } from "@/app/api/authentication/register/verify-email/route";
 
 // Mock the db module
 jest.mock("@/db");
@@ -36,12 +36,17 @@ describe("verifyEmail", () => {
       }),
     });
 
-    const result = await verifyEmail({
-      email: "user@example.com",
-      template: "<h1>Test Template</h1>",
-    });
+    const mockRequest = {
+      json: jest.fn().mockResolvedValue({
+        email: "nonexistent@example.com",
+        template: "<h1>Verfication code </h1>",
+      }),
+    } as unknown as Request;
 
-    expect(result).toEqual({
+    const result = await POST(mockRequest);
+    const jsonResult = await result.json();
+
+    expect(jsonResult).toEqual({
       success: false,
       message: "Email address already in use.",
     });
@@ -60,22 +65,27 @@ describe("verifyEmail", () => {
 
     mockSendMail.mockResolvedValue({}); // Simulate successful email sending
 
-    const result = await verifyEmail({
-      email: "newuser@example.com",
-      template: "<h1>Test Template</h1>",
-    });
+    const mockRequest = {
+      json: jest.fn().mockResolvedValue({
+        email: "newuser@example.com",
+        template: "<h1>Test Template</h1>",
+      }),
+    } as unknown as Request;
+
+    const result = await POST(mockRequest);
+    const jsonResult = await result.json();
 
     // Ensure sendMail was called with the expected arguments
-    expect(result).toEqual({
+    expect(jsonResult).toEqual({
       success: true,
-      message: "Verification email sent successfully.",
+      message: "Verification code sent successfully.",
     });
 
     expect(mockSendMail).toHaveBeenCalledWith({
       from: "newuser@example.com",
       to: "newuser@example.com",
       replyTo: "newuser@example.com",
-      subject: "Website activity from newuser@example.com",
+      subject: `Verification Code for Pair Dev Finder`,
       html: "<h1>Test Template</h1>",
     });
   });
@@ -93,12 +103,17 @@ describe("verifyEmail", () => {
     // Simulate email sending failure
     mockSendMail.mockRejectedValue(new Error("SMTP Error"));
 
-    const result = await verifyEmail({
-      email: "newuser@example.com",
-      template: "<h1>Test Template</h1>",
-    });
+    const mockRequest = {
+      json: jest.fn().mockResolvedValue({
+        email: "newuser@example.com",
+        template: "<h1>Test Template</h1>",
+      }),
+    } as unknown as Request;
+    const result = await POST(mockRequest);
 
-    expect(result).toEqual({
+    const jsonResult = await result.json();
+
+    expect(jsonResult).toEqual({
       success: false,
       message: "Unable to send verification email. Please try again later.",
     });
@@ -108,7 +123,7 @@ describe("verifyEmail", () => {
       from: "newuser@example.com",
       to: "newuser@example.com",
       replyTo: "newuser@example.com",
-      subject: "Website activity from newuser@example.com",
+      subject: `Verification Code for Pair Dev Finder`,
       html: "<h1>Test Template</h1>",
     });
   });

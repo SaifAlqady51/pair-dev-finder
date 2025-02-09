@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { verifyEmailFormSchema } from "@/schemas/verifyEmailFormSchema";
 import { encrypt } from "@/utils/jwt";
-import { verifyEmail } from "@/app/authentication/register/verify-email/actions";
 import { useState } from "react";
+import { verifyEmailService } from "@/services";
 type UseVerifyEmailFormProps = {
   emailHtml: string;
   code: string;
@@ -31,7 +31,7 @@ export function useVerifyEmailForm({
     const token = encrypt(values);
     const encryptedCode = encrypt({ code: code.toString() });
 
-    const { success, message } = await verifyEmail({
+    const { success, message } = await verifyEmailService({
       email: values.email,
       template: emailHtml,
     });
