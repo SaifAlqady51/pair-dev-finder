@@ -11,9 +11,6 @@ export const loginUser = async (
       },
       body: JSON.stringify(userData),
     });
-    if (!response.ok) {
-      return { success: false, message: "Failed to login" };
-    }
 
     return await response.json();
   } catch (error) {
