@@ -17,6 +17,13 @@ describe("verifyEmail", () => {
   const mockDbSelect = jest.fn(); // Mock db.select method
   const mockSendMail = nodemailer.createTransport().sendMail as jest.Mock;
 
+  const mockRequest = {
+    json: jest.fn().mockResolvedValue({
+      email: "newuser@example.com",
+      template: "<h1>Test Template</h1>",
+    }),
+  } as unknown as Request;
+
   beforeAll(() => {
     // Mock db.select to return controlled values
     db.select = mockDbSelect as any;
@@ -35,13 +42,6 @@ describe("verifyEmail", () => {
         }),
       }),
     });
-
-    const mockRequest = {
-      json: jest.fn().mockResolvedValue({
-        email: "nonexistent@example.com",
-        template: "<h1>Verfication code </h1>",
-      }),
-    } as unknown as Request;
 
     const result = await POST(mockRequest);
     const jsonResult = await result.json();
@@ -64,13 +64,6 @@ describe("verifyEmail", () => {
     });
 
     mockSendMail.mockResolvedValue({}); // Simulate successful email sending
-
-    const mockRequest = {
-      json: jest.fn().mockResolvedValue({
-        email: "newuser@example.com",
-        template: "<h1>Test Template</h1>",
-      }),
-    } as unknown as Request;
 
     const result = await POST(mockRequest);
     const jsonResult = await result.json();
@@ -103,12 +96,6 @@ describe("verifyEmail", () => {
     // Simulate email sending failure
     mockSendMail.mockRejectedValue(new Error("SMTP Error"));
 
-    const mockRequest = {
-      json: jest.fn().mockResolvedValue({
-        email: "newuser@example.com",
-        template: "<h1>Test Template</h1>",
-      }),
-    } as unknown as Request;
     const result = await POST(mockRequest);
 
     const jsonResult = await result.json();
