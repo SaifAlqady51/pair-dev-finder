@@ -6,11 +6,11 @@ import { signIn } from "next-auth/react";
 import { toast } from "@/components/ui/use-toast";
 import { decrypt } from "@/utils/jwt";
 import { useNavigatControl } from "@/hooks/useNavigationControl";
-import { createUserAccount } from "@/app/authentication/register/create-account/actions";
 import {
   createAccountFormSchema,
   CreateAccountFormSchema,
 } from "@/schemas/creatAccountFormSchema";
+import { createAccountService } from "@/services";
 
 export const useCreateAccountForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +43,7 @@ export const useCreateAccountForm = () => {
       }
 
       // Create the user account
-      const createdAccount = await createUserAccount({
+      const createdAccount = await createAccountService({
         name: values.username,
         password: values.password,
         email: data.email,
