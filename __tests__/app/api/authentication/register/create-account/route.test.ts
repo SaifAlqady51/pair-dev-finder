@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 import * as bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
-import { POST } from "@/app/api/authentication/create-account/route";
+import { POST } from "@/app/api/authentication/register/create-account/route";
 
 // Mock drizzle-orm's sql function
 jest.mock("drizzle-orm", () => ({
@@ -15,7 +15,10 @@ jest.mock("drizzle-orm", () => ({
 jest.mock("@/db");
 
 // Mock bcrypt
-jest.mock("bcrypt");
+jest.mock("bcrypt", () => ({
+  hash: jest.fn(),
+  compare: jest.fn(),
+}));
 
 describe("createUserAccount", () => {
   const mockDbSelect = jest.fn();
