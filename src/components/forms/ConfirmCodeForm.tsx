@@ -33,17 +33,18 @@ export const ConfirmCodeForm: React.FC = () => {
               <FormLabel className="font-medium ">Verification code</FormLabel>
               <FormControl>
                 <InputOTP maxLength={6} {...field}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
+                  <InputOTPGroup data-cy="InputOTPGroup">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                      <InputOTPSlot
+                        key={index}
+                        data-cy={`InputOTPSlot-${index}`}
+                        index={index}
+                      />
+                    ))}
                   </InputOTPGroup>
                 </InputOTP>
               </FormControl>
-              <FormMessage />
+              <FormMessage data-cy="confirm-code-error-message" />
             </FormItem>
           )}
         />
