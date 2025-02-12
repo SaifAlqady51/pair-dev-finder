@@ -2,9 +2,10 @@ import "../../src/app/globals.css";
 import { RoomCard } from "@/components";
 import React from "react";
 import { getRepoName } from "@/utils/getRepoName";
+import { Room } from "@/db/schema";
 
 describe("<RoomCard />", () => {
-  const room = {
+  const room: Room = {
     id: "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8",
     userId: "user_1234567890",
     name: "Awesome Coding Room",
@@ -13,6 +14,8 @@ describe("<RoomCard />", () => {
     description:
       "A collaborative space for building amazing projects with TypeScript and React!",
     created_at: new Date(),
+    image:
+      "https://media.mobidev.biz/2024/08/red-green-refactoring-2.jpg?strip=all&lossy=1&ssl=1",
   };
 
   beforeEach(() => {
