@@ -5,19 +5,16 @@ import {
   primaryKey,
   integer,
   uuid,
-} from "drizzle-orm/pg-core"
+} from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
-import postgres from "postgres"
-import { drizzle } from "drizzle-orm/postgres-js"
-import type { AdapterAccount } from "next-auth/adapters"
- 
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+import type { AdapterAccount } from "next-auth/adapters";
 
 const connectionString = process.env.DATABASE_URL! as string;
-const pool = postgres(connectionString, { max: 1 })
- 
-export const db = drizzle(pool)
- 
+const pool = postgres(connectionString, { max: 1 });
 
+export const db = drizzle(pool);
 
 export const users = pgTable("user", {
   id: text("id")
@@ -28,8 +25,8 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: text("password"),
   image: text("image"),
-})
- 
+});
+
 export const accounts = pgTable(
   "account",
   {
@@ -51,17 +48,17 @@ export const accounts = pgTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  })
-)
- 
+  }),
+);
+
 export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
-})
- 
+});
+
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -71,21 +68,24 @@ export const verificationTokens = pgTable(
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
-)
+  }),
+);
 
 export const rooms = pgTable("room", {
-  id: uuid("id").default(sql`gen_random_uuid()`).notNull().primaryKey(),
+  id: uuid("id")
+    .default(sql`gen_random_uuid()`)
+    .notNull()
+    .primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   tags: text("tags").notNull(),
   githubRepo: text("githubRepo"),
-  description:text("description"),
+  description: text("description"),
   created_at: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
-
-})
+  image: text("image"),
+});
 
 export type Room = typeof rooms.$inferSelect;
 export type Users = typeof users.$inferSelect;

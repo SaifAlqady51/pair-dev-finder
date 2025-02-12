@@ -23,6 +23,8 @@ const room: Room = {
   githubRepo: "https://github.com/example/repo",
   userId: "user123",
   created_at: new Date(),
+  image:
+    "https://media.mobidev.biz/2024/08/red-green-refactoring-2.jpg?strip=all&lossy=1&ssl=1",
 };
 
 export const Default: Story = {
