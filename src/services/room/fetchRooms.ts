@@ -6,6 +6,7 @@ export const fetchRooms = async (): Promise<Room[]> => {
     // Step 1: Make the API request
     const response = await fetch("http://localhost:3000/api/rooms", {
       method: "GET",
+      cache: "no-store",
     });
 
     // Step 2: Check if the response is OK (status code 200-299)
