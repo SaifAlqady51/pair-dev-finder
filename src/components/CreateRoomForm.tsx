@@ -53,7 +53,11 @@ export function CreateRoomForm() {
     checkGithubRepo(values.githubRepo || "")
       .then(() => createRoom(values))
       .then(() => {
-        toast({ title: "Room Created" });
+        toast({
+          title: "Room Created",
+          description: "Your new room has been successfully created.",
+          variant: "success",
+        });
         route.push("/");
       })
       .catch((error) => {
