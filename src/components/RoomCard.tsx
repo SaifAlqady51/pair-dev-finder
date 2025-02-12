@@ -16,7 +16,18 @@ import { splitTags } from "@/utils/splitTags";
 
 export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (
-    <Card className="w-full flex flex-col justify-between" data-cy="room-card">
+    <Card
+      className="w-full flex flex-col justify-between shadow-slate-700 shadow-lg "
+      data-cy="room-card"
+    >
+      <div className="w-full h-1/2 ">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={room.image || ""}
+          alt="room image"
+          className="object-cover w-full h-full rounded-t-md "
+        />
+      </div>
       <div>
         <CardHeader>
           <CardTitle data-cy="room-name">{room.name}</CardTitle>
