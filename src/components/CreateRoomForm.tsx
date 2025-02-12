@@ -30,6 +30,7 @@ export const formSchema = z.object({
   tags: z.string().min(2).max(50),
   githubRepo: z.string(),
   description: z.string().min(2).max(100),
+  image: z.string().min(8).max(100),
 });
 
 export function CreateRoomForm() {
@@ -85,7 +86,6 @@ export function CreateRoomForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>{formField.fieldDescription}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
