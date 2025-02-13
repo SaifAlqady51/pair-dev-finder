@@ -5,6 +5,7 @@ import { rooms } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
 
 export async function GET() {
   try {
@@ -23,13 +24,27 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse> {
   try {
     const data = await req.json();
 
     const session = await getSession();
     if (!session) {
-      throw new Error("You have to sign in first");
+      return NextResponse.json({
+        success: false,
+        message: "You have to sign in first",
+      });
+    }
+
+    if (data.githubRepo) {
+      const validGithubRepo = await checkGithubRepo(data.githubRepo);
+
+      if (!validGithubRepo) {
+        return NextResponse.json({
+          success: false,
+          message: "Invalid GitHub repo",
+        });
+      }
     }
 
     const insertedRoom = await db
@@ -37,7 +52,6 @@ export async function POST(req: Request) {
       .values({ ...data, userId: session.user.id })
       .returning();
 
-    revalidatePath("/");
     return NextResponse.json({ success: true, data: insertedRoom });
   } catch (error) {
     return NextResponse.json(
