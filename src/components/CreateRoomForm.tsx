@@ -21,9 +21,8 @@ import {
 } from "@/data/roomFormFieldsData";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
-import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
 import { removeErrorWord } from "@/utils/removeErrorWord";
-import { createRoom } from "@/services";
+import { createRoomService } from "@/services";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -45,28 +44,29 @@ export function CreateRoomForm() {
       tags: "",
       githubRepo: "",
       description: "",
+      image: "",
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    checkGithubRepo(values.githubRepo || "")
-      .then(() => createRoom(values))
-      .then(() => {
-        toast({
-          title: "Room Created",
-          description: "Your new room has been successfully created.",
-          variant: "success",
-        });
-        route.push("/");
-      })
-      .catch((error) => {
-        toast({
-          variant: "destructive",
-          title: "Failed to create a room",
-          description: removeErrorWord(error as string), // Use error message if available
-        });
+    const createRoomResult = await createRoomService(values);
+
+    if (!createRoomResult.success) {
+      toast({
+        variant: "destructive",
+        title: "Failed to create a room",
+        description: removeErrorWord(createRoomResult.message),
       });
+      return;
+    }
+
+    toast({
+      title: "Room Created",
+      description: "Your new room has been successfully created.",
+      variant: "success",
+    });
+    route.push("/");
   }
 
   return (
