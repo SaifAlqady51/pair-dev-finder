@@ -4,9 +4,12 @@ import { Room } from "@/db/schema";
 export const fetchRoomById = async (id: string): Promise<Room | null> => {
   try {
     // Make the API request to fetch the room by ID
-    const response = await fetch(`http://localhost:3000/api/rooms/${id}`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/rooms/${id}`,
+      {
+        method: "GET",
+      },
+    );
 
     // Check if the response is OK (status code 200-299)
     if (!response.ok) {
