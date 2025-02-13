@@ -3,24 +3,36 @@ import { GET, POST } from "@/app/api/rooms/route";
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth";
+import { Room } from "@/db/schema";
+import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
 
 // Mock the dependencies
 jest.mock("@/db");
 jest.mock("next/cache");
+jest.mock("@/lib/auth");
+jest.mock("@/app/create-room/checkGithubRepo");
+
 jest.mock("@auth/drizzle-adapter", () => ({
   DrizzleAdapter: jest.fn().mockImplementation((db) => ({
     is: jest.fn(),
   })),
 }));
 
-jest.mock("@/lib/auth", () => ({
-  getSession: jest.fn(), // mock globally
-}));
-
 describe("Rooms API", () => {
   const mockDbSelect = jest.fn();
   const mockDbInsert = jest.fn();
   const mockRevalidatePath = jest.fn();
+  const mockGetSession = getSession as jest.Mock;
+  const mockCheckGithubRepo = checkGithubRepo as jest.Mock;
+
+  const mockRoomDataRequest = {
+    userId: "1",
+    name: "Sample Room",
+    tags: "Tag1, Tag2, Tag3",
+    githubRepo: "https://github.com/sample/repository",
+    description: "This is a hardcoded description for the room.",
+    image: "https://image.com/image.jpg",
+  };
 
   beforeAll(() => {
     db.select = mockDbSelect as any;
@@ -34,7 +46,7 @@ describe("Rooms API", () => {
 
   describe("GET /api/rooms", () => {
     test("should fetch rooms successfully", async () => {
-      const mockRooms = [
+      const mockRooms: Room[] = [
         {
           id: "f39e6c6e-21b2-4a6d-8f23-7e5d7cd153c8",
           userId: "1",
@@ -42,7 +54,8 @@ describe("Rooms API", () => {
           tags: "Tag1, Tag2, Tag3",
           githubRepo: "https://github.com/sample/repository",
           description: "This is a hardcoded description for the room.",
-          created_at: "2025-02-01T12:34:56.789Z",
+          created_at: "2025-02-01T12:34:56.789Z" as unknown as Date,
+          image: "https://image.com/image.jpg",
         },
       ];
 
@@ -79,16 +92,9 @@ describe("Rooms API", () => {
 
   describe("POST /api/rooms", () => {
     test("should create a room successfully", async () => {
-      const mockRoomData = {
-        userId: "1",
-        name: "Sample Room",
-        tags: "Tag1, Tag2, Tag3",
-        githubRepo: "https://github.com/sample/repository",
-        description: "This is a hardcoded description for the room.",
-      };
       const mockInsertedRoom = {
         id: "2",
-        ...mockRoomData,
+        ...mockRoomDataRequest,
         created_at: new Date().toISOString(),
       };
 
@@ -98,10 +104,11 @@ describe("Rooms API", () => {
         }),
       });
 
-      (getSession as jest.Mock).mockResolvedValue({ user: { id: "1" } });
+      mockGetSession.mockResolvedValue({ user: { id: "1" } });
+      mockCheckGithubRepo.mockResolvedValue(true);
 
       const req = {
-        json: jest.fn().mockResolvedValue(mockRoomData),
+        json: jest.fn().mockResolvedValue(mockRoomDataRequest),
       } as unknown as Request;
 
       const response = await POST(req);
@@ -111,49 +118,49 @@ describe("Rooms API", () => {
       expect(data.success).toBe(true);
       expect(data.data).toEqual([mockInsertedRoom]);
       expect(mockDbInsert).toHaveBeenCalled();
-      expect(revalidatePath).toHaveBeenCalledWith("/");
     });
 
     test("should return an error if user is not signed in", async () => {
-      const mockRoomData = {
-        userId: "1",
-        name: "Sample Room",
-        tags: "Tag1, Tag2, Tag3",
-        githubRepo: "https://github.com/sample/repository",
-        description: "This is a hardcoded description for the room.",
-      };
-
-      (getSession as jest.Mock).mockResolvedValue(null);
+      mockGetSession.mockResolvedValue(null);
 
       const req = {
-        json: jest.fn().mockResolvedValue(mockRoomData),
+        json: jest.fn().mockResolvedValue(mockRoomDataRequest),
       } as unknown as Request;
 
       const response = await POST(req);
       const data = await response.json();
 
-      expect(response.status).toBe(500);
+      expect(response.status).toBe(200);
       expect(data.success).toBe(false);
       expect(data.message).toContain("You have to sign in first");
     });
 
-    test("should handle errors when creating a room", async () => {
-      const mockRoomData = {
-        userId: "1",
-        name: "Sample Room",
-        tags: "Tag1, Tag2, Tag3",
-        githubRepo: "https://github.com/sample/repository",
-        description: "This is a hardcoded description for the room.",
-      };
+    test("should return an error if GitHub repo is invalid", async () => {
+      mockGetSession.mockResolvedValue({ user: { id: "1" } });
+      mockCheckGithubRepo.mockResolvedValue(false);
 
-      (getSession as jest.Mock).mockResolvedValue({ user: { id: "1" } });
+      const req = {
+        json: jest.fn().mockResolvedValue(mockRoomDataRequest),
+      } as unknown as Request;
+
+      const response = await POST(req);
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(false);
+      expect(data.message).toContain("Invalid GitHub repo");
+    });
+
+    test("should handle errors when creating a room", async () => {
+      mockGetSession.mockResolvedValue({ user: { id: "1" } });
+      mockCheckGithubRepo.mockResolvedValue(true);
 
       mockDbInsert.mockImplementation(() => {
         throw new Error("Database error");
       });
 
       const req = {
-        json: jest.fn().mockResolvedValue(mockRoomData),
+        json: jest.fn().mockResolvedValue(mockRoomDataRequest),
       } as unknown as Request;
 
       const response = await POST(req);

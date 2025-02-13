@@ -1,16 +1,9 @@
-// services/roomService.ts
-
 import { Room } from "@/db/schema";
+import { FormResponseType } from "@/types/formResponse";
 
-interface CreateRoomResponse {
-  success: boolean;
-  data?: any;
-  message?: string;
-}
-
-export async function createRoom(
+export async function createRoomService(
   data: Omit<Room, "userId" | "id" | "created_at">,
-): Promise<CreateRoomResponse> {
+): Promise<FormResponseType> {
   try {
     const response = await fetch("/api/rooms", {
       method: "POST",

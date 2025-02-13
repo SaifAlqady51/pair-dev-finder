@@ -35,7 +35,7 @@ export default async function Home() {
             <p className="text-2xl font-light text-red-500">{error}</p>
           ) : rooms.length > 0 ? (
             <div
-              className=" w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6"
+              className=" w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-8"
               data-cy="room-list"
             >
               {rooms.map((room) => (

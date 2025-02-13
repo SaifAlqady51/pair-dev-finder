@@ -20,7 +20,7 @@ export default async function RoomPage({ params }: ParamsProps) {
       {/* Video Player */}
       <Video roomId={room!.id} />
       {/* Panel */}
-      <div className="flex  h-fit pt-4">
+      <div className="xl:flex hidden h-fit pt-4">
         <div className=" mr-8 p-4 border rounded-[20px] border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-slate-200 dark:bg-slate-800">
           <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
@@ -31,7 +31,7 @@ export default async function RoomPage({ params }: ParamsProps) {
             target="_blank"
             className="flex gap-2 items-center"
           >
-            <FaGithubAlt />
+            <FaGithubAlt className="mt-1" />
             {getRepoName(room?.githubRepo) || ""}
           </Link>
         </div>
