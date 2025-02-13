@@ -1,10 +1,9 @@
 import { Room } from "@/db/schema";
-import { revalidatePath } from "next/cache";
 
 export const fetchRooms = async (): Promise<Room[]> => {
   try {
     // Step 1: Make the API request
-    const response = await fetch("http://localhost:3000/api/rooms", {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/rooms/`, {
       method: "GET",
       cache: "no-store",
     });
