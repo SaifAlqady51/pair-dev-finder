@@ -1,3 +1,4 @@
+import { FormResponseType } from "../../types/formResponse";
 type verifyEmailFormType = {
   email: string;
   template: string;
@@ -5,7 +6,7 @@ type verifyEmailFormType = {
 
 export const verifyEmailService = async (
   userData: verifyEmailFormType,
-): Promise<{ success: boolean; message: string }> => {
+): Promise<FormResponseType> => {
   try {
     const response = await fetch("/api/authentication/register/verify-email", {
       method: "POST",

@@ -1,8 +1,9 @@
 import { Users } from "@/db/schema";
+import { FormResponseType } from "@/types/formResponse";
 
 export const createAccountService = async (
   userData: Omit<Users, "emailVerified" | "image" | "id">,
-): Promise<{ success: boolean; message: string }> => {
+): Promise<FormResponseType> => {
   try {
     const response = await fetch(
       "/api/authentication/register/create-account",

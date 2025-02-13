@@ -1,8 +1,9 @@
 import { LoginUserType } from "@/schemas";
+import { FormResponseType } from "@/types/formResponse";
 
 export const loginUser = async (
   userData: LoginUserType,
-): Promise<{ success: boolean; message: string }> => {
+): Promise<FormResponseType> => {
   try {
     const response = await fetch("/api/authentication/login", {
       method: "POST",
