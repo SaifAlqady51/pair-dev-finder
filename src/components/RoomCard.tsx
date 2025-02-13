@@ -17,7 +17,7 @@ import { splitTags } from "@/utils/splitTags";
 export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (
     <Card
-      className="w-full flex flex-col justify-between shadow-slate-700 shadow-lg "
+      className="w-full flex flex-col justify-between dark:shadow-slate-700  dark:shadow-lg drop-shadow-xl  "
       data-cy="room-card"
     >
       <div className="w-full h-1/2 ">
