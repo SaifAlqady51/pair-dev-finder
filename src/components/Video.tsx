@@ -117,12 +117,11 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
   }, []);
 
   return (
-    <div className=" w-full h-fit p-8 ml-12  dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] space-y-10">
-      <div className="relative">
+    <div className=" w-full h-fit  md:p-8 p-2 md:ml-12 dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] space-y-10">
+      <div className="relative h-2/3">
         <video
-          className="drop-shadow-lg bg-slate-300 dark:bg-slate-600 w-full rounded-[20px] "
+          className="drop-shadow-lg bg-slate-300 dark:bg-slate-600 w-full h-full md:aspect-video aspect-[9/16] object-cover rounded-[20px] "
           autoPlay
-          muted
           ref={userVideo}
         />
         <MediaButtons
@@ -135,8 +134,9 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
       </div>
       <div>
         <video
-          className="w-1/3 h-60 bg-slate-300 dark:bg-slate-600 col-span-2 rounded-[20px] drop-shadow-lg"
+          className="md:w-1/3 w-full h-60 bg-slate-300 dark:bg-slate-600 col-span-2 rounded-[20px] drop-shadow-lg aspect-square object-cover"
           autoPlay
+          muted
           ref={partnerVideo}
         />
       </div>
