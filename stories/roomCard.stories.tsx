@@ -19,7 +19,7 @@ const room: Room = {
   id: "1",
   name: "Example Room",
   description: "This is an example room.",
-  tags: "example,story,room",
+  keywords: [],
   githubRepo: "https://github.com/example/repo",
   userId: "user123",
   created_at: new Date(),

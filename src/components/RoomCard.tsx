@@ -12,7 +12,6 @@ import { getRepoName } from "@/utils/getRepoName";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { TagList } from "./TagList";
-import { splitTags } from "@/utils/splitTags";
 
 export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (
@@ -38,7 +37,7 @@ export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
         <CardContent>
           <div>
             <div className="my-2" data-cy="room-tags">
-              <TagList tags={splitTags(room.tags)} />
+              <TagList keywords={room.keywords} />
             </div>
             {room.githubRepo && (
               <Link

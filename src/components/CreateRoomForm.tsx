@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,13 +22,19 @@ import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { removeErrorWord } from "@/utils/removeErrorWord";
 import { createRoomService } from "@/services";
+import { KeywordsInput } from "./KeywordsInput";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
-  tags: z.string().min(2).max(50),
+  keywords: z.array(z.string().min(2).max(50)).max(5),
   githubRepo: z.string(),
   description: z.string().min(2).max(100),
-  image: z.string().min(8).max(100),
+  image: z
+    .string()
+    .optional()
+    .refine((value) => !value || z.string().url().safeParse(value).success, {
+      message: "Image must be a valid URL or empty",
+    }),
 });
 
 export function CreateRoomForm() {
@@ -41,7 +46,7 @@ export function CreateRoomForm() {
     // set default values to avoid DOM warning
     defaultValues: {
       name: "",
-      tags: "",
+      keywords: [],
       githubRepo: "",
       description: "",
       image: "",
@@ -50,7 +55,13 @@ export function CreateRoomForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const createRoomResult = await createRoomService(values);
+    const formattedValues = {
+      ...values,
+      image: values.image ?? null, // Convert undefined to null
+    };
+
+    console.log(JSON.stringify(formattedValues));
+    const createRoomResult = await createRoomService(formattedValues);
 
     if (!createRoomResult.success) {
       toast({
@@ -70,7 +81,7 @@ export function CreateRoomForm() {
   }
 
   return (
-    <Form {...form}>
+    <Form {...form} data-cy="creaet-room-form">
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Loop over each field from formFieldData  */}
         {roomFormFieldsData.map((formField: RoomFormFieldDataType) => (
@@ -84,11 +95,16 @@ export function CreateRoomForm() {
                   {formField.label}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="border-gray-400"
-                    placeholder={formField.placeholder || ""}
-                    {...field}
-                  />
+                  {formField.label === "Keywords" ? (
+                    <KeywordsInput field={field} />
+                  ) : (
+                    <Input
+                      data-cy-={formField["data-cy"]}
+                      className="border-gray-400"
+                      placeholder={formField.placeholder || ""}
+                      {...field}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>

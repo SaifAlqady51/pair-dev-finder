@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth";
 import { Room } from "@/db/schema";
 import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
+import { Keyboard } from "lucide-react";
 
 // Mock the dependencies
 jest.mock("@/db");
@@ -25,10 +26,10 @@ describe("Rooms API", () => {
   const mockGetSession = getSession as jest.Mock;
   const mockCheckGithubRepo = checkGithubRepo as jest.Mock;
 
-  const mockRoomDataRequest = {
+  const mockRoomDataRequest: Omit<Room, "id" | "created_at"> = {
     userId: "1",
     name: "Sample Room",
-    tags: "Tag1, Tag2, Tag3",
+    keywords: [],
     githubRepo: "https://github.com/sample/repository",
     description: "This is a hardcoded description for the room.",
     image: "https://image.com/image.jpg",
@@ -51,7 +52,7 @@ describe("Rooms API", () => {
           id: "f39e6c6e-21b2-4a6d-8f23-7e5d7cd153c8",
           userId: "1",
           name: "Sample Room",
-          tags: "Tag1, Tag2, Tag3",
+          keywords: [],
           githubRepo: "https://github.com/sample/repository",
           description: "This is a hardcoded description for the room.",
           created_at: "2025-02-01T12:34:56.789Z" as unknown as Date,
