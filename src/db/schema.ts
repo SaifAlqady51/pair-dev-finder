@@ -80,7 +80,10 @@ export const rooms = pgTable("room", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  tags: text("tags").notNull(),
+  keywords: text("keywords")
+    .array()
+    .notNull()
+    .default(sql`ARRAY[]::text[]`), // Corrected
   githubRepo: text("githubRepo"),
   description: text("description"),
   created_at: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
