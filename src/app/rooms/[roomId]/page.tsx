@@ -2,7 +2,6 @@ import { TagList } from "@/components";
 import { Video } from "@/components";
 import { fetchRoomById } from "@/services";
 import { getRepoName } from "@/utils/getRepoName";
-import { splitTags } from "@/utils/splitTags";
 import Link from "next/link";
 import { FaGithubAlt } from "react-icons/fa";
 
@@ -25,7 +24,7 @@ export default async function RoomPage({ params }: ParamsProps) {
           <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
           <h4 className="font-medium text-lg">Tags :</h4>
-          <TagList tags={splitTags(room?.tags)} />
+          <TagList keywords={room?.keywords} />
           <Link
             href={room?.githubRepo || ""}
             target="_blank"

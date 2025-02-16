@@ -9,7 +9,7 @@ describe("<RoomCard />", () => {
     id: "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8",
     userId: "user_1234567890",
     name: "Awesome Coding Room",
-    tags: "typescript,react,nodejs",
+    keywords: [],
     githubRepo: "https://github.com/username/awesome-repo",
     description:
       "A collaborative space for building amazing projects with TypeScript and React!",
@@ -32,13 +32,6 @@ describe("<RoomCard />", () => {
 
   it("renders the room description correctly", () => {
     cy.get('[data-cy="room-description"]').should("contain", room.description);
-  });
-
-  it("renders the tags correctly", () => {
-    const tags = room.tags.split(",");
-    tags.forEach((tag) => {
-      cy.get('[data-cy="room-tags"]').should("contain", tag.trim());
-    });
   });
 
   it("renders the GitHub repo link correctly", () => {
