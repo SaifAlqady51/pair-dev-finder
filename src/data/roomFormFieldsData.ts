@@ -9,14 +9,14 @@ export type RoomFormFieldDataType = {
 export const roomFormFieldsData: RoomFormFieldDataType[] = [
   {
     fieldName: "name",
-    label: "name",
+    label: "name  *",
     placeholder: "John Doe",
     "data-cy": "create-room-form-name-field",
   },
   {
     fieldName: "description",
     placeholder: "Talk about your room purpose, goals, etc.",
-    label: "description",
+    label: "description  *",
     "data-cy": "create-room-form-description-field",
   },
   {
