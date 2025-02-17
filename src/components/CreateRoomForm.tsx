@@ -81,7 +81,7 @@ export function CreateRoomForm() {
   }
 
   return (
-    <Form {...form} data-cy="creaet-room-form">
+    <Form data-cy="create-room-form" {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Loop over each field from formFieldData  */}
         {roomFormFieldsData.map((formField: RoomFormFieldDataType) => (
@@ -99,7 +99,7 @@ export function CreateRoomForm() {
                     <KeywordsInput field={field} />
                   ) : (
                     <Input
-                      data-cy-={formField["data-cy"]}
+                      data-cy={formField["data-cy"]}
                       className="border-gray-400"
                       placeholder={formField.placeholder || ""}
                       {...field}
@@ -111,7 +111,9 @@ export function CreateRoomForm() {
             )}
           />
         ))}
-        <Button type="submit">Submit</Button>
+        <Button type="submit" data-cy="create-room-submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );
