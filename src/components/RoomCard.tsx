@@ -22,7 +22,10 @@ export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
       <div className="w-full h-1/2 ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={room.image || ""}
+          src={
+            room.image ||
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD4qmuiXoOrmp-skck7b7JjHA8Ry4TZyPHkw&s"
+          }
           alt="room image"
           className="object-cover w-full h-full rounded-t-md "
         />
