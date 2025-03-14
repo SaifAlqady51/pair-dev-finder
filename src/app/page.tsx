@@ -26,7 +26,9 @@ export default async function Home() {
             Find Dev Rooms
           </h2>
           <Button className="font-semibold md:text-xl text-2xl md:p-6 px-10 py-6">
-            <Link href="/create-room">Create Room</Link>
+            <Link href="/create-room" data-cy="create-room-button">
+              Create Room
+            </Link>
           </Button>
         </div>
 

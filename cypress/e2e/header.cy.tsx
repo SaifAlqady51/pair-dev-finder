@@ -19,10 +19,10 @@ describe("Header Component Tests", () => {
   it("should display signing buttons when there is no session", () => {
     cy.intercept("GET", "/api/auth/session", { statusCode: 200, body: null });
     cy.reload();
-    cy.get('[data-cy="log-in"]').should("be.visible").click();
+    cy.get('[data-cy="header-login-link"]').should("be.visible").click();
     cy.url().should("include", "/authentication/login");
     cy.visit("/"); // return to homepage
-    cy.get('[data-cy="register"]').should("be.visible").click();
+    cy.get('[data-cy="header-register-link"]').should("be.visible").click();
     cy.url().should("include", "/authentication/register/verify-email");
   });
 

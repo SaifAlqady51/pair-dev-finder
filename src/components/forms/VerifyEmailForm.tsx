@@ -35,7 +35,9 @@ export const VerifyEmailForm: React.FC = () => {
           name="email"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel className="font-medium ">Email Address</FormLabel>
+              <FormLabel className="font-medium" data-cy="verify-email-input">
+                Email Address
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="JohnDoe@example.com"
@@ -43,7 +45,7 @@ export const VerifyEmailForm: React.FC = () => {
                   className="border-2 "
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage data-cy="veify-email-error-message" />
             </FormItem>
           )}
         />

@@ -6,7 +6,7 @@ export default function Signing() {
     <div className="flex justify-between items-center gap-4">
       <Button variant="ghost">
         <Link
-          data-cy="log-in"
+          data-cy="header-login-link"
           href="/authentication/login"
           className="text-lg font-medium"
         >
@@ -18,7 +18,7 @@ export default function Signing() {
         <Link
           href="/authentication/register/verify-email"
           className="text-lg font-medium"
-          data-cy="register"
+          data-cy="header-register-link"
         >
           Register
         </Link>

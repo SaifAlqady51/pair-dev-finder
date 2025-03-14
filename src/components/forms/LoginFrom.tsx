@@ -41,6 +41,7 @@ export function LoginForm() {
                       placeholder={formField.placeholder}
                       {...field}
                       className="border-2 "
+                      data-cy={formField["data-cy"]}
                       type={
                         (formField.fieldName === "password" && showPassword) ||
                           formField.type === "text"
@@ -67,7 +68,7 @@ export function LoginForm() {
           type="submit"
           className="w-full font-semibold flex items-center justify-center"
           disabled={isLoading}
-          data-cy="submit-button"
+          data-cy="login-submit-button"
         >
           {isLoading ? <span>Processing...</span> : <span>Log in</span>}
         </Button>
