@@ -11,9 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { render } from "@react-email/render";
-import VerifyEmail from "../../../emails/VerifyEmail";
-import { generateRandomNumber } from "@/utils/generateRandomNumber";
 import { useVerifyEmailForm } from "@/hooks/useVerifyEmailForm";
+import { generateRandomNumber } from "@/utils";
+import { VerifyEmail } from "@emails";
 
 export const VerifyEmailForm: React.FC = () => {
   const generatedCode = generateRandomNumber();
