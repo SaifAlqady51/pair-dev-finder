@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { render } from "@react-email/render";
 import { useVerifyEmailForm } from "@/hooks/useVerifyEmailForm";
 import { generateRandomNumber } from "@/utils";
-import { VerifyEmail } from "@emails";
+import { VerifyEmail } from "@emails/VerifyEmail";
 
 export const VerifyEmailForm: React.FC = () => {
   const generatedCode = generateRandomNumber();

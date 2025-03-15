@@ -10,7 +10,7 @@ import { checkGithubRepo } from "@/utils";
 jest.mock("@/db");
 jest.mock("next/cache");
 jest.mock("@/lib/auth");
-jest.mock("@/app/create-room/checkGithubRepo");
+jest.mock("@/utils/checkGithubRepo");
 
 jest.mock("@auth/drizzle-adapter", () => ({
   DrizzleAdapter: jest.fn().mockImplementation((db) => ({
