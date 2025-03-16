@@ -1,9 +1,10 @@
+import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-export default function Signing() {
+export const Signing: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <div className="flex justify-between items-center gap-4">
+    <div className={cn("flex justify-between items-center gap-4", className)}>
       <Button variant="ghost">
         <Link
           data-cy="header-login-link"
@@ -25,4 +26,4 @@ export default function Signing() {
       </Button>
     </div>
   );
-}
+};
