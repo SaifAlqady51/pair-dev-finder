@@ -6,7 +6,9 @@ import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
 import { ModeToggle } from "../ModeToggle";
 import Profile from "./Profile";
-import Signing from "./Signing";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Signing } from "./Signing";
 
 export function Header() {
   const { data: session, status } = useSession();
@@ -16,28 +18,40 @@ export function Header() {
         <Image src={Icon} alt="Icon" className="w-16 h-16" />
         <h3 className="text-2xl font-semibold">Dev Finder</h3>
       </Link>
-      {/* This section get hidden when the screen size is small*/}
-      <div className="md:flex items-center justify-center gap-10 hidden ">
+      <div className="flex items-center justify-center md:gap-10 gap-4 ">
         <ModeToggle />
-        {/* Skeleton for laoding */}
-        {status === "loading" ? (
-          <div data-cy="skelatons" className="flex gap-4">
-            <Skeleton className="w-20 h-10 rounded-md " />
-            <Skeleton className="w-20 h-10 rounded-md " />
-          </div>
-        ) : (
-          <div>
-            {/* show profile or signing buttons */}
-            {session ? (
-              <Profile
-                image={session.user.image || ""}
-                name={session.user.name || ""}
-              ></Profile>
-            ) : (
-              <Signing />
-            )}
-          </div>
-        )}
+        {/* This section get hidden when the screen size is small*/}
+        <div className="md:flex items-center justify-center gap-10 hidden ">
+          {/* Skeleton for laoding */}
+          {status === "loading" ? (
+            <div data-cy="skelatons" className="flex gap-4">
+              <Skeleton className="w-20 h-10 rounded-md " />
+              <Skeleton className="w-20 h-10 rounded-md " />
+            </div>
+          ) : (
+            <div>
+              {/* show profile or signing buttons */}
+              {session ? (
+                <Profile
+                  image={session.user.image || ""}
+                  name={session.user.name || ""}
+                ></Profile>
+              ) : (
+                <Signing />
+              )}
+            </div>
+          )}
+        </div>
+        <div className="md:hidden flex">
+          <Popover>
+            <PopoverTrigger>
+              <GiHamburgerMenu className="w-7 h-7" />
+            </PopoverTrigger>
+            <PopoverContent className="w-fit border shadow-lg dark:shadow-dark ">
+              <Signing className="flex-col w-fit" />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </div>
   );
