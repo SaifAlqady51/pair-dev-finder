@@ -5,7 +5,7 @@ import { rooms } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
-import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
+import { checkGithubRepo } from "@/utils";
 
 export async function GET() {
   try {

@@ -4,14 +4,13 @@ import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth";
 import { Room } from "@/db/schema";
-import { checkGithubRepo } from "@/app/create-room/checkGithubRepo";
-import { Keyboard } from "lucide-react";
+import { checkGithubRepo } from "@/utils";
 
 // Mock the dependencies
 jest.mock("@/db");
 jest.mock("next/cache");
 jest.mock("@/lib/auth");
-jest.mock("@/app/create-room/checkGithubRepo");
+jest.mock("@/utils/checkGithubRepo");
 
 jest.mock("@auth/drizzle-adapter", () => ({
   DrizzleAdapter: jest.fn().mockImplementation((db) => ({
