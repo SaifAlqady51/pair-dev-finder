@@ -16,7 +16,7 @@ import { TagList } from "./TagList";
 export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (
     <Card
-      className="w-full flex flex-col justify-between dark:shadow-slate-700  dark:shadow-lg drop-shadow-xl  "
+      className="w-full flex flex-col justify-between dark:shadow-dark"
       data-cy="room-card"
     >
       <div className="w-full h-1/2 ">
