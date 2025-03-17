@@ -12,14 +12,15 @@ import {
 type ProfileProps = {
   image?: string;
   name: string;
+  showName?: boolean;
 };
-export default function Profile({ image, name }: ProfileProps) {
+export default function Profile({ image, name, showName }: ProfileProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex justify-between gap-2 items-center cursor-pointer ">
           <ProfileImage image={image} name={name} />
-          <h4 className="font-semibold">{name}</h4>
+          {showName && <h4 className="font-semibold">{name}</h4>}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
