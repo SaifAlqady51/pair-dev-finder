@@ -73,7 +73,7 @@ const config = {
         },
       },
       boxShadow: {
-        dark: "0px 3px 15px rgba(200, 200, 200, 0.5)", // Slate-700 in RGBA (dark mode)
+        dark: "0px 1px 10px rgba(200, 200, 200, 0.5)",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
