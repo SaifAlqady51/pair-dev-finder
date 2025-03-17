@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <main className=" w-full min-h-screen flex justify-center items-center ">
-      <div className="min-h-screen md:w-10/12 w-full pt-32 px-16">
+      <div className="min-h-screen md:w-10/12 w-full pt-32 md:px-16 px-6">
         <div className="flex md:flex-row gap-6 flex-col justify-between items-center w-full mb-12">
           <h2
             className="md:text-4xl text-3xl font-bold"
