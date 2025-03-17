@@ -83,7 +83,7 @@ export const rooms = pgTable("room", {
   keywords: text("keywords")
     .array()
     .notNull()
-    .default(sql`ARRAY[]::text[]`), // Corrected
+    .default(sql`ARRAY[]::text[]`),
   githubRepo: text("githubRepo"),
   description: text("description"),
   created_at: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
