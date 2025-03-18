@@ -9,8 +9,12 @@ async function main() {
   console.log("Migration starts...");
 
   // Reset schema
-  await sql`DROP SCHEMA public CASCADE;`;
+  await sql`DROP SCHEMA public CASCADE; `;
   console.log("Database schema reset.");
+
+  // Create schema
+  //
+  await sql`CREATE SCHEMA ;`;
 
   // Run migrations
   await migrate(db, { migrationsFolder: "./drizzle" });
