@@ -9,7 +9,7 @@ async function main() {
   console.log("Migration starts...");
 
   // Reset schema
-  await sql`DROP SCHEMA public CASCADE; CREATE SCHEMA public;`;
+  await sql`DROP SCHEMA public CASCADE;`;
   console.log("Database schema reset.");
 
   // Run migrations
