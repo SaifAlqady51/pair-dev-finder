@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeAll, afterEach } from "@jest/globals";
 import { GET, POST } from "@/app/api/rooms/route";
 import { db } from "@/db";
-import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth";
 import { Room } from "@/db/schema";
 import { checkGithubRepo } from "@/utils";
@@ -21,7 +20,6 @@ jest.mock("@auth/drizzle-adapter", () => ({
 describe("Rooms API", () => {
   const mockDbSelect = jest.fn();
   const mockDbInsert = jest.fn();
-  const mockRevalidatePath = jest.fn();
   const mockGetSession = getSession as jest.Mock;
   const mockCheckGithubRepo = checkGithubRepo as jest.Mock;
 
@@ -37,7 +35,6 @@ describe("Rooms API", () => {
   beforeAll(() => {
     db.select = mockDbSelect as any;
     db.insert = mockDbInsert as any;
-    (revalidatePath as jest.Mock) = mockRevalidatePath;
   });
 
   afterEach(() => {

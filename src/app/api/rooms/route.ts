@@ -4,7 +4,6 @@ import { db } from "@/db";
 import { rooms } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
 import { checkGithubRepo } from "@/utils";
 
 export async function GET() {
@@ -50,8 +49,6 @@ export async function POST(req: Request): Promise<NextResponse> {
       .insert(rooms)
       .values({ ...data, userId: session.user.id })
       .returning();
-
-    revalidatePath("/");
     return NextResponse.json({ success: true, data: insertedRoom });
   } catch (error) {
     return NextResponse.json(
