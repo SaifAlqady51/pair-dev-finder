@@ -117,7 +117,7 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
   }, []);
 
   return (
-    <div className=" w-full h-fit  md:p-8 p-2 md:ml-12 dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] space-y-10">
+    <div className=" relative w-full h-fit md:p-8 p-2 md:ml-12 dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] ">
       <div className="relative h-2/3">
         <video
           className="drop-shadow-lg bg-slate-300 dark:bg-slate-600 w-full h-full md:aspect-video aspect-[9/16] object-cover rounded-[20px] "
@@ -132,14 +132,12 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
           leaveRoom={leaveRoom}
         />
       </div>
-      <div>
-        <video
-          className="md:w-1/3 w-full h-60 bg-slate-300 dark:bg-slate-600 col-span-2 rounded-[20px] drop-shadow-lg aspect-square object-cover"
-          autoPlay
-          muted
-          ref={partnerVideo}
-        />
-      </div>
+      <video
+        className="absolute md:bottom-12 md:top-auto md:right-12 top-4 right-4 md:w-1/4 w-2/3 h-60 bg-slate-800 col-span-2 rounded-[20px] drop-shadow-lg object-cover"
+        autoPlay
+        muted
+        ref={partnerVideo}
+      />
     </div>
   );
 };
