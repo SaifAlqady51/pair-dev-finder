@@ -8,8 +8,12 @@ import Icon from "@/public/static/images/icon.png";
 import { Skeleton } from "../ui/skeleton";
 import { ModeToggle } from "../ModeToggle";
 import Profile from "./Profile";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Signing } from "./Signing";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export function Header() {
   const { data: session, status } = useSession();
@@ -39,14 +43,14 @@ export function Header() {
       );
     }
     return isMobile ? (
-      <Popover>
-        <PopoverTrigger>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
           <GiHamburgerMenu className="w-7 h-7" />
-        </PopoverTrigger>
-        <PopoverContent className="w-fit border shadow-lg dark:shadow-dark">
-          <Signing className="flex-col w-fit" />
-        </PopoverContent>
-      </Popover>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-fit border flex justify-center">
+          <Signing className="flex-col w-fit justify-center" />
+        </DropdownMenuContent>
+      </DropdownMenu>
     ) : (
       <Signing />
     );
