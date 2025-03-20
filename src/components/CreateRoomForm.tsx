@@ -1,5 +1,4 @@
 "use client";
-
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -78,6 +77,7 @@ export function CreateRoomForm() {
       variant: "success",
     });
     route.push("/");
+    route.refresh();
   }
 
   return (
