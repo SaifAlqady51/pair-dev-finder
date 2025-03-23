@@ -90,5 +90,21 @@ export const rooms = pgTable("room", {
   image: text("image"),
 });
 
+export const messages = pgTable("message", {
+  id: uuid("id")
+    .default(sql`gen_random_uuid()`)
+    .notNull()
+    .primaryKey(),
+  roomId: uuid("roomId")
+    .notNull()
+    .references(() => rooms.id),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
 export type Room = typeof rooms.$inferSelect;
 export type Users = typeof users.$inferSelect;
+export type Message = typeof messages.$inferSelect;
