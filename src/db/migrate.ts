@@ -15,6 +15,20 @@ const sql = postgres(DATABASE_URL, { max: 5 }); // Increase pool size
 const db = drizzle(sql);
 
 async function hasPendingMigrations(): Promise<boolean> {
+  // Check if _drizzle_migrations table exists
+  const [{ exists }] = await sql<{ exists: boolean }[]>`
+    SELECT EXISTS (
+      SELECT 1 FROM information_schema.tables WHERE table_name = '_drizzle_migrations'
+    );
+  `;
+
+  if (!exists) {
+    console.log(
+      "No _drizzle_migrations table found. Assuming all migrations are pending.",
+    );
+    return true; // First-time migration
+  }
+
   // Read migration files from the migration folder
   const migrationFolder = path.resolve("./drizzle");
   const migrationFiles = fs
