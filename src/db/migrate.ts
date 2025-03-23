@@ -1,8 +1,6 @@
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import fs from "fs";
-import path from "path";
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
@@ -11,61 +9,37 @@ if (!DATABASE_URL) {
   process.exit(1);
 }
 
-const sql = postgres(DATABASE_URL, { max: 5 }); // Increase pool size
+const sql = postgres(DATABASE_URL, { max: 1 });
 const db = drizzle(sql);
-
-async function hasPendingMigrations(): Promise<boolean> {
-  // Check if _drizzle_migrations table exists
-  const [{ exists }] = await sql<{ exists: boolean }[]>`
-    SELECT EXISTS (
-      SELECT 1 FROM information_schema.tables WHERE table_name = '_drizzle_migrations'
-    );
-  `;
-
-  if (!exists) {
-    console.log(
-      "No _drizzle_migrations table found. Assuming all migrations are pending.",
-    );
-    return true; // First-time migration
-  }
-
-  // Read migration files from the migration folder
-  const migrationFolder = path.resolve("./drizzle");
-  const migrationFiles = fs
-    .readdirSync(migrationFolder)
-    .filter((file) => file.endsWith(".sql"))
-    .map((file) => file.replace(".sql", "")); // Extract migration names
-
-  // Get already applied migrations from the database
-  const appliedMigrations = await sql<{ name: string }[]>`
-    SELECT name FROM _drizzle_migrations
-  `;
-
-  const appliedMigrationNames = new Set(appliedMigrations.map((m) => m.name));
-
-  // Check if there are any new migrations
-  return migrationFiles.some((file) => !appliedMigrationNames.has(file));
-}
 
 async function migrateDatabase() {
   try {
-    console.log("Checking for pending migrations...");
-
-    if (!(await hasPendingMigrations())) {
-      console.log("No pending migrations. Skipping migration process.");
-      return;
-    }
-
     console.log("Starting migration...");
 
-    await migrate(db, { migrationsFolder: "./drizzle" });
+    // Check if public schema exists before dropping
+    const [{ exists }] = await sql<{ exists: boolean }[]>`
+      SELECT EXISTS (
+        SELECT 1 FROM pg_namespace WHERE nspname = 'public'
+      );
+    `;
 
+    if (exists) {
+      await sql`DROP SCHEMA public CASCADE;`;
+      console.log("Existing public schema dropped.");
+    }
+
+    // Create public schema if it doesn't exist
+    await sql`CREATE SCHEMA IF NOT EXISTS public;`;
+    console.log("Schema ensured.");
+
+    // Run migrations
+    await migrate(db, { migrationsFolder: "./drizzle" });
     console.log("Migrations completed successfully.");
   } catch (error) {
     console.error("Migration failed:", error);
     process.exit(1);
   } finally {
-    await sql.end(); // Close DB connection
+    await sql.end(); // Ensure connection is closed
   }
 }
 
