@@ -1,5 +1,6 @@
 import { TagList } from "@/components";
 import { Video } from "@/components";
+import { getSession } from "@/lib/auth";
 import { fetchRoomById } from "@/services";
 import { getRepoName } from "@/utils/getRepoName";
 import Link from "next/link";
@@ -13,11 +14,16 @@ interface ParamsProps {
 
 export default async function RoomPage({ params }: ParamsProps) {
   const room = await fetchRoomById(params.roomId);
+  const session = await getSession();
 
   return (
     <div className="mt-2 flex justify-center gap-12 bg-slate-100 dark:bg-slate-950 ">
       {/* Video Player */}
-      <Video roomId={room!.id} />
+      <Video
+        roomId={room!.id}
+        userId={session?.user.id!}
+        username={session?.user.name!}
+      />
       {/* Panel */}
       <div className="xl:flex hidden h-fit pt-4">
         <div className=" mr-8 p-4 border rounded-[20px] border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
