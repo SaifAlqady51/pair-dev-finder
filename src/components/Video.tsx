@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { useWebRtc } from "@/hooks/useWebRTC";
 import { MediaButtons } from "./MediaButtons";
 
-export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
+interface VideoProps {
+  roomId: string;
+  userId: string;
+  username: string;
+}
+
+export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
   // Setup states
   const router = useRouter();
   const host = useRef(false);
@@ -51,7 +57,7 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
     pusherRef.current = new Pusher(process.env.PUSHER_KEY!, {
       authEndpoint: "/api/pusher/auth",
       auth: {
-        params: { username: "saif" },
+        params: { username: username, userId: userId },
       },
       cluster: "eu",
     });
