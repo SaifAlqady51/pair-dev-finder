@@ -1,5 +1,5 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { PresenceChannel } from "pusher-js";
+import Pusher, { PresenceChannel } from "pusher-js";
 import { MutableRefObject, RefObject, useCallback, useRef } from "react";
 
 type WebRtcHookProps = {
@@ -9,6 +9,7 @@ type WebRtcHookProps = {
   partnerVideo: RefObject<HTMLVideoElement>;
   userVideo: RefObject<HTMLVideoElement>;
   router: AppRouterInstance;
+  pusherRef: MutableRefObject<Pusher | null>;
 };
 
 const ICE_SERVERS = {
@@ -25,6 +26,7 @@ export function useWebRtc({
   partnerVideo,
   userVideo,
   router,
+  pusherRef,
 }: WebRtcHookProps) {
   const rtcConnection = useRef<RTCPeerConnection | null>(null);
   const createPeerConnection = () => {
@@ -34,13 +36,28 @@ export function useWebRtc({
     connection.onicecandidateerror = (e) => console.log(e);
     return connection;
   };
+
   const initiateCall = useCallback(async () => {
+    // Ensure we have a fresh connection
+    if (rtcConnection.current) {
+      rtcConnection.current.close();
+      rtcConnection.current = null;
+    }
+
     if (!userStream.current) {
       try {
+        // Stop any existing tracks first
+        if (userVideo.current?.srcObject) {
+          (userVideo.current.srcObject as MediaStream)
+            .getTracks()
+            .forEach((track) => track.stop());
+        }
+
         userStream.current = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
         });
+
         if (userVideo.current) {
           userVideo.current.srcObject = userStream.current;
         }
@@ -49,18 +66,19 @@ export function useWebRtc({
         return;
       }
     }
+
     if (host.current) {
       rtcConnection.current = createPeerConnection();
       userStream.current?.getTracks().forEach((track) => {
         rtcConnection.current?.addTrack(track, userStream.current!);
       });
+
       rtcConnection
         .current!.createOffer()
         .then((offer) => {
           rtcConnection.current!.setLocalDescription(offer);
           channelRef.current?.trigger("client-offer", offer);
         })
-
         .catch((error) => {
           console.log(error);
         });
@@ -112,32 +130,41 @@ export function useWebRtc({
 
   const handlePeerLeaving = () => {
     host.current = true;
+
+    // Reset partner video
     if (partnerVideo.current?.srcObject) {
       (partnerVideo.current.srcObject as MediaStream)
         .getTracks()
-        .forEach((track) => track.stop()); // Stops receiving all track of Peer.
+        .forEach((track) => track.stop());
+      partnerVideo.current.srcObject = null;
     }
+
+    // Reset connection
     if (rtcConnection.current) {
       rtcConnection.current.ontrack = null;
       rtcConnection.current.onicecandidate = null;
       rtcConnection.current.close();
       rtcConnection.current = null;
     }
-  };
 
+    // Reinitialize for new connection
+    initiateCall();
+  };
   const leaveRoom = () => {
+    // Clean up media streams
     if (userStream.current) {
       userStream.current.getTracks().forEach((track) => track.stop());
-      userStream.current = null; // Ensure fresh stream when rejoining
+      userStream.current = null;
     }
 
     if (partnerVideo.current?.srcObject) {
       (partnerVideo.current.srcObject as MediaStream)
         .getTracks()
         .forEach((track) => track.stop());
-      partnerVideo.current.srcObject = null; // Reset video
+      partnerVideo.current.srcObject = null;
     }
 
+    // Clean up WebRTC connection
     if (rtcConnection.current) {
       rtcConnection.current.ontrack = null;
       rtcConnection.current.onicecandidate = null;
@@ -145,10 +172,17 @@ export function useWebRtc({
       rtcConnection.current = null;
     }
 
-    // Clear Pusher event listeners if applicable
-    channelRef.current?.unbind("client-offer");
-    channelRef.current?.unbind("client-answer");
-    channelRef.current?.unbind("client-ice-candidate");
+    // Reset host status
+    host.current = false;
+
+    // Clean up Pusher
+    if (channelRef.current) {
+      channelRef.current.unbind_all();
+      channelRef.current.unsubscribe();
+    }
+    if (pusherRef.current) {
+      pusherRef.current.disconnect();
+    }
 
     router.push("/");
   };
@@ -159,5 +193,6 @@ export function useWebRtc({
     handlerNewIceCandidateMsg,
     handlePeerLeaving,
     leaveRoom,
+    rtcConnection,
   };
 }
