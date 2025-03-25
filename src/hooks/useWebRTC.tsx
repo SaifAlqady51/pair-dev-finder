@@ -34,7 +34,21 @@ export function useWebRtc({
     connection.onicecandidateerror = (e) => console.log(e);
     return connection;
   };
-  const initiateCall = useCallback(() => {
+  const initiateCall = useCallback(async () => {
+    if (!userStream.current) {
+      try {
+        userStream.current = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        if (userVideo.current) {
+          userVideo.current.srcObject = userStream.current;
+        }
+      } catch (error) {
+        console.error("Error accessing media devices:", error);
+        return;
+      }
+    }
     if (host.current) {
       rtcConnection.current = createPeerConnection();
       userStream.current?.getTracks().forEach((track) => {
@@ -112,15 +126,16 @@ export function useWebRtc({
   };
 
   const leaveRoom = () => {
-    if (userVideo.current!.srcObject) {
-      (userVideo.current!.srcObject as MediaStream)
-        .getTracks()
-        .forEach((track) => track.stop()); // Stops sending all tracks of User.
+    if (userStream.current) {
+      userStream.current.getTracks().forEach((track) => track.stop());
+      userStream.current = null; // Ensure fresh stream when rejoining
     }
-    if (partnerVideo.current!.srcObject) {
-      (partnerVideo.current!.srcObject as MediaStream)
+
+    if (partnerVideo.current?.srcObject) {
+      (partnerVideo.current.srcObject as MediaStream)
         .getTracks()
-        .forEach((track) => track.stop()); // Stops receiving all tracks from Peer.
+        .forEach((track) => track.stop());
+      partnerVideo.current.srcObject = null; // Reset video
     }
 
     if (rtcConnection.current) {
@@ -129,6 +144,12 @@ export function useWebRtc({
       rtcConnection.current.close();
       rtcConnection.current = null;
     }
+
+    // Clear Pusher event listeners if applicable
+    channelRef.current?.unbind("client-offer");
+    channelRef.current?.unbind("client-answer");
+    channelRef.current?.unbind("client-ice-candidate");
+
     router.push("/");
   };
   return {
