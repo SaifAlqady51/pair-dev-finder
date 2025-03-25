@@ -43,6 +43,7 @@ export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
     handlerNewIceCandidateMsg,
     handlePeerLeaving,
     leaveRoom,
+    rtcConnection,
   } = useWebRtc({
     userStream,
     host,
@@ -50,6 +51,7 @@ export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
     partnerVideo,
     userVideo,
     router,
+    pusherRef,
   });
   // Set up pusher
   useEffect(() => {
@@ -110,8 +112,27 @@ export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
         handlerNewIceCandidateMsg(iceCandidate);
       },
     );
+    channelRef.current.bind("pusher:member_added", () => {
+      if (host.current) {
+        // If we're the host and someone joins, re-initiate the call
+        initiateCall();
+      }
+    });
     // Cleanup function to unbind all events and disconnect from Pusher when component unmounts
     return () => {
+      // Clean up WebRTC connection
+      if (rtcConnection.current) {
+        rtcConnection.current.close();
+        rtcConnection.current = null;
+      }
+
+      // Clean up media streams
+      if (userStream.current) {
+        userStream.current.getTracks().forEach((track) => track.stop());
+        userStream.current = null;
+      }
+
+      // Clean up Pusher
       if (channelRef.current) {
         channelRef.current.unbind_all();
         channelRef.current.unsubscribe();
