@@ -1,5 +1,6 @@
 import { TagList } from "@/components";
 import { Video } from "@/components";
+import { Chat } from "@/components/Chat";
 import { getSession } from "@/lib/auth";
 import { fetchRoomById } from "@/services";
 import { getRepoName } from "@/utils/getRepoName";
@@ -41,6 +42,11 @@ export default async function RoomPage({ params }: ParamsProps) {
           </Link>
         </div>
       </div>
+      <Chat
+        roomId={room!.id}
+        username={session?.user.name!}
+        userId={session?.user.id!}
+      />
     </div>
   );
 }
