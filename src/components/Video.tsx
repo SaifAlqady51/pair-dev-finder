@@ -36,91 +36,19 @@ export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
   });
 
   // invoke useWebRTC customed hook
-  const {
-    initiateCall,
-    handleReceivedOffer,
-    handleAnswerReceived,
-    handlerNewIceCandidateMsg,
-    handlePeerLeaving,
-    leaveRoom,
-  } = useWebRtc({
+  const { leaveRoom } = useWebRtc({
     userStream,
     host,
     channelRef,
     partnerVideo,
     userVideo,
     router,
+    pusherRef,
+    userId,
+    username,
+    handleRoomJoined,
   });
   // Set up pusher
-  useEffect(() => {
-    // Create pusher instance
-    pusherRef.current = new Pusher(process.env.PUSHER_KEY!, {
-      authEndpoint: "/api/pusher/auth",
-      auth: {
-        params: { username: username, userId: userId },
-      },
-      cluster: "eu",
-    });
-
-    channelRef.current = pusherRef.current.subscribe(
-      `presence-room`,
-    ) as PresenceChannel;
-    // Join room
-    channelRef.current.bind(
-      "pusher:subscription_succeeded",
-      (members: Members) => {
-        if (members.count === 1) {
-          host.current = true;
-        }
-        if (members.count > 2) {
-          router.push("/");
-        }
-        handleRoomJoined();
-      },
-    );
-    // start call with the partner
-    channelRef.current.bind("client-ready", () => {
-      initiateCall();
-    });
-    // offer call request
-    channelRef.current.bind(
-      "client-offer",
-
-      (offer: RTCSessionDescriptionInit) => {
-        if (!host.current) {
-          handleReceivedOffer(offer);
-        }
-      },
-    );
-    // leave room
-    channelRef.current.bind("pusher:member_removed", handlePeerLeaving);
-    channelRef.current.bind(
-      "client-answer",
-
-      (answer: RTCSessionDescriptionInit) => {
-        if (host.current) {
-          handleAnswerReceived(answer as RTCSessionDescriptionInit);
-        }
-      },
-    );
-    // Send ice-candidate message to partner
-    channelRef.current.bind(
-      "client-ice-candidate",
-      (iceCandidate: RTCIceCandidate) => {
-        handlerNewIceCandidateMsg(iceCandidate);
-      },
-    );
-    // Cleanup function to unbind all events and disconnect from Pusher when component unmounts
-    return () => {
-      if (channelRef.current) {
-        channelRef.current.unbind_all();
-        channelRef.current.unsubscribe();
-      }
-      if (pusherRef.current) {
-        pusherRef.current.disconnect();
-      }
-    };
-  }, []);
 
   return (
     <div className=" relative w-full h-fit md:p-8 p-2 md:ml-12 bg-secondary m-4 rounded-[20px] ">
