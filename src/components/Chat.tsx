@@ -10,12 +10,10 @@ type ChatProps = {
 
 export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
   const [message, setMessage] = useState("");
-  console.log(message);
   const { messages, isConnected, sendMessage } = useChat({
     userId,
     username,
     roomId,
-    message,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,16 +24,12 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
     }
   };
 
-  // const handleKeyDown = () => {
-  //   startTyping();
-  // };
-
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b">
         <h2 className="text-xl font-semibold">Chat Room</h2>
         <p className="text-sm text-gray-500">
-          {isConnected ? "Connected ✅" : "Connecting..."}
+          {isConnected ? "Connected " : "Connecting..."}
         </p>
       </div>
 
@@ -46,7 +40,7 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
             className={`flex ${msg.userId === userId ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-xs md:max-w-md rounded-lg p-3 ${msg.userId === userId
+              className={`max-w-xs md:max-w-md rounded-lg p-2 ${msg.userId === userId
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-800"
                 }`}
