@@ -62,7 +62,8 @@ export const useCreateAccountForm = () => {
       // Show success toast with account details
       toast({
         title: "Account Created",
-        description: `Created account for successfully `,
+        description: "Account created successfully",
+        variant: "success",
       });
 
       // Sign in the user
