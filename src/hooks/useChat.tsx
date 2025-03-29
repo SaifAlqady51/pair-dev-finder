@@ -56,20 +56,9 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
       "client-message",
       (message: Omit<Message, "id">) => {
         setMessages((prev) => {
-          // Check if message already exists to prevent duplicates
-          if (
-            !prev.some(
-              (m) =>
-                m.content === message.content &&
-                m.userId === message.userId &&
-                new Date(m.createdAt).getTime() -
-                new Date(message.createdAt).getTime() <
-                1000,
-            )
-          ) {
+          {
             return [...prev, { ...message, id: Date.now().toString() }];
           }
-          return prev;
         });
       },
     );
