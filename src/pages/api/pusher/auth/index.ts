@@ -1,38 +1,42 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-import Pusher from "pusher";
-
 import { pusherServer } from "@/lib/pusher";
-import { z } from "zod";
 
-// Define the schema for input validation
-const schema = z.object({
-  socket_id: z.string(),
-  channel_name: z.string(),
-  username: z.string(),
-});
+interface AuthRequest {
+  socket_id: string;
+  channel_name: string;
+  username: string;
+  userId: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
-): Promise<Pusher.UserAuthResponse | void> {
+  res: NextApiResponse,
+): Promise<void> {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-  const { socket_id, channel_name, username } = req.body;
-  
-  const randomString = Math.random().toString(36).slice(2);
+  const { socket_id, channel_name, username, userId } =
+    req.body as Partial<AuthRequest>;
+
+  if (!socket_id || !channel_name || !username || !userId) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
   const presenceData = {
-    user_id: randomString,
-    user_info: {
-      username: "@" + username,
-    },
+    user_id: userId,
+    user_info: { username: `@${username}` },
   };
 
-
   try {
-    const auth = pusherServer.authorizeChannel(socket_id, channel_name, presenceData);
-    res.send(auth);
+    const auth = pusherServer.authorizeChannel(
+      socket_id,
+      channel_name,
+      presenceData,
+    );
+    return res.json(auth);
   } catch (error) {
-    console.error(error);
-    res.send(500)
+    console.error("Pusher authorization error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 }

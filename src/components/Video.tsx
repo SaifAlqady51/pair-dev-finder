@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { useWebRtc } from "@/hooks/useWebRTC";
 import { MediaButtons } from "./MediaButtons";
 
-export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
+interface VideoProps {
+  roomId: string;
+  userId: string;
+  username: string;
+}
+
+export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
   // Setup states
   const router = useRouter();
   const host = useRef(false);
@@ -30,94 +36,22 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
   });
 
   // invoke useWebRTC customed hook
-  const {
-    initiateCall,
-    handleReceivedOffer,
-    handleAnswerReceived,
-    handlerNewIceCandidateMsg,
-    handlePeerLeaving,
-    leaveRoom,
-  } = useWebRtc({
+  const { leaveRoom } = useWebRtc({
     userStream,
     host,
     channelRef,
     partnerVideo,
     userVideo,
     router,
+    pusherRef,
+    userId,
+    username,
+    handleRoomJoined,
   });
   // Set up pusher
-  useEffect(() => {
-    // Create pusher instance
-    pusherRef.current = new Pusher(process.env.PUSHER_KEY!, {
-      authEndpoint: "/api/pusher/auth",
-      auth: {
-        params: { username: "saif" },
-      },
-      cluster: "eu",
-    });
-
-    channelRef.current = pusherRef.current.subscribe(
-      `presence-room`,
-    ) as PresenceChannel;
-    // Join room
-    channelRef.current.bind(
-      "pusher:subscription_succeeded",
-      (members: Members) => {
-        if (members.count === 1) {
-          host.current = true;
-        }
-        if (members.count > 2) {
-          router.push("/");
-        }
-        handleRoomJoined();
-      },
-    );
-    // start call with the partner
-    channelRef.current.bind("client-ready", () => {
-      initiateCall();
-    });
-    // offer call request
-    channelRef.current.bind(
-      "client-offer",
-
-      (offer: RTCSessionDescriptionInit) => {
-        if (!host.current) {
-          handleReceivedOffer(offer);
-        }
-      },
-    );
-    // leave room
-    channelRef.current.bind("pusher:member_removed", handlePeerLeaving);
-    channelRef.current.bind(
-      "client-answer",
-
-      (answer: RTCSessionDescriptionInit) => {
-        if (host.current) {
-          handleAnswerReceived(answer as RTCSessionDescriptionInit);
-        }
-      },
-    );
-    // Send ice-candidate message to partner
-    channelRef.current.bind(
-      "client-ice-candidate",
-      (iceCandidate: RTCIceCandidate) => {
-        handlerNewIceCandidateMsg(iceCandidate);
-      },
-    );
-    // Cleanup function to unbind all events and disconnect from Pusher when component unmounts
-    return () => {
-      if (channelRef.current) {
-        channelRef.current.unbind_all();
-        channelRef.current.unsubscribe();
-      }
-      if (pusherRef.current) {
-        pusherRef.current.disconnect();
-      }
-    };
-  }, []);
 
   return (
-    <div className=" w-full h-fit  md:p-8 p-2 md:ml-12 dark:bg-slate-800 bg-slate-200 m-4 rounded-[20px] space-y-10">
+    <div className=" relative w-full h-fit md:p-8 p-2 md:ml-12 bg-secondary m-4 rounded-[20px] ">
       <div className="relative h-2/3">
         <video
           className="drop-shadow-lg bg-slate-300 dark:bg-slate-600 w-full h-full md:aspect-video aspect-[9/16] object-cover rounded-[20px] "
@@ -132,14 +66,12 @@ export const Video: React.FC<{ roomId: string }> = ({ roomId }) => {
           leaveRoom={leaveRoom}
         />
       </div>
-      <div>
-        <video
-          className="md:w-1/3 w-full h-60 bg-slate-300 dark:bg-slate-600 col-span-2 rounded-[20px] drop-shadow-lg aspect-square object-cover"
-          autoPlay
-          muted
-          ref={partnerVideo}
-        />
-      </div>
+      <video
+        className="absolute md:bottom-12 md:top-auto md:right-12 top-4 right-4 md:w-1/4 w-2/3 h-60 dark:bg-slate-800 bg-slate-400 col-span-2 rounded-[20px] drop-shadow-lg object-cover"
+        autoPlay
+        muted
+        ref={partnerVideo}
+      />
     </div>
   );
 };
