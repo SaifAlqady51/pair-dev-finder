@@ -6,18 +6,11 @@ type UseChatProps = {
   userId: string;
   username: string;
   roomId: string;
-  message: string; // This is the prop you want to use
 };
 
-export const useChat = ({
-  userId,
-  username,
-  roomId,
-  message: initialMessage, // Renamed to avoid conflict with state
-}: UseChatProps) => {
+export const useChat = ({ userId, username, roomId }: UseChatProps) => {
   Pusher.logToConsole = true;
   const [messages, setMessages] = useState<Message[]>([]);
-  console.log(messages);
   const [isConnected, setIsConnected] = useState(false);
   const pusherRef = useRef<Pusher | null>(null);
   const channelRef = useRef<PresenceChannel | null>(null);
@@ -63,20 +56,9 @@ export const useChat = ({
       "client-message",
       (message: Omit<Message, "id">) => {
         setMessages((prev) => {
-          // Check if message already exists to prevent duplicates
-          if (
-            !prev.some(
-              (m) =>
-                m.content === message.content &&
-                m.userId === message.userId &&
-                new Date(m.createdAt).getTime() -
-                new Date(message.createdAt).getTime() <
-                1000,
-            )
-          ) {
+          {
             return [...prev, { ...message, id: Date.now().toString() }];
           }
-          return prev;
         });
       },
     );
