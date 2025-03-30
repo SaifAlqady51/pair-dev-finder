@@ -18,7 +18,7 @@ export default async function RoomPage({ params }: ParamsProps) {
   const session = await getSession();
 
   return (
-    <div className="mt-2 flex justify-center gap-12 bg-slate-100 dark:bg-slate-950 ">
+    <div className="mt-2 flex justify-center gap-12">
       {/* Video Player */}
       <Video
         roomId={room!.id}
