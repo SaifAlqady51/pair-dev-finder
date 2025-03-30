@@ -26,7 +26,7 @@ export default async function RoomPage({ params }: ParamsProps) {
         username={session?.user.name!}
       />
       {/* Panel */}
-      <div className="xl:flex hidden h-fit pt-4">
+      <div className="xl:flex hidden h-fit pt-4 flex-col ">
         <div className=" mr-8 p-4 border rounded-[20px] border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
           <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
@@ -41,12 +41,13 @@ export default async function RoomPage({ params }: ParamsProps) {
             {getRepoName(room?.githubRepo) || ""}
           </Link>
         </div>
+
+        <Chat
+          roomId={room!.id}
+          username={session?.user.name!}
+          userId={session?.user.id!}
+        />
       </div>
-      <Chat
-        roomId={room!.id}
-        username={session?.user.name!}
-        userId={session?.user.id!}
-      />
     </div>
   );
 }
