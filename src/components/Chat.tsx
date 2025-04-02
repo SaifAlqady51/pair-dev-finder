@@ -33,7 +33,7 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+      <div className="flex-1 overflow-y-auto p-4 space-y-1">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -47,7 +47,10 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
             >
               <div>{msg.content}</div>
               <div className="text-xs mt-1 opacity-70">
-                {new Date(msg.createdAt).toLocaleTimeString()}
+                {new Date(msg.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </div>
             </div>
           </div>
@@ -70,7 +73,7 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 border rounded-lg w-6 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Type a message..."
           />
           <button
