@@ -1,6 +1,6 @@
 import { Badge } from "./ui/badge";
 
-export const TagList: React.FC<{ keywords: string[] | undefined }> = ({
+export const KeywordsList: React.FC<{ keywords: string[] | undefined }> = ({
   keywords,
 }) => {
   if (keywords) {

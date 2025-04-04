@@ -11,12 +11,12 @@ import { Room } from "@/db/schema";
 import { getRepoName } from "@/utils/getRepoName";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
-import { TagList } from "./TagList";
+import { KeywordsList } from "./KeywordsList";
 
 export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (
     <Card
-      className="w-full flex flex-col justify-between dark:shadow-dark shadow-lg"
+      className="group no-border w-full flex flex-col justify-between dark:shadow-dark shadow-lg"
       data-cy="room-card"
     >
       <div className="w-full h-1/2 ">
@@ -40,7 +40,7 @@ export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
         <CardContent>
           <div>
             <div className="my-2" data-cy="room-tags">
-              <TagList keywords={room.keywords} />
+              <KeywordsList keywords={room.keywords} />
             </div>
             {room.githubRepo && (
               <Link

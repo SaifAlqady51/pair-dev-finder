@@ -5,6 +5,6 @@ export * from "./MediaButtons";
 export * from "./ModeToggle";
 export * from "./RoomCard";
 export * from "./ShowPassword";
-export * from "./TagList";
+export * from "./KeywordsList";
 export * from "./theme-provider";
 export * from "./Video";
