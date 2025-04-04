@@ -17,14 +17,14 @@ export const RoomSidebar: React.FC<RoomSidebarProps> = ({ room, session }) => {
     <Sidebar
       variant="sidebar"
       side="right"
-      className=" xl:flex hidden flex-col mt-20 max-h-[calc(100vh-150px)]"
+      className=" xl:flex hidden flex-col mt-20 max-h-100vh"
       bordered={false}
     >
       <SidebarContent className="h-full">
-        <div className="p-4 border rounded-[20px] border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
+        <div className=" p-4 border rounded-[20px] border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
           <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
-          {room?.keywords?.length === 0 && (
+          {(room?.keywords ?? []).length > 0 && (
             <>
               <h4 className="font-medium text-lg">Keywords :</h4>
               <KeywordsList keywords={room?.keywords} />
@@ -41,12 +41,15 @@ export const RoomSidebar: React.FC<RoomSidebarProps> = ({ room, session }) => {
             </Link>
           )}
         </div>
-
-        <Chat
-          roomId={room!.id}
-          username={session?.user.name!}
-          userId={session?.user.id!}
-        />
+        <div className="flex-1 min-h-0">
+          {" "}
+          {/* This prevents overflow */}
+          <Chat
+            roomId={room!.id}
+            username={session?.user.name!}
+            userId={session?.user.id!}
+          />
+        </div>
       </SidebarContent>
     </Sidebar>
   );
