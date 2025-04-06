@@ -192,6 +192,32 @@ const Sidebar = React.forwardRef<
     ref,
   ) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+    const sidebarRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+      if (!isMobile || !openMobile) return;
+
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          sidebarRef.current &&
+          !sidebarRef.current.contains(event.target as Node)
+        ) {
+          setOpenMobile(false);
+        }
+      };
+
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setOpenMobile(false);
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEscape);
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("keydown", handleEscape);
+      };
+    }, [isMobile, openMobile, setOpenMobile]);
 
     if (collapsible === "none") {
       return (
@@ -210,25 +236,35 @@ const Sidebar = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SheetContent
-            data-sidebar="sidebar"
-            data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+        <>
+          <div
+            className={cn(
+              "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all duration-300",
+              openMobile ? "opacity-100" : "opacity-0 pointer-events-none",
+            )}
+            onClick={() => setOpenMobile(false)}
+            aria-hidden="true"
+          />
+
+          <div
+            ref={sidebarRef}
+            className={cn(
+              "fixed inset-y-0 z-50 w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground transition-transform duration-300",
+              side === "left" ? "left-0" : "right-0",
+              openMobile
+                ? "translate-x-0"
+                : side === "left"
+                  ? "-translate-x-full"
+                  : "translate-x-full",
+            )}
             style={
-              {
-                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-              } as React.CSSProperties
+              { "--sidebar-width": SIDEBAR_WIDTH_MOBILE } as React.CSSProperties
             }
-            side={side}
+            {...props}
           >
-            <SheetHeader className="sr-only">
-              <SheetTitle>Sidebar</SheetTitle>
-              <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-            </SheetHeader>
             <div className="flex h-full w-full flex-col">{children}</div>
-          </SheetContent>
-        </Sheet>
+          </div>
+        </>
       );
     }
 
@@ -241,7 +277,6 @@ const Sidebar = React.forwardRef<
         data-variant={variant}
         data-side={side}
       >
-        {/* This is what handles the sidebar gap on desktop */}
         <div
           className={cn(
             "relative w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear",
@@ -261,7 +296,6 @@ const Sidebar = React.forwardRef<
             variant === "floating" || variant === "inset"
               ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
               : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]",
-            // Conditionally apply border classes
             bordered && variant !== "floating" && variant !== "inset"
               ? side === "left"
                 ? "border-r"
