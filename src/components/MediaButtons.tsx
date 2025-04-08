@@ -1,11 +1,13 @@
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import {
   BsMicFill,
   BsMicMuteFill,
   BsCameraVideoOffFill,
   BsCameraVideoFill,
 } from "react-icons/bs";
-import { GoSignIn, GoSignOut } from "react-icons/go";
+import { GoSignOut } from "react-icons/go";
+import { SidebarTrigger } from "./ui/sidebar";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 type MediaButtonsProps = {
   toggleMic: () => void;
@@ -15,8 +17,6 @@ type MediaButtonsProps = {
   isCameraActive: boolean;
 };
 
-const buttonStyles: string =
-  "bg-slate-900 hover:bg-slate-800  dark-slate-400 rounded-md p-2 opacity-70";
 const buttonIconStyles: string = "text-white w-7 h-7";
 
 export function MediaButtons({
@@ -27,25 +27,43 @@ export function MediaButtons({
   isCameraActive,
 }: MediaButtonsProps) {
   return (
-    <div className=" flex gap-4 absolute bottom-2 left-3">
-      <button onClick={leaveRoom} type="button" className={buttonStyles}>
-        <GoSignOut className={buttonIconStyles} />
-      </button>
-      <button onClick={toggleMic} type="button" className={buttonStyles}>
-        {isMicActive ? (
-          <BsMicFill className={buttonIconStyles} />
-        ) : (
-          <BsMicMuteFill className={buttonIconStyles} />
-        )}
-      </button>
+    <div className="absolute bottom-2 left-0 w-full flex justify-between items-center px-6">
+      <div className="space-x-4">
+        <MediaButton onClick={leaveRoom} type="button">
+          <GoSignOut className={buttonIconStyles} />
+        </MediaButton>
+        <MediaButton onClick={toggleMic} type="button">
+          {isMicActive ? (
+            <BsMicFill className={buttonIconStyles} />
+          ) : (
+            <BsMicMuteFill className={buttonIconStyles} />
+          )}
+        </MediaButton>
 
-      <button onClick={toggleCamera} type="button" className={buttonStyles}>
-        {isCameraActive ? (
-          <BsCameraVideoFill className={buttonIconStyles} />
-        ) : (
-          <BsCameraVideoOffFill className={buttonIconStyles} />
-        )}
-      </button>
+        <MediaButton onClick={toggleCamera} type="button">
+          {isCameraActive ? (
+            <BsCameraVideoFill className={buttonIconStyles} />
+          ) : (
+            <BsCameraVideoOffFill className={buttonIconStyles} />
+          )}
+        </MediaButton>
+      </div>
+      <SidebarTrigger className="flex md:hidden w-11 h-11 bg-slate-900 hover:bg-slate-800 dark-slate-400 rounded-md p-2 opacity-70">
+        <HiDotsHorizontal className={buttonIconStyles} />
+      </SidebarTrigger>
     </div>
   );
 }
+
+type MediaButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+const MediaButton = ({ onClick, children, ...props }: MediaButtonProps) => (
+  <button
+    onClick={onClick}
+    type="button"
+    className="bg-slate-900 hover:bg-slate-800 dark-slate-400 rounded-md p-2 opacity-70"
+    {...props}
+  >
+    {children}
+  </button>
+);

@@ -239,7 +239,7 @@ const Sidebar = React.forwardRef<
         <>
           <div
             className={cn(
-              "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all duration-300",
+              "fixed inset-0 z-40 bg-black/20 backdrop-blur-xs transition-all duration-300",
               openMobile ? "opacity-100" : "opacity-0 pointer-events-none",
             )}
             onClick={() => setOpenMobile(false)}
@@ -320,8 +320,8 @@ Sidebar.displayName = "Sidebar";
 
 const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof Button>
->(({ className, onClick, ...props }, ref) => {
+  React.ComponentProps<typeof Button> & { children?: React.ReactNode }
+>(({ className, onClick, children, ...props }, ref) => {
   const { open, toggleSidebar } = useSidebar();
 
   return (
@@ -337,7 +337,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      {open ? <ArrowRight /> : <ArrowLeft />}
+      {children ?? (open ? <ArrowRight /> : <ArrowLeft />)}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
