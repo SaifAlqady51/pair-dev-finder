@@ -48,7 +48,7 @@ export function MediaButtons({
           )}
         </MediaButton>
       </div>
-      <SidebarTrigger className="w-11 h-11 bg-slate-900 hover:bg-slate-800 dark-slate-400 rounded-md p-2 opacity-70">
+      <SidebarTrigger className="flex md:hidden w-11 h-11 bg-slate-900 hover:bg-slate-800 dark-slate-400 rounded-md p-2 opacity-70">
         <HiDotsHorizontal className={buttonIconStyles} />
       </SidebarTrigger>
     </div>
