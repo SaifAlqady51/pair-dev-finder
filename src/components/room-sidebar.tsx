@@ -21,7 +21,7 @@ export const RoomSidebar: React.FC<RoomSidebarProps> = ({ room, session }) => {
       bordered={false}
     >
       <SidebarContent className="h-full">
-        <div className=" p-4 border rounded-[20px] border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
+        <div className=" p-4 border md:rounded-[20px] rounded-none border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
           <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>
           <p className="text-lg text-gray-400">{room?.description}</p>
           {(room?.keywords ?? []).length > 0 && (
