@@ -67,7 +67,7 @@ export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
         />
       </div>
       <video
-        className="absolute md:bottom-12 md:top-auto md:right-12 top-4 left-4 md:w-1/4 w-1/2 h-52 dark:bg-slate-800 bg-slate-400 col-span-2 rounded-[20px] drop-shadow-lg object-cover aspect-video"
+        className="absolute md:bottom-12 md:top-auto md:right-12 top-4 left-4 md:left-auto md:w-1/4 w-1/2 h-52 dark:bg-slate-800 bg-slate-400 col-span-2 rounded-[20px] drop-shadow-lg object-cover aspect-video"
         autoPlay
         muted
         ref={partnerVideo}
