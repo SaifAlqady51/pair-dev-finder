@@ -17,8 +17,6 @@ type MediaButtonsProps = {
   isCameraActive: boolean;
 };
 
-const buttonStyles: string =
-  "bg-slate-900 hover:bg-slate-800  dark-slate-400 rounded-md p-2 opacity-70";
 const buttonIconStyles: string = "text-white w-7 h-7";
 
 export function MediaButtons({
@@ -29,7 +27,7 @@ export function MediaButtons({
   isCameraActive,
 }: MediaButtonsProps) {
   return (
-    <div className="absolute bottom-2 left-0 w-full flex justify-between">
+    <div className="absolute bottom-2 left-0 w-full flex justify-between items-center px-6">
       <div className="space-x-4">
         <MediaButton onClick={leaveRoom} type="button">
           <GoSignOut className={buttonIconStyles} />
@@ -42,11 +40,7 @@ export function MediaButtons({
           )}
         </MediaButton>
 
-        <MediaButton
-          onClick={toggleCamera}
-          type="button"
-          className={buttonStyles}
-        >
+        <MediaButton onClick={toggleCamera} type="button">
           {isCameraActive ? (
             <BsCameraVideoFill className={buttonIconStyles} />
           ) : (
@@ -54,13 +48,9 @@ export function MediaButtons({
           )}
         </MediaButton>
       </div>
-      <div>
-        <SidebarTrigger>
-          <MediaButton>
-            <HiDotsHorizontal className={buttonIconStyles} />
-          </MediaButton>
-        </SidebarTrigger>
-      </div>
+      <SidebarTrigger className="w-11 h-11 bg-slate-900 hover:bg-slate-800 dark-slate-400 rounded-md p-2 opacity-70">
+        <HiDotsHorizontal className={buttonIconStyles} />
+      </SidebarTrigger>
     </div>
   );
 }
