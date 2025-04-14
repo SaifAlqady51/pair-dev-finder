@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useChat } from "@/hooks/useChat";
 
 type ChatProps = {
@@ -10,11 +10,18 @@ type ChatProps = {
 
 export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
   const [message, setMessage] = useState("");
-  const { messages, isConnected, sendMessage } = useChat({
+  const {
+    messages,
+    isConnected,
+    sendMessage,
+    markMessagesAsSeen,
+    getUnreadMessages,
+  } = useChat({
     userId,
     username,
     roomId,
   });
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +30,51 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
       setMessage("");
     }
   };
+
+  const seenMessageIds = useRef<Set<string>>(new Set());
+
+  const observeMessage = useCallback(
+    (el: HTMLDivElement | null, messageId: string) => {
+      if (!el || seenMessageIds.current.has(messageId)) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              markMessagesAsSeen([messageId]);
+              seenMessageIds.current.add(messageId);
+              observer.disconnect();
+            }
+          });
+        },
+        {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.6,
+        },
+      );
+
+      observer.observe(el);
+
+      // Cleanup function
+      return () => observer.disconnect();
+    },
+    [markMessagesAsSeen],
+  );
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Mark messages as seen when they become visible
+  useEffect(() => {
+    const unreadMessages = getUnreadMessages();
+
+    if (unreadMessages.length > 0) {
+      markMessagesAsSeen(unreadMessages.map((msg) => msg.id));
+    }
+  }, []);
 
   return (
     <div className="flex flex-col h-full ">
@@ -35,27 +87,46 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
 
       <div className="flex-auto overflow-y-scroll">
         <div className="p-4 space-y-1 ">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.userId === userId ? "justify-end" : "justify-start"}`}
-            >
+          {messages.map((msg) => {
+            const isUnread =
+              msg.userId !== userId && !(msg.seenBy || []).includes(userId);
+            const ref = isUnread
+              ? (el: HTMLDivElement | null) => observeMessage(el, msg.id)
+              : undefined;
+            return (
               <div
-                className={`max-w-xs md:max-w-md rounded-lg p-2 flex gap-1 ${msg.userId === userId
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-800"
-                  }`}
+                ref={ref}
+                key={msg.id}
+                data-message-id={msg.id}
+                className={`flex ${msg.userId === userId ? "justify-end" : "justify-start"}`}
               >
-                <div>{msg.content}</div>
-                <div className="text-xs mt-1 opacity-70">
-                  {new Date(msg.createdAt).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                <div
+                  className={`max-w-xs md:max-w-md rounded-lg p-2 flex gap-1 ${msg.userId === userId
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-800"
+                    }`}
+                >
+                  <div>{msg.content}</div>
+                  <div className="text-xs mt-1 opacity-70">
+                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                  {msg.userId === userId && (
+                    <div className="flex space-x-1">
+                      {msg.seenBy && msg.seenBy.some((id) => id !== userId) ? (
+                        <span className="text-xs text-white">✓✓</span>
+                      ) : (
+                        <span className="text-xs text-white opacity-50">✓</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 

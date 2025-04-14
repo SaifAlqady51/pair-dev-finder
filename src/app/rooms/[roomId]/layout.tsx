@@ -1,7 +1,7 @@
 import { RoomSidebar } from "@/components/room-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { getSession } from "@/lib/auth";
 import { fetchRoomById } from "@/services";
-import { getSession } from "next-auth/react";
 
 interface ParamsProps {
   params: {
