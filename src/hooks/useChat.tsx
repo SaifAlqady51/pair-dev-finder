@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Pusher, { PresenceChannel } from "pusher-js";
 import { Message } from "@/db/schema";
+import { v4 as uuidv4 } from "uuid";
 
 type UseChatProps = {
   userId: string;
@@ -8,8 +9,12 @@ type UseChatProps = {
   roomId: string;
 };
 
+type SeenEvent = {
+  messageIds: string[];
+  userId: string;
+};
+
 export const useChat = ({ userId, username, roomId }: UseChatProps) => {
-  Pusher.logToConsole = true;
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const pusherRef = useRef<Pusher | null>(null);
@@ -17,22 +22,59 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
 
   const sendMessage = (content: string) => {
     if (channelRef.current && isConnected) {
-      const newMessage: Omit<Message, "id"> = {
+      const newMessage: Message = {
+        id: uuidv4(),
         userId,
         content,
         createdAt: new Date(),
         roomId,
+        seenBy: [],
       };
 
-      // Add the message to local state immediately
-      setMessages((prev) => [
-        ...prev,
-        { ...newMessage, id: Date.now().toString() },
-      ]);
+      // Optimistic update
+      setMessages((prev) => [...prev, { ...newMessage }]);
 
-      // Send the message via Pusher
+      // Send via Pusher
       channelRef.current.trigger("client-message", newMessage);
     }
+  };
+
+  // Function to mark messages as seen
+  const markMessagesAsSeen = (messageIds: string[]) => {
+    if (!channelRef.current || !isConnected) return;
+
+    // Filter out messages that belong to the current user
+    const messagesToMark = messageIds.filter((id) => {
+      const message = messages.find((msg) => msg.id === id);
+      return message && message.userId !== userId;
+    });
+
+    if (messagesToMark.length === 0) return;
+
+    // Update local state first
+    setMessages((prev) =>
+      prev.map((msg) =>
+        messagesToMark.includes(msg.id) && !msg.seenBy?.includes(userId)
+          ? { ...msg, seenBy: [...(msg.seenBy || []), userId] }
+          : msg,
+      ),
+    );
+
+    // Notify other users
+    const seenEvent: SeenEvent = {
+      messageIds: messagesToMark,
+      userId,
+    };
+
+    channelRef.current.trigger("client-messages-seen", seenEvent);
+  };
+
+  // Function to get unread messages
+  const getUnreadMessages = () => {
+    const filteredMessages = messages.filter(
+      (msg) => msg.userId !== userId && !msg.seenBy?.includes(userId),
+    );
+    return filteredMessages;
   };
 
   useEffect(() => {
@@ -52,17 +94,23 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
       setIsConnected(true);
     });
 
-    channelRef.current.bind(
-      "client-message",
-      (message: Omit<Message, "id">) => {
-        setMessages((prev) => {
-          {
-            return [...prev, { ...message, id: Date.now().toString() }];
-          }
-        });
-      },
-    );
-
+    channelRef.current.bind("client-message", (message: Message) => {
+      setMessages((prev) => {
+        {
+          return [...prev, { ...message }];
+        }
+      });
+    });
+    channelRef.current.bind("client-messages-seen", (event: SeenEvent) => {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          event.messageIds.includes(msg.id) &&
+            !msg.seenBy?.includes(event.userId)
+            ? { ...msg, seenBy: [...(msg.seenBy || []), event.userId] }
+            : msg,
+        ),
+      );
+    });
     return () => {
       if (channelRef.current) {
         channelRef.current.unbind_all();
@@ -78,5 +126,7 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
     messages,
     isConnected,
     sendMessage,
+    markMessagesAsSeen,
+    getUnreadMessages,
   };
 };
