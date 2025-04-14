@@ -103,6 +103,9 @@ export const messages = pgTable("message", {
     .references(() => users.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  seenBy: text("keywords")
+    .array()
+    .default(sql`ARRAY[]::text[]`),
 });
 
 export type Room = typeof rooms.$inferSelect;
