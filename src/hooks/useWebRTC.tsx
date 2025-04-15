@@ -1,3 +1,4 @@
+import { createPusherClient } from "@/lib/pusher-initalizer";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Pusher, { Members, PresenceChannel } from "pusher-js";
 import {
@@ -201,13 +202,7 @@ export function useWebRtc({
 
   useEffect(() => {
     // Create pusher instance
-    pusherRef.current = new Pusher(process.env.PUSHER_KEY!, {
-      authEndpoint: "/api/pusher/auth",
-      auth: {
-        params: { username: username, userId: userId },
-      },
-      cluster: "eu",
-    });
+    pusherRef.current = createPusherClient(userId, username);
 
     channelRef.current = pusherRef.current.subscribe(
       `presence-room`,
