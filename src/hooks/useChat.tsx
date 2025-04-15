@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Pusher, { PresenceChannel } from "pusher-js";
 import { Message } from "@/db/schema";
 import { v4 as uuidv4 } from "uuid";
+import { createPusherClient } from "@/lib/pusher-initializer";
 
 type UseChatProps = {
   userId: string;
@@ -30,20 +31,14 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
         roomId,
         seenBy: [],
       };
-
-      // Optimistic update
       setMessages((prev) => [...prev, { ...newMessage }]);
-
-      // Send via Pusher
       channelRef.current.trigger("client-message", newMessage);
     }
   };
 
-  // Function to mark messages as seen
   const markMessagesAsSeen = (messageIds: string[]) => {
     if (!channelRef.current || !isConnected) return;
 
-    // Filter out messages that belong to the current user
     const messagesToMark = messageIds.filter((id) => {
       const message = messages.find((msg) => msg.id === id);
       return message && message.userId !== userId;
@@ -51,7 +46,6 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
 
     if (messagesToMark.length === 0) return;
 
-    // Update local state first
     setMessages((prev) =>
       prev.map((msg) =>
         messagesToMark.includes(msg.id) && !msg.seenBy?.includes(userId)
@@ -59,8 +53,6 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
           : msg,
       ),
     );
-
-    // Notify other users
     const seenEvent: SeenEvent = {
       messageIds: messagesToMark,
       userId,
@@ -69,7 +61,6 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
     channelRef.current.trigger("client-messages-seen", seenEvent);
   };
 
-  // Function to get unread messages
   const getUnreadMessages = () => {
     const filteredMessages = messages.filter(
       (msg) => msg.userId !== userId && !msg.seenBy?.includes(userId),
@@ -78,14 +69,7 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
   };
 
   useEffect(() => {
-    pusherRef.current = new Pusher(process.env.PUSHER_KEY!, {
-      authEndpoint: "/api/pusher/auth",
-      auth: {
-        params: { username: username, userId: userId },
-      },
-      cluster: "eu",
-    });
-
+    pusherRef.current = createPusherClient(userId, username);
     channelRef.current = pusherRef.current.subscribe(
       `presence-${roomId}`,
     ) as PresenceChannel;
