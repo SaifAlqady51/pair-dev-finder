@@ -1,4 +1,4 @@
-import { createPusherClient } from "@/lib/pusher-initializer";
+import { createPusherClient } from "@/lib/pusher-client";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Pusher, { Members, PresenceChannel } from "pusher-js";
 import {

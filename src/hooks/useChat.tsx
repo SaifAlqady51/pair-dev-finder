@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Pusher, { PresenceChannel } from "pusher-js";
 import { Message } from "@/db/schema";
 import { v4 as uuidv4 } from "uuid";
-import { createPusherClient } from "@/lib/pusher-initializer";
+import { createPusherClient } from "@/lib/pusher-client";
 
 type UseChatProps = {
   userId: string;
