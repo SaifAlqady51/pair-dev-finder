@@ -21,6 +21,20 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
   const pusherRef = useRef<Pusher | null>(null);
   const channelRef = useRef<PresenceChannel | null>(null);
 
+  const addMessage = (message: Message) => {
+    setMessages((prev) => [...prev, { ...message }]);
+  };
+
+  const updateSeenStatus = (messageIds: string[], seenByUserId: string) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        messageIds.includes(msg.id) && !msg.seenBy?.includes(seenByUserId)
+          ? { ...msg, seenBy: [...(msg.seenBy || []), seenByUserId] }
+          : msg,
+      ),
+    );
+  };
+
   const sendMessage = (content: string) => {
     if (channelRef.current && isConnected) {
       const newMessage: Message = {
@@ -31,7 +45,7 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
         roomId,
         seenBy: [],
       };
-      setMessages((prev) => [...prev, { ...newMessage }]);
+      addMessage(newMessage);
       channelRef.current.trigger("client-message", newMessage);
     }
   };
@@ -46,13 +60,8 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
 
     if (messagesToMark.length === 0) return;
 
-    setMessages((prev) =>
-      prev.map((msg) =>
-        messagesToMark.includes(msg.id) && !msg.seenBy?.includes(userId)
-          ? { ...msg, seenBy: [...(msg.seenBy || []), userId] }
-          : msg,
-      ),
-    );
+    updateSeenStatus(messagesToMark, userId);
+
     const seenEvent: SeenEvent = {
       messageIds: messagesToMark,
       userId,
@@ -78,23 +87,12 @@ export const useChat = ({ userId, username, roomId }: UseChatProps) => {
       setIsConnected(true);
     });
 
-    channelRef.current.bind("client-message", (message: Message) => {
-      setMessages((prev) => {
-        {
-          return [...prev, { ...message }];
-        }
-      });
-    });
-    channelRef.current.bind("client-messages-seen", (event: SeenEvent) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          event.messageIds.includes(msg.id) &&
-            !msg.seenBy?.includes(event.userId)
-            ? { ...msg, seenBy: [...(msg.seenBy || []), event.userId] }
-            : msg,
-        ),
-      );
-    });
+    channelRef.current.bind("client-message", (message: Message) =>
+      addMessage(message),
+    );
+    channelRef.current.bind("client-messages-seen", (event: SeenEvent) =>
+      updateSeenStatus(event.messageIds, event.userId),
+    );
     return () => {
       if (channelRef.current) {
         channelRef.current.unbind_all();
