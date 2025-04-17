@@ -1,6 +1,10 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import { useChat } from "@/hooks/useChat";
+import {
+  UnreadMessagesCounterContext,
+  useUnreadMessagesCounter,
+} from "./unread-messages-counter-provider";
 
 type ChatProps = {
   userId: string;
@@ -21,6 +25,9 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
     username,
     roomId,
   });
+
+  const { setUnreadMessagesCount } = useUnreadMessagesCounter();
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -68,6 +75,11 @@ export const Chat: React.FC<ChatProps> = ({ userId, username, roomId }) => {
   }, [messages]);
 
   // Mark messages as seen when they become visible
+  //
+  useEffect(() => {
+    const unreadMessages = getUnreadMessages();
+    setUnreadMessagesCount(unreadMessages.length);
+  }, [messages]);
   useEffect(() => {
     const unreadMessages = getUnreadMessages();
 
