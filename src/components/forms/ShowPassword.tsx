@@ -6,17 +6,17 @@ type ShowPasswordProps = {
   setShowPassword: Dispatch<SetStateAction<boolean>>;
 };
 
-export function ShowPassword({
+export const ShowPassword: React.FC<ShowPasswordProps> = (
   showPassword,
   setShowPassword,
-}: ShowPasswordProps) {
+) => {
   return (
     <span
       data-cy="show-password-button"
       className="absolute top-[30%] right-4 text-xl cursor-pointer"
-      onClick={() => setShowPassword((prevState) => !prevState)}
+      onClick={() => setShowPassword((prevState: boolean) => !prevState)}
     >
       {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
     </span>
   );
-}
+};

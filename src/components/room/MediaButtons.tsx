@@ -6,10 +6,10 @@ import {
   BsCameraVideoFill,
 } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
-import { SidebarTrigger } from "./ui/sidebar";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { useUnreadMessagesCounter } from "./unread-messages-counter-provider";
-import { Indicator } from "./ui/indicator";
+import { useUnreadMessagesCounter } from "../providers";
+import { Indicator } from "../ui/indicator";
+import { SidebarTrigger } from "../ui/sidebar";
 
 type MediaButtonsProps = {
   toggleMic: () => void;

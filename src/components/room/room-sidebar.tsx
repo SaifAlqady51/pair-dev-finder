@@ -4,8 +4,8 @@ import { Chat } from "./Chat";
 import { Room } from "@/db/schema";
 import { getRepoName } from "@/utils";
 import { Session } from "next-auth";
-import { Sidebar, SidebarContent } from "./ui/sidebar";
 import { KeywordsList } from "./KeywordsList";
+import { Sidebar, SidebarContent } from "../ui/sidebar";
 
 interface RoomSidebarProps {
   room: Room | null;
