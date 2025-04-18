@@ -1,9 +1,8 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "@/components/theme-provider";
 import { usePathname } from "next/navigation";
-import { Header } from "@/components";
+import { Header, ThemeProvider } from "@/components";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

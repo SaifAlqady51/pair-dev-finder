@@ -6,7 +6,6 @@ import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Icon from "@/public/static/images/icon.png";
 import { Skeleton } from "../ui/skeleton";
-import { ModeToggle } from "../ModeToggle";
 import Profile from "./Profile";
 import { Signing } from "./Signing";
 import {
@@ -14,6 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { ModeToggle } from "./ModeToggle";
 
 export function Header() {
   const { data: session, status } = useSession();

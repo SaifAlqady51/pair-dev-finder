@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import { useChat } from "@/hooks/useChat";
-import { useUnreadMessagesCounter } from "./unread-messages-counter-provider";
+import { useUnreadMessagesCounter } from "../providers";
 
 type ChatProps = {
   userId: string;
