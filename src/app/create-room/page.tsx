@@ -1,4 +1,4 @@
-import { CreateRoomForm } from "@/components/CreateRoomForm";
+import { CreateRoomForm } from "@/components/forms/CreateRoomForm";
 
 export default function CreateRoomPage() {
   return (

@@ -1,6 +1,5 @@
-import { RoomSidebar } from "@/components/room-sidebar";
+import { RoomSidebar, UnreadMessagesCounterProvider } from "@/components";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { UnreadMessagesCounterProvider } from "@/components/unread-messages-counter-provider";
 import { getSession } from "@/lib/auth";
 import { fetchRoomById } from "@/services";
 

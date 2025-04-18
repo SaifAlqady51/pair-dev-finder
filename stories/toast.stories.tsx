@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button"; // Optional: For triggering toasts
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
 import { useState } from "react";
+import { ThemeProvider } from "@/components";
 
 const meta: Meta<typeof Toaster> = {
   title: "Components/ui/Toaster",
