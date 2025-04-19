@@ -25,10 +25,10 @@ export const Indicator = ({
   const displayCount = count > maxDisplay ? `${maxDisplay}+` : count;
 
   const positionClasses = {
-    "top-right": "-top-1 -right-1",
-    "top-left": "-top-1 -left-1",
-    "bottom-right": "-bottom-1 -right-1",
-    "bottom-left": "-bottom-1 -left-1",
+    "top-right": "top-0 right-0 translate-x-1/2 -translate-y-1/2",
+    "top-left": "top-0 left-0 -translate-x-1/2 -translate-y-1/2",
+    "bottom-right": "bottom-0 right-0 translate-x-1/2 translate-y-1/2",
+    "bottom-left": "bottom-0 left-0 -translate-x-1/2 translate-y-1/2",
   };
 
   return (
@@ -37,7 +37,7 @@ export const Indicator = ({
       {shouldShow && (
         <span
           className={cn(
-            "absolute flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white",
+            "absolute flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs font-medium text-white",
             positionClasses[position],
             badgeClassName,
           )}
