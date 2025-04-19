@@ -20,6 +20,7 @@ type WebRtcHookProps = {
   userId: string;
   username: string;
   handleRoomJoined: () => void;
+  roomId: string;
 };
 
 const ICE_SERVERS = {
@@ -40,6 +41,7 @@ export function useWebRtc({
   userId,
   username,
   handleRoomJoined,
+  roomId,
 }: WebRtcHookProps) {
   const rtcConnection = useRef<RTCPeerConnection | null>(null);
   const createPeerConnection = () => {
@@ -205,7 +207,7 @@ export function useWebRtc({
     pusherRef.current = createPusherClient(userId, username);
 
     channelRef.current = pusherRef.current.subscribe(
-      `presence-room`,
+      `presence-room-${roomId}`,
     ) as PresenceChannel;
     // Join room
     channelRef.current.bind(

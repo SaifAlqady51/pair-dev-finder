@@ -13,7 +13,6 @@ interface VideoProps {
 }
 
 export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
-  // Setup states
   const router = useRouter();
   const host = useRef(false);
   const pusherRef = useRef<Pusher | null>(null);
@@ -46,6 +45,7 @@ export const Video: React.FC<VideoProps> = ({ roomId, username, userId }) => {
     userId,
     username,
     handleRoomJoined,
+    roomId,
   });
 
   return (
