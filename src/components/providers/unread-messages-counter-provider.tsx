@@ -20,7 +20,7 @@ const defaultContext: UnreadMessagesCounterContextType = {
   },
 };
 
-const UnreadMessagesCounterContext = createContext(defaultContext);
+export const UnreadMessagesCounterContext = createContext(defaultContext);
 
 export const UnreadMessagesCounterProvider = ({
   children,
