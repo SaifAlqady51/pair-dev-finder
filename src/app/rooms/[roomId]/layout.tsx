@@ -1,5 +1,5 @@
 import { RoomSidebar, UnreadMessagesCounterProvider } from "@/components";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/auth";
 import { fetchRoomById } from "@/services";
 
@@ -18,7 +18,6 @@ export default async function Layout({ params, children }: ParamsProps) {
     <UnreadMessagesCounterProvider>
       <SidebarProvider className="min-h-[calc(100vh-110px]">
         <main className="w-full">{children}</main>
-        <SidebarTrigger className=" top-0 p-2 w-10 h-10 mr-4 mt-4 hover:bg-slate-700 bg-muted hidden md:flex" />
         <RoomSidebar room={room} session={session} />
       </SidebarProvider>
     </UnreadMessagesCounterProvider>
