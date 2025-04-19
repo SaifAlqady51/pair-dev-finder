@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode, ComponentProps } from "react";
+import { ButtonHTMLAttributes } from "react";
 import {
   BsMicFill,
   BsMicMuteFill,
@@ -6,10 +6,8 @@ import {
   BsCameraVideoFill,
 } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
-import { HiDotsHorizontal } from "react-icons/hi";
+import { ToggleSidebarButton } from "./toggle-sidebar-button";
 import { useUnreadMessagesCounter } from "../providers";
-import { Indicator } from "../ui/indicator";
-import { SidebarTrigger } from "../ui/sidebar";
 
 type MediaButtonsProps = {
   toggleMic: () => void;
@@ -51,15 +49,7 @@ export function MediaButtons({
           )}
         </MediaButton>
       </div>
-      <Indicator
-        count={unreadMessagesCount}
-        position="top-right"
-        badgeClassName="h-4 w-4 text-[10px]"
-      >
-        <SidebarTrigger className="flex md:hidden w-11 h-11 bg-slate-900 hover:bg-slate-800 dark-slate-400 rounded-md p-2 opacity-70">
-          <HiDotsHorizontal className={buttonIconStyles} />
-        </SidebarTrigger>
-      </Indicator>
+      <ToggleSidebarButton unreadMessagesCount={unreadMessagesCount} />
     </div>
   );
 }
