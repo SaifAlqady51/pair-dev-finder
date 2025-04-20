@@ -1,4 +1,3 @@
-export * from "./Chat";
 export * from "./KeywordsList";
 export * from "./MediaButtons";
 export * from "./room-sidebar";
