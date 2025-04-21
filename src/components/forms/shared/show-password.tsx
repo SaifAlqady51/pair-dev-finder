@@ -6,10 +6,10 @@ type ShowPasswordProps = {
   setShowPassword: Dispatch<SetStateAction<boolean>>;
 };
 
-export const ShowPassword: React.FC<ShowPasswordProps> = (
+export const ShowPassword: React.FC<ShowPasswordProps> = ({
   showPassword,
   setShowPassword,
-) => {
+}) => {
   return (
     <span
       data-cy="show-password-button"
