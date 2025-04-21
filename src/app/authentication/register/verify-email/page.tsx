@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { VerifyEmailForm } from "@/components";
-import { ProviderButtons } from "@/components/forms/shared";
 
 export const metadata: Metadata = {
   title: "Register | Verify Email",
@@ -30,7 +29,6 @@ export default function RegisterPage() {
         </div>
       </div>
       <VerifyEmailForm />
-      <ProviderButtons />
     </React.Fragment>
   );
 }
