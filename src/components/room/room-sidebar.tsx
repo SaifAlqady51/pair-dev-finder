@@ -1,10 +1,10 @@
 import { Link } from "lucide-react";
 import { FaGithubAlt } from "react-icons/fa";
-import { Chat } from "./Chat";
+import { Chat } from "./chat";
 import { Room } from "@/db/schema";
 import { getRepoName } from "@/utils";
 import { Session } from "next-auth";
-import { KeywordsList } from "./KeywordsList";
+import { KeywordsList } from "./keywords-list";
 import { Sidebar, SidebarContent } from "../ui/sidebar";
 
 interface RoomSidebarProps {

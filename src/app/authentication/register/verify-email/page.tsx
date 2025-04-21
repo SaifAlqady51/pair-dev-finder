@@ -1,8 +1,8 @@
 import React from "react";
-import { ProviderButtons } from "@/components/forms/ProvidersButtons";
 import Link from "next/link";
 import { Metadata } from "next";
-import { VerifyEmailForm } from "@/components/forms/VerifyEmailForm";
+import { VerifyEmailForm } from "@/components";
+import { ProviderButtons } from "@/components/forms/shared";
 
 export const metadata: Metadata = {
   title: "Register | Verify Email",

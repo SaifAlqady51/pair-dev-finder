@@ -1,4 +1,4 @@
-import { CreateAccountForm } from "@/components/forms/CreateAccountForm";
+import { CreateAccountForm } from "@/components";
 import { Metadata } from "next";
 import { Suspense } from "react";
 

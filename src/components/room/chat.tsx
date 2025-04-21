@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useCallback, useContext } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useChat } from "@/hooks/useChat";
 import { useUnreadMessagesCounter } from "../providers";
 

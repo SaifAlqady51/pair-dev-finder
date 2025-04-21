@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { LoginFormDataType, loginFormFieldsData } from "@/data/loginformFields";
 import React, { useState } from "react";
 import { useLoginForm } from "@/hooks/useLoginForm";
-import { ShowPassword } from "./ShowPassword";
+import { ShowPassword } from "./shared";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);

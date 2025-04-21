@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 
 import { createAccountFormFieldsData } from "@/data/createAccountFormFieldsData";
 import { useCreateAccountForm } from "@/hooks/useCreateAccountForm";
-import { ShowPassword } from "./ShowPassword";
+import { ShowPassword } from "./shared";
 
 export const CreateAccountForm: React.FC = () => {
   const { form, onSubmit, showPassword, setShowPassword, access } =

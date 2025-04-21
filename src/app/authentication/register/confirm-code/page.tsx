@@ -1,4 +1,4 @@
-import { ConfirmCodeForm } from "@/components/forms/ConfirmCodeForm";
+import { ConfirmCodeForm } from "@/components";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
