@@ -20,8 +20,8 @@ import {
 import { useRouter } from "next/navigation";
 import { removeErrorWord } from "@/utils/removeErrorWord";
 import { createRoomService } from "@/services";
-import { KeywordsInput } from "./KeywordsInput";
 import { useToast } from "../ui/use-toast";
+import { KeywordsInput } from "./shared";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),

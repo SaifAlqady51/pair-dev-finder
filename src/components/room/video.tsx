@@ -1,10 +1,10 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
-import Pusher, { Members, PresenceChannel } from "pusher-js";
+import { useRef, useState } from "react";
+import Pusher, { PresenceChannel } from "pusher-js";
 import { useMediaStream } from "@/hooks/useMediaStream";
 import { useRouter } from "next/navigation";
 import { useWebRtc } from "@/hooks/useWebRTC";
-import { MediaButtons } from "./MediaButtons";
+import { MediaButtons } from "./media-buttons";
 
 interface VideoProps {
   roomId: string;

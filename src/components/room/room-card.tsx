@@ -11,7 +11,7 @@ import { Room } from "@/db/schema";
 import { getRepoName } from "@/utils/getRepoName";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
-import { KeywordsList } from "./KeywordsList";
+import { KeywordsList } from "./keywords-list";
 
 export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
   return (

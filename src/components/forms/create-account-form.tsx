@@ -10,14 +10,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { LoginFormDataType, loginFormFieldsData } from "@/data/loginformFields";
-import React, { useState } from "react";
-import { useLoginForm } from "@/hooks/useLoginForm";
-import { ShowPassword } from "./ShowPassword";
+import { createAccountFormFieldsData } from "@/data/createAccountFormFieldsData";
+import { useCreateAccountForm } from "@/hooks/useCreateAccountForm";
+import { ShowPassword } from "./shared";
 
-export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const { form, isLoading, onSubmit } = useLoginForm();
+export const CreateAccountForm: React.FC = () => {
+  const { form, onSubmit, showPassword, setShowPassword, access } =
+    useCreateAccountForm();
+
+  if (!access.canAccess) {
+    return null;
+  }
 
   return (
     <Form {...form}>
@@ -25,32 +28,32 @@ export function LoginForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 flex flex-col items-center"
       >
-        {loginFormFieldsData.map((formField: LoginFormDataType) => (
+        {createAccountFormFieldsData.map((formField) => (
           <FormField
             key={formField.fieldName}
             control={form.control}
-            name={formField.fieldName}
+            name={formField.fieldName as "username" | "password"}
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="font-medium capitalize ">
+                <FormLabel className="font-medium capitalize">
                   {formField.fieldName}
                 </FormLabel>
                 <div className="relative">
                   <FormControl>
                     <Input
-                      placeholder={formField.placeholder}
                       {...field}
-                      className="border-2 "
-                      data-cy={formField["data-cy"]}
+                      placeholder={formField.placeholder}
+                      className="border-2"
                       type={
-                        (formField.fieldName === "password" && showPassword) ||
+                        (formField.type === "password" && showPassword) ||
                           formField.type === "text"
                           ? "text"
                           : "password"
                       }
+                      aria-invalid={!!form.formState.errors[field.name]}
+                      aria-describedby={`${field.name}-error`}
                     />
                   </FormControl>
-                  {/* hide & show password toggler */}
                   {formField.fieldName === "password" && (
                     <ShowPassword
                       showPassword={showPassword}
@@ -58,21 +61,15 @@ export function LoginForm() {
                     />
                   )}
                 </div>
-
-                <FormMessage data-cy="error-message" />
+                <FormMessage id={`${field.name}-error`} />
               </FormItem>
             )}
           />
         ))}
-        <Button
-          type="submit"
-          className="w-full font-semibold flex items-center justify-center"
-          disabled={isLoading}
-          data-cy="login-submit-button"
-        >
-          {isLoading ? <span>Processing...</span> : <span>Log in</span>}
+        <Button type="submit" className="w-full font-semibold">
+          Create new account
         </Button>
       </form>
     </Form>
   );
-}
+};

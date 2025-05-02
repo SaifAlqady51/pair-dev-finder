@@ -2,9 +2,9 @@ import { Room } from "@/db/schema";
 import Link from "next/link";
 import { FaGithubAlt } from "react-icons/fa";
 import { getRepoName } from "@/utils";
-import { KeywordsList } from "@/components/room/KeywordsList";
 import { DeleteRoomButton } from "./sub-components/delete-room-button";
 import { Session } from "next-auth";
+import { KeywordsList } from "@/components/room/keywords-list";
 
 interface RoomInfoProps {
   room: Room;

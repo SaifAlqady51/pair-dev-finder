@@ -1,8 +1,7 @@
 import React from "react";
-import { LoginForm } from "@/components/forms/LoginFrom";
-import { ProviderButtons } from "@/components/forms/ProvidersButtons";
 import { Metadata } from "next";
 import Link from "next/link";
+import { LoginForm } from "@/components";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -26,7 +25,6 @@ export default function LoginPage() {
         </div>
       </div>
       <LoginForm />
-      <ProviderButtons />
     </React.Fragment>
   );
 }

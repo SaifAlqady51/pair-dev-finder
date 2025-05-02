@@ -1,8 +1,5 @@
+import { KeywordsInput, KeywordsInputProps } from "@/components/forms/shared";
 import { Meta, StoryObj } from "@storybook/react";
-import {
-  KeywordsInput,
-  KeywordsInputProps,
-} from "@/components/forms/KeywordsInput";
 import { useState } from "react";
 
 const meta: Meta<typeof KeywordsInput> = {
