@@ -1,22 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Room } from "@/db/schema";
-import { fetchRooms } from "@/services";
-import { RoomCard } from "@/components";
+import { RoomsList } from "@/components/room/room-list";
 
 export default async function Home() {
-  let rooms: Room[] = [];
-  let error: string | null = null;
-
-  try {
-    rooms = await fetchRooms();
-  } catch (err) {
-    console.error("Error fetching rooms:", err);
-    error = "Failed to load rooms. Please try again later.";
-  }
-
   return (
-    <main className=" w-full min-h-screen flex justify-center items-center ">
+    <main className="w-full min-h-screen flex justify-center items-center">
       <div className="min-h-screen md:w-10/12 w-full pt-32 md:px-16 px-6">
         <div className="flex md:flex-row gap-6 flex-col justify-between items-center w-full mb-12">
           <h2
@@ -31,25 +19,7 @@ export default async function Home() {
             </Link>
           </Button>
         </div>
-
-        <div className="flex justify-center items-center min-h-[30vh]">
-          {error ? (
-            <p className="text-2xl font-light text-red-500">{error}</p>
-          ) : rooms.length > 0 ? (
-            <div
-              className=" w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-8"
-              data-cy="room-list"
-            >
-              {rooms.map((room) => (
-                <RoomCard room={room} key={room.id} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-2xl font-light" data-cy="no-rooms-message">
-              No rooms available
-            </p>
-          )}
-        </div>
+        <RoomsList />
       </div>
     </main>
   );
