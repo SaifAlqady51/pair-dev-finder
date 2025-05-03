@@ -6,13 +6,20 @@ import { desc } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 import { checkGithubRepo } from "@/utils";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 9;
+    const offset = (page - 1) * limit;
+
     const fetchedRooms = await db
       .select()
       .from(rooms)
       .orderBy(desc(rooms.created_at))
-      .limit(9);
+      .limit(limit)
+      .offset(offset);
+
     return NextResponse.json({ success: true, data: fetchedRooms });
   } catch (error) {
     return NextResponse.json(
