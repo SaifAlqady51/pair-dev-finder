@@ -1,14 +1,18 @@
 import { Room } from "@/db/schema";
 
-export const fetchRooms = async (): Promise<Room[]> => {
+export const fetchRooms = async (
+  page: number = 1,
+  limit: number = 9,
+): Promise<Room[]> => {
   try {
-    // Step 1: Make the API request
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/rooms/`, {
-      method: "GET",
-      cache: "no-store",
-    });
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/rooms/?page=${page}&limit=${limit}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    );
 
-    // Step 2: Check if the response is OK (status code 200-299)
     if (!response.ok) {
       if (response.status === 404) {
         throw new Error(`Failed to fetch rooms: ${response.statusText}`);
@@ -19,10 +23,8 @@ export const fetchRooms = async (): Promise<Room[]> => {
       }
     }
 
-    // Step 3: Parse the response as JSON
     const data = await response.json();
 
-    // Step 4: Validate the response data and return an empty array if invalid
     if (!Array.isArray(data.data)) {
       console.warn("Invalid data format received. Returning an empty array.");
       return [];
@@ -30,7 +32,6 @@ export const fetchRooms = async (): Promise<Room[]> => {
 
     return data.data as Room[];
   } catch (error) {
-    // Step 5: Handle network errors or other unexpected errors
     if (error instanceof Error) {
       console.error("Error in fetchRooms:", error.message);
       return [];
