@@ -60,7 +60,13 @@ export function Header() {
     <header className="flex justify-between items-center md:px-6 px-2 dark:bg-gray-900 bg-slate-500 top-0 w-full z-10">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
-        <Image src={Icon} alt="Icon" className="w-16 h-16" />
+        <Image
+          src={Icon}
+          alt="Icon"
+          className="w-16 h-16"
+          width={64}
+          height={64}
+        />
         <h3 className="text-2xl font-semibold">Dev Finder</h3>
       </Link>
 

@@ -19,6 +19,8 @@ export default function SigningFormWrapper({
         src={Telephon}
         alt="login image"
         className="lg:w-7/12 w-0 h-full object-cover"
+        width={500}
+        height={500}
       />
     </div>
   );
