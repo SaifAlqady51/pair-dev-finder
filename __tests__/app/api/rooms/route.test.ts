@@ -42,35 +42,78 @@ describe("Rooms API", () => {
   });
 
   describe("GET /api/rooms", () => {
-    test("should fetch rooms successfully", async () => {
-      const mockRooms: Room[] = [
-        {
-          id: "f39e6c6e-21b2-4a6d-8f23-7e5d7cd153c8",
-          userId: "1",
-          name: "Sample Room",
-          keywords: [],
-          githubRepo: "https://github.com/sample/repository",
-          description: "This is a hardcoded description for the room.",
-          created_at: "2025-02-01T12:34:56.789Z" as unknown as Date,
-          image: "https://image.com/image.jpg",
-        },
-      ];
+    const mockRooms: Room[] = [
+      {
+        id: "f39e6c6e-21b2-4a6d-8f23-7e5d7cd153c8",
+        userId: "1",
+        name: "Sample Room",
+        keywords: [],
+        githubRepo: "https://github.com/sample/repository",
+        description: "This is a hardcoded description for the room.",
+        created_at: "2025-02-01T12:34:56.789Z" as unknown as Date,
+        image: "https://image.com/image.jpg",
+      },
+      {
+        id: "f39e6c6e-21b2-4a6d-8f23-7e5d7cd153c9",
+        userId: "2",
+        name: "Another Room",
+        keywords: ["test", "room"],
+        githubRepo: "https://github.com/another/repository",
+        description: "Another description",
+        created_at: "2025-02-02T12:34:56.789Z" as unknown as Date,
+        image: "https://image.com/image2.jpg",
+      },
+    ];
 
+    beforeEach(() => {
       mockDbSelect.mockReturnValue({
         from: jest.fn().mockReturnValue({
           orderBy: jest.fn().mockReturnValue({
-            limit: jest.fn().mockResolvedValue(mockRooms),
+            limit: jest.fn().mockReturnValue({
+              offset: jest.fn().mockResolvedValue(mockRooms),
+            }),
           }),
         }),
       });
+    });
 
-      const response = await GET();
+    test("should fetch rooms successfully with default pagination", async () => {
+      // Mock request with no query parameters
+      const mockRequest = {
+        url: "http://localhost:3000/api/rooms",
+      } as Request;
+
+      const response = await GET(mockRequest);
       const data = await response.json();
 
       expect(response.status).toBe(200);
       expect(data.success).toBe(true);
       expect(data.data).toEqual(mockRooms);
       expect(mockDbSelect).toHaveBeenCalled();
+
+      // Verify default pagination (limit=9, offset=0)
+      const limitFn = mockDbSelect().from().orderBy().limit;
+      expect(limitFn).toHaveBeenCalledWith(9);
+      expect(limitFn().offset).toHaveBeenCalledWith(0);
+    });
+
+    test("should handle invalid pagination parameters", async () => {
+      // Mock request with invalid page and limit values
+      const mockRequest = {
+        url: "http://localhost:3000/api/rooms?page=invalid&limit=invalid",
+      } as Request;
+
+      const response = await GET(mockRequest);
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(true);
+      expect(data.data).toEqual(mockRooms);
+
+      // Verify default values were used
+      const limitFn = mockDbSelect().from().orderBy().limit;
+      expect(limitFn).toHaveBeenCalledWith(9);
+      expect(limitFn().offset).toHaveBeenCalledWith(0);
     });
 
     test("should handle errors when fetching rooms", async () => {
@@ -78,7 +121,11 @@ describe("Rooms API", () => {
         throw new Error("Database error");
       });
 
-      const response = await GET();
+      const mockRequest = {
+        url: "http://localhost:3000/api/rooms",
+      } as Request;
+
+      const response = await GET(mockRequest);
       const data = await response.json();
 
       expect(response.status).toBe(500);
