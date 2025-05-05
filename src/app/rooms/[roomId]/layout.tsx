@@ -2,7 +2,7 @@ import { RoomSidebar, UnreadMessagesCounterProvider } from "@/components";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Room } from "@/db/schema";
 import { getSession } from "@/lib/auth";
-import { fetchRoomById } from "@/services";
+import { RoomService } from "@/services";
 
 interface ParamsProps {
   params: {
@@ -12,7 +12,7 @@ interface ParamsProps {
 }
 
 export default async function Layout({ params, children }: ParamsProps) {
-  const room = (await fetchRoomById(params.roomId)) as Room;
+  const room = (await RoomService.fetchRoomById(params.roomId)) as Room;
   const session = await getSession();
 
   return (
