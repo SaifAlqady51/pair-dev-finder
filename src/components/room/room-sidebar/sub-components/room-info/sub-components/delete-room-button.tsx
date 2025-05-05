@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteRoomService } from "@/services/room/deleteRoom";
+import { RoomService } from "@/services";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -12,7 +12,7 @@ export const DeleteRoomButton: React.FC<{ roomId: string }> = ({ roomId }) => {
   const deleteRoom = async () => {
     setLoading(true);
     try {
-      const response = await deleteRoomService({ id: roomId });
+      const response = await RoomService.deleteRoomService({ id: roomId });
       if (response.success) {
         router.push("/");
         setLoading(false);

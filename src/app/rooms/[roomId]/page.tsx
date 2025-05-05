@@ -1,6 +1,6 @@
 import { Video } from "@/components";
 import { getSession } from "@/lib/auth";
-import { fetchRoomById } from "@/services";
+import { RoomService } from "@/services";
 
 interface ParamsProps {
   params: {
@@ -9,7 +9,7 @@ interface ParamsProps {
 }
 
 export default async function RoomPage({ params }: ParamsProps) {
-  const room = await fetchRoomById(params.roomId);
+  const room = await RoomService.fetchRoomById(params.roomId);
   const session = await getSession();
 
   return (

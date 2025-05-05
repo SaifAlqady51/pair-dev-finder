@@ -19,9 +19,9 @@ import {
 } from "@/data/roomFormFieldsData";
 import { useRouter } from "next/navigation";
 import { removeErrorWord } from "@/utils/removeErrorWord";
-import { createRoomService } from "@/services";
 import { useToast } from "../ui/use-toast";
 import { KeywordsInput } from "./shared";
+import { RoomService } from "@/services";
 
 export const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -60,7 +60,9 @@ export function CreateRoomForm() {
     };
 
     console.log(JSON.stringify(formattedValues));
-    const createRoomResult = await createRoomService(formattedValues);
+    const createRoomResult =
+      await RoomService.createRoomService(formattedValues);
+    console.log("created rooms " + JSON.stringify(createRoomResult));
 
     if (!createRoomResult.success) {
       toast({

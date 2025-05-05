@@ -1,7 +1,7 @@
 "use client";
 
 import { Room } from "@/db/schema";
-import { fetchRooms } from "@/services";
+import { RoomService } from "@/services";
 import { RoomCard } from "@/components";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ export function RoomsList() {
     const loadRooms = async () => {
       setIsLoading(true);
       try {
-        const rooms = await fetchRooms(currentPage, pageSize);
+        const rooms = await RoomService.fetchRooms(currentPage, pageSize);
         setRooms(rooms);
       } catch (err) {
         console.error("Error fetching rooms:", err);

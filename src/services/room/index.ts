@@ -1,3 +1,1 @@
-export * from "./createRoom";
-export * from "./fetchRooms";
-export * from "./fetchRoomById";
+export * from "./room-service";
