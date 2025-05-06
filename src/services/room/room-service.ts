@@ -94,7 +94,7 @@ export class RoomService {
   static async fetchRooms(
     page: number = 1,
     limit: number = 9,
-  ): Promise<Room[]> {
+  ): Promise<{ rooms: Room[]; totalCount: number }> {
     try {
       const response = await fetch(
         `${process.env.NEXTAUTH_URL}/api/rooms/?page=${page}&limit=${limit}`,
@@ -103,7 +103,6 @@ export class RoomService {
           cache: "no-store",
         },
       );
-
       if (!response.ok) {
         if (response.status === 404) {
           throw new Error(`Failed to fetch rooms: ${response.statusText}`);
@@ -115,20 +114,24 @@ export class RoomService {
       }
 
       const data = await response.json();
+      console.log("DATA " + JSON.stringify(data));
 
       if (!Array.isArray(data.data)) {
         console.warn("Invalid data format received. Returning an empty array.");
-        return [];
+        return { rooms: [], totalCount: 0 };
       }
 
-      return data.data as Room[];
+      return {
+        rooms: data.data as Room[],
+        totalCount: data.totalCount as number,
+      };
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error in fetchRooms:", error.message);
-        return [];
+        return { rooms: [], totalCount: 0 };
       } else {
         console.error("Unexpected error in fetchRooms:", error);
-        return [];
+        return { rooms: [], totalCount: 0 };
       }
     }
   }
