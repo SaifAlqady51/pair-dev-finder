@@ -2,28 +2,55 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { rooms } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 import { checkGithubRepo } from "@/utils";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const page = Number(searchParams.get("page")) || 1;
-    const limit = Number(searchParams.get("limit")) || 9;
-    const offset = (page - 1) * limit;
+    const url = new URL(request.url);
+    const pageParam = url.searchParams.get("page");
+    const limitParam = url.searchParams.get("limit");
 
-    const fetchedRooms = await db
-      .select()
-      .from(rooms)
-      .orderBy(desc(rooms.created_at))
-      .limit(limit)
-      .offset(offset);
+    const totalRooms = await db
+      .select({ count: sql<number>`count(*)`.as("count") })
+      .from(rooms);
 
-    return NextResponse.json({ success: true, data: fetchedRooms });
+    let roomsData;
+
+    if (!pageParam && !limitParam) {
+      roomsData = await db.select().from(rooms).orderBy(desc(rooms.created_at));
+    } else {
+      const page = Number(pageParam) || 1;
+      const limit = Number(limitParam) || 9;
+      const offset = (page - 1) * limit;
+
+      roomsData = await db
+        .select()
+        .from(rooms)
+        .orderBy(desc(rooms.created_at))
+        .limit(limit)
+        .offset(offset);
+    }
+
+    console.log({
+      success: true,
+      data: roomsData,
+      totalCount: totalRooms[0].count,
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: roomsData,
+      totalCount: totalRooms[0].count,
+    });
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: "Error fetching rooms." + error },
+      {
+        success: false,
+        message: "Error fetching rooms.",
+        error: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 },
     );
   }
