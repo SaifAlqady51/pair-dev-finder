@@ -1,8 +1,5 @@
-import { RoomSidebar, UnreadMessagesCounterProvider } from "@/components";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Room } from "@/db/schema";
-import { getSession } from "@/lib/auth";
-import { RoomService } from "@/services";
+import React from "react";
+import { UnreadMessagesCounterProvider } from "@/components";
 
 interface ParamsProps {
   params: {
@@ -12,15 +9,7 @@ interface ParamsProps {
 }
 
 export default async function Layout({ params, children }: ParamsProps) {
-  const room = (await RoomService.fetchRoomById(params.roomId)) as Room;
-  const session = await getSession();
-
   return (
-    <UnreadMessagesCounterProvider>
-      <SidebarProvider className="min-h-[calc(100vh-110px]">
-        <main className="w-full">{children}</main>
-        <RoomSidebar room={room} session={session} />
-      </SidebarProvider>
-    </UnreadMessagesCounterProvider>
+    <UnreadMessagesCounterProvider>{children}</UnreadMessagesCounterProvider>
   );
 }

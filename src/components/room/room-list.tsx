@@ -12,13 +12,18 @@ export function RoomsList() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     const loadRooms = async () => {
       setIsLoading(true);
       try {
-        const rooms = await RoomService.fetchRooms(currentPage, pageSize);
+        const { rooms, totalCount } = await RoomService.fetchRooms(
+          currentPage,
+          pageSize,
+        );
         setRooms(rooms);
+        setTotalCount(totalCount);
       } catch (err) {
         console.error("Error fetching rooms:", err);
         setError("Failed to load rooms. Please try again later.");
@@ -51,7 +56,7 @@ export function RoomsList() {
             page={currentPage}
             onPageChange={(newPage: number) => setCurrentPage(newPage)}
             pageSize={pageSize}
-            totalCount={5}
+            totalCount={totalCount}
           />
         </div>
       )}

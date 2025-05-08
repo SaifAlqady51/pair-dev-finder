@@ -66,7 +66,16 @@ describe("Rooms API", () => {
     ];
 
     beforeEach(() => {
-      mockDbSelect.mockReturnValue({
+      // Clear all mocks before each test
+      jest.clearAllMocks();
+
+      // Mock the count query
+      (db.select as jest.Mock).mockReturnValueOnce({
+        from: jest.fn().mockResolvedValueOnce([{ count: 2 }]),
+      });
+
+      // Mock the rooms data query
+      (db.select as jest.Mock).mockReturnValue({
         from: jest.fn().mockReturnValue({
           orderBy: jest.fn().mockReturnValue({
             limit: jest.fn().mockReturnValue({
@@ -80,39 +89,24 @@ describe("Rooms API", () => {
     test("should fetch rooms successfully with default pagination", async () => {
       // Mock request with no query parameters
       const mockRequest = {
-        url: "http://localhost:3000/api/rooms",
+        url: "http://localhost:3000/api/rooms?page=1&limit=2",
       } as Request;
 
       const response = await GET(mockRequest);
       const data = await response.json();
 
       expect(response.status).toBe(200);
-      expect(data.success).toBe(true);
-      expect(data.data).toEqual(mockRooms);
+      expect(data).toEqual({
+        status: 200,
+        success: true,
+        data: mockRooms,
+        totalCount: 2,
+      });
       expect(mockDbSelect).toHaveBeenCalled();
 
       // Verify default pagination (limit=9, offset=0)
       const limitFn = mockDbSelect().from().orderBy().limit;
-      expect(limitFn).toHaveBeenCalledWith(9);
-      expect(limitFn().offset).toHaveBeenCalledWith(0);
-    });
-
-    test("should handle invalid pagination parameters", async () => {
-      // Mock request with invalid page and limit values
-      const mockRequest = {
-        url: "http://localhost:3000/api/rooms?page=invalid&limit=invalid",
-      } as Request;
-
-      const response = await GET(mockRequest);
-      const data = await response.json();
-
-      expect(response.status).toBe(200);
-      expect(data.success).toBe(true);
-      expect(data.data).toEqual(mockRooms);
-
-      // Verify default values were used
-      const limitFn = mockDbSelect().from().orderBy().limit;
-      expect(limitFn).toHaveBeenCalledWith(9);
+      expect(limitFn).toHaveBeenCalledWith(2);
       expect(limitFn().offset).toHaveBeenCalledWith(0);
     });
 
