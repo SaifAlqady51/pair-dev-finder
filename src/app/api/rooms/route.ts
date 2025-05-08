@@ -11,7 +11,6 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const pageParam = url.searchParams.get("page");
     const limitParam = url.searchParams.get("limit");
-
     const totalRooms = await db
       .select({ count: sql<number>`count(*)`.as("count") })
       .from(rooms);
@@ -21,8 +20,8 @@ export async function GET(request: Request) {
     if (!pageParam && !limitParam) {
       roomsData = await db.select().from(rooms).orderBy(desc(rooms.created_at));
     } else {
-      const page = Number(pageParam) || 1;
-      const limit = Number(limitParam) || 9;
+      const page = Number(pageParam);
+      const limit = Number(limitParam);
       const offset = (page - 1) * limit;
 
       roomsData = await db
@@ -33,13 +32,8 @@ export async function GET(request: Request) {
         .offset(offset);
     }
 
-    console.log({
-      success: true,
-      data: roomsData,
-      totalCount: totalRooms[0].count,
-    });
-
     return NextResponse.json({
+      status: 200,
       success: true,
       data: roomsData,
       totalCount: totalRooms[0].count,
