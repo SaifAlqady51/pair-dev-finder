@@ -50,16 +50,18 @@ export function RoomsList() {
       ) : (
         <p className="text-2xl font-light">No rooms available</p>
       )}
-      {!error && !isLoading && (
-        <div className="mt-8">
-          <PaginationWithLinks
-            page={currentPage}
-            onPageChange={(newPage: number) => setCurrentPage(newPage)}
-            pageSize={pageSize}
-            totalCount={totalCount}
-          />
-        </div>
-      )}
+      {!error ||
+        !isLoading ||
+        (rooms.length > 0 && (
+          <div className="mt-8">
+            <PaginationWithLinks
+              page={currentPage}
+              onPageChange={(newPage: number) => setCurrentPage(newPage)}
+              pageSize={pageSize}
+              totalCount={totalCount}
+            />
+          </div>
+        ))}
     </div>
   );
 }
