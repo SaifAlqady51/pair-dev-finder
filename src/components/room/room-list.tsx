@@ -5,6 +5,7 @@ import { RoomService } from "@/services";
 import { RoomCard } from "@/components";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
 import { useEffect, useState } from "react";
+import { RoomCardSkeleton } from "./room-card-skeleton";
 
 export function RoomsList() {
   const pageSize = 3;
@@ -38,7 +39,11 @@ export function RoomsList() {
   return (
     <div className="flex flex-col justify-between min-h-[30vh] w-full">
       {isLoading ? (
-        <p className="text-2xl font-light">Loading...</p>
+        <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-8">
+          {Array.from({ length: pageSize }).map((_, index) => (
+            <RoomCardSkeleton key={index} />
+          ))}
+        </div>
       ) : error ? (
         <p className="text-2xl font-light text-red-500">{error}</p>
       ) : rooms.length > 0 ? (
