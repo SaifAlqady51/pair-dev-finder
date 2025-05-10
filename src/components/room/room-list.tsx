@@ -7,7 +7,7 @@ import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
 import { useEffect, useState } from "react";
 
 export function RoomsList() {
-  const pageSize = 2;
+  const pageSize = 3;
   const [currentPage, setCurrentPage] = useState(1);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [error, setError] = useState<string | null>(null);
