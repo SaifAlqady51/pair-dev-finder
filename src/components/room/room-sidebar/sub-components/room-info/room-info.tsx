@@ -11,8 +11,6 @@ interface RoomInfoProps {
   session: Session | null;
 }
 export const RoomInfo: React.FC<RoomInfoProps> = ({ room, session }) => {
-  console.log("USERID " + session?.user.id);
-  console.log("ROOMID " + room.userId);
   return (
     <div className=" p-4 border md:rounded-md rounded-none border-slate-300  dark:border-none space-y-3 drop-shadow-xl bg-secondary">
       <h3 className="text-center text-2xl font-semibold">{room?.name}</h3>

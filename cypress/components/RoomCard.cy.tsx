@@ -19,7 +19,7 @@ describe("<RoomCard />", () => {
   };
 
   beforeEach(() => {
-    cy.mount(<RoomCard room={room} />);
+    cy.mount(<RoomCard room={room} onJoinClick={() => { }} />);
   });
 
   it("renders the room card", () => {

@@ -18,7 +18,7 @@ export default function LoginPage() {
           <Link
             href="/authentication/register/verify-email/"
             className="text-blue-500"
-            data-cy="register-link" // Add this line
+            data-cy="register-link"
           >
             Register
           </Link>
