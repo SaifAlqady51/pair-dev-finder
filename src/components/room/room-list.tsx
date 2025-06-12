@@ -65,7 +65,7 @@ export function RoomsList() {
 
       <div className="flex flex-col justify-between min-h-[30vh] w-full">
         {isLoading ? (
-          <div className="w-full bg-gray-50 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-8">
+          <div className="w-full bg-inherit grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-8">
             {Array.from({ length: pageSize }).map((_, index) => (
               <RoomCardSkeleton key={index} />
             ))}
