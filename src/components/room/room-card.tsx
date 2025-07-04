@@ -13,26 +13,14 @@ import { getRepoName } from "@/utils/getRepoName";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { KeywordsList } from "./keywords-list";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useAuthDialog } from "@/hooks/use-auth-dialog";
 
-export const RoomCard: React.FC<{ room: Room; onJoinClick: () => void }> = ({
-  room,
-  onJoinClick,
-}) => {
-  const { data: session } = useSession();
-  const isSignedIn = !!session?.user;
+export const RoomCard: React.FC<{ room: Room }> = ({ room }) => {
+  const { AuthDialog, handleAuthRequired } = useAuthDialog();
 
-  const router = useRouter();
-  const handleJoinRoom = () => {
-    if (isSignedIn) {
-      router.push(`/rooms/${room.id}`);
-    } else {
-      onJoinClick();
-    }
-  };
   return (
     <>
+      <AuthDialog />
       <Card
         className="group no-border w-full flex flex-col justify-between dark:shadow-dark shadow-lg"
         data-cy="room-card"
@@ -75,7 +63,10 @@ export const RoomCard: React.FC<{ room: Room; onJoinClick: () => void }> = ({
           </CardContent>
         </div>
         <CardFooter className="flex justify-between">
-          <Button data-cy="join-button" onClick={handleJoinRoom}>
+          <Button
+            data-cy="join-button"
+            onClick={() => handleAuthRequired({ link: `/rooms/${room.id}` })}
+          >
             Join
           </Button>
         </CardFooter>

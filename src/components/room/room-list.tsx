@@ -2,12 +2,11 @@
 
 import { Room } from "@/db/schema";
 import { RoomService } from "@/services";
-import { LoginForm, RoomCard } from "@/components";
+import { RoomCard } from "@/components";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
 import { useEffect, useState } from "react";
 import { RoomCardSkeleton } from "./room-card-skeleton";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import Link from "next/link";
+import { useAuthDialog } from "@/hooks/use-auth-dialog";
 
 export function RoomsList() {
   const pageSize = 3;
@@ -16,7 +15,7 @@ export function RoomsList() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  const [showDialog, setShowDialog] = useState(false);
+  const { AuthDialog, handleAuthRequired } = useAuthDialog();
 
   useEffect(() => {
     const loadRooms = async () => {
@@ -41,27 +40,7 @@ export function RoomsList() {
 
   return (
     <>
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-2xl">
-              Please sign in to join the room.
-            </DialogTitle>
-
-            <div className="flex gap-1 text-gray-300 text-sm">
-              <p>{"Don't have an account?"}</p>
-              <Link
-                href="/authentication/register/verify-email/"
-                className="text-blue-500"
-                data-cy="register-link"
-              >
-                Register
-              </Link>
-            </div>
-          </DialogHeader>
-          <LoginForm />
-        </DialogContent>
-      </Dialog>
+      <AuthDialog />
 
       <div className="flex flex-col justify-between min-h-[30vh] w-full">
         {isLoading ? (
@@ -75,11 +54,7 @@ export function RoomsList() {
         ) : rooms.length > 0 ? (
           <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mb-8">
             {rooms.map((room) => (
-              <RoomCard
-                room={room}
-                key={room.id}
-                onJoinClick={() => setShowDialog(true)}
-              />
+              <RoomCard room={room} key={room.id} />
             ))}
           </div>
         ) : (
