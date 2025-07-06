@@ -57,7 +57,7 @@ export function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center md:px-6 px-2 dark:bg-secondary bg-slate-500 top-0 w-full z-10">
+    <header className="flex justify-between items-center md:px-44 px-2 dark:bg-secondary bg-slate-500 top-0 w-full z-10">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
         <Image
