@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --page-padding-x: 2rem;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -87,6 +88,11 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  @media (min-width: 1200px) {
+    :root {
+      --page-padding-x: 10rem;
+    }
   }
 }
 
