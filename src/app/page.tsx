@@ -9,23 +9,24 @@ export default function Home() {
   return (
     <>
       <AuthDialog />
-      <main className="w-full min-h-screen flex justify-center items-center">
-        <div className="min-h-screen md:w-10/12 w-full pt-32 md:px-16 px-6">
-          <div className="flex md:flex-row gap-6 flex-col justify-between items-center w-full mb-12">
-            <h2
-              className="md:text-4xl text-3xl font-bold"
-              data-cy="find-dev-title"
-            >
-              Find Dev Rooms
-            </h2>
+      <main className="w-full min-h-screen">
+        <div
+          className="h-screen w-full pt-32"
+          style={{ paddingInline: "var(--page-padding-x)" }}
+        >
+          <div className="flex flex-col md:flex-row justify-between items-center w-full mb-12 gap-6">
+            <h2 className="text-3xl md:text-4xl font-bold">Find Dev Rooms</h2>
             <Button
-              className="font-semibold md:text-xl text-2xl md:p-6 px-10 py-6"
+              className="font-semibold text-xl md:text-2xl px-6 py-4 md:px-8 md:py-6"
               onClick={() => handleAuthRequired({ link: "/create-room" })}
             >
               Create Room
             </Button>
           </div>
-          <RoomsList />
+
+          <div className="w-full">
+            <RoomsList />
+          </div>
         </div>
       </main>
     </>
