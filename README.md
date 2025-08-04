@@ -4,7 +4,7 @@ Pair Dev Finder is a comprehensive platform designed to bridge the gap between d
 
 ## 🚀 Key Features
 
-### 🔍 Intelligent Developer Matching System
+### 🔍 Developer Matching System
 
 Our advanced matching algorithm considers multiple factors to create meaningful connections:
 
