@@ -42,8 +42,8 @@ The platform provides everything needed for productive pair programming:
 ### Backend Services
 
 - **Next.js API Routes**: Organized RESTful endpoints with middleware support
+- **Next-Auth**: Authentication system with support for multiple providers
 - **Supabase Integration**:
-  - Authentication with email/password and OAuth providers
   - PostgreSQL database with row-level security
   - Storage for user uploads and assets
 - **Drizzle ORM**: Type-safe database queries with schema migrations
@@ -74,6 +74,10 @@ Ensure your system has:
 - Git for version control
 - Supabase account (free tier available)
 - Pusher account (developer plan sufficient)
+
+## Database Schema
+
+![Database Schema](./public/database_schema.png)
 
 ## Figma Design
 
