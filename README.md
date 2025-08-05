@@ -42,8 +42,8 @@ The platform provides everything needed for productive pair programming:
 ### Backend Services
 
 - **Next.js API Routes**: Organized RESTful endpoints with middleware support
+- **Next-Auth**: Authentication system with support for multiple providers
 - **Supabase Integration**:
-  - Authentication with email/password and OAuth providers
   - PostgreSQL database with row-level security
   - Storage for user uploads and assets
 - **Drizzle ORM**: Type-safe database queries with schema migrations
@@ -75,14 +75,10 @@ Ensure your system has:
 - Supabase account (free tier available)
 - Pusher account (developer plan sufficient)
 
+## Database Schema
+
+![Database Schema](./public/database_schema.png)
+
 ## Figma Design
 
 You can view the design on [Figma](https://www.figma.com/design/yZodyGIJg8YQ0M5L48XbHE/Pair-dev-finder?node-id=0-1&p=f&t=nkH3xBlftrfROAk0-0).
-
-### Step-by-Step Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/pair-dev-finder.git
-   cd pair-dev-finder
-   ```
