@@ -82,11 +82,3 @@ Ensure your system has:
 ## Figma Design
 
 You can view the design on [Figma](https://www.figma.com/design/yZodyGIJg8YQ0M5L48XbHE/Pair-dev-finder?node-id=0-1&p=f&t=nkH3xBlftrfROAk0-0).
-
-### Step-by-Step Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/pair-dev-finder.git
-   cd pair-dev-finder
-   ```
